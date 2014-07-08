@@ -19,7 +19,7 @@
 var someArray = Array<String>()
 
 // Shorter, more common way to define an array of Strings
-var shorter: String[]
+var shorter: [String]
 
 // This is an array literal. Since all members are of type String, this will create a String array.
 //
@@ -28,7 +28,7 @@ var shorter: String[]
 ["Eggs", "Milk"]
 
 // Let's create an array with some stuff in it. We'll use an explicit String type:
-var commonPets: String[] = ["Cats", "Dogs"]
+var commonPets: [String] = ["Cats", "Dogs"]
 
 // We can also let Swift infer the type of the Array based on the type of the initializer members.
 //
@@ -71,7 +71,7 @@ shoppingList[0] = "Six Eggs"
 shoppingList[4...6] = ["Banannas", "Apples"]
 
 // Or we can replace two items with three, inserting a new item:
-shoppingList[4..6] = ["Limes", "Mint leaves", "Sugar"]
+shoppingList[4..<6] = ["Limes", "Mint leaves", "Sugar"]
 
 // We can insert an item at a given index
 shoppingList.insert("Maple Syrup", atIndex: 3)
@@ -102,7 +102,7 @@ for (index, value) in enumerate(shoppingList)
 //
 // Earlier, we saw how to declare an array of a given type. Here, we see how to declare an array
 // type and then assign it to a stored value, which gets its type by inference:
-var someInts = Int[]()
+var someInts = [Int]()
 
 // Add the number '3' to the array
 someInts.append(3)
@@ -113,7 +113,7 @@ someInts
 someInts = []
 
 // We can initialize an array and and fill it with default values
-var threeDoubles = Double[](count: 3, repeatedValue: 3.3)
+var threeDoubles = [Double](count: 3, repeatedValue: 3.3)
 
 // We can also use the Array initializer to fill it with default values. Note that we don't need to
 // specify type since it is inferred:
@@ -127,7 +127,8 @@ let immutableArray = ["a", "b"]
 // the array itself.
 //
 // We change the contents of an immutable array:
-immutableArray[0] = "b"
+// immutableArray[0] = "b"
+// !!! Since beta 3 this operation also give compiler error !!!
 
 // But if you try to change the size or add an element, you will get a compiler error:
 //
@@ -169,7 +170,9 @@ c
 //
 // The unshare() method is performant because it doesn't actually copy the array contents until
 // it has to (if ever.)
-b.unshare()
+// b.unshare()
+// !!! Since beta 3 Apple remove this method, copy using an efﬁcient lazy copy implementation !!!
+
 
 // They still appear to be the same...
 b
@@ -207,6 +210,10 @@ else
 // Use the copy() method to force a shallow copy.
 //
 // Unlike the unshare method, the copy will happen immediately when calling copy().
-var d = a.copy()
+// var d = a.copy()
+// !!! Since beta 3 Apple remove this method, copy using an efﬁcient lazy copy implementation !!!
+// So you can use simple assign operator
+var d = a
+
 a[0] = 101
 d[0]

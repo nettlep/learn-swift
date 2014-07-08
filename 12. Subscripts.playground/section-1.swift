@@ -44,7 +44,7 @@ struct Matrix
 {
 	let rows: Int
 	let columns: Int
-	var grid: Double[]
+	var grid: [Double]
 	
 	init (rows: Int, columns: Int)
 	{

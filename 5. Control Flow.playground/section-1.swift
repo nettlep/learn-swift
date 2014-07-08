@@ -29,7 +29,7 @@ for index in 1...5
 // We can loop through ranges using the half-closed range operator (with two dots)
 //
 // We can also reuse the name 'index' because of the scoping noted previously.
-for index in 1..5
+for index in 1..<5
 {
 	"This will print 4 times"
 }

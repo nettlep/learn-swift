@@ -119,3 +119,7 @@ copiedAges["Peter"] = 24
 
 // And we can see that the original is not changed:
 ages["Peter"]
+
+// Since beta 3 you can also use [ KeyType: ValueType ] syntax to declare dictionary
+var beta3dict:[String: AnyObject]
+
