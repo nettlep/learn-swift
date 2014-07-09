@@ -235,7 +235,7 @@ extension Hamster: TextRepresentable
 // Hamsters and Dice don't have much in common, but in our sample code above, they both conform
 // to the TextRepresentable protocol. Because of this, we can create an array of things that are
 // TextRepresentable which includes each:
-let textRepresentableThigns: TextRepresentable[] = [d6, tedTheHamster]
+let textRepresentableThigns: [TextRepresentable] = [d6, tedTheHamster]
 
 // We can now loop through each and produce its text representation:
 for thing in textRepresentableThigns
@@ -341,7 +341,7 @@ class Animal
 }
 
 // We can store our objects into an array of type AnyObject[]
-let objects: AnyObject[] =
+let objects: [AnyObject] =
 [
 	Circle(radius: 3.0),
 	Country(area: 4356947.0),

@@ -26,18 +26,18 @@
 //   return s1 < s2
 // }
 //
-// Here's an example using Swift's global sort function. It's important to note that the sort
-// function receives two parameters, a String array and a closure.
+// Here's an example using Swift's 'sorted' member function. It's important to note that this
+// function receives a single closure.
 //
 // These can be a little tricky to read if you're not used to them. To understand the syntax, pay
 // special attention to the curly braces that encapsulate the closure and the parenthesis just
 // outside of those curly braces:
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
-var reversed = String[]()
-reversed = sort(names,
-	{ (s1: String, s2: String) -> Bool in
-		return s1 > s2
-	})
+var reversed = [String]()
+reversed = names.sorted({
+    (s1: String, s2: String) -> Bool in
+        return s1 > s2
+})
 
 // ------------------------------------------------------------------------------------------------
 // Inferring Type from Context
@@ -49,65 +49,73 @@ reversed = sort(names,
 // call to sort.
 //
 // The following call is identical to the one above with the exception that "-> Bool" was removed:
-reversed = sort(names,
-	{ (s1: String, s2: String) in
+reversed = names.sorted({
+    (s1: String, s2: String) in
 		return s1 > s2
-	})
+})
 
 // Just as the return type can be inferred, so can the parameter types. This allows us to simplify
 // the syntax a bit further by removing the type annotations from the closure's parameters.
 //
 // The following call is identical to the one above with the exception that the parameter type
 // annotations (": String") have been removed:
-reversed = sort(names,
-	{ (s1, s2) in
+reversed = names.sorted({
+    (s1, s2) in
 		return s1 > s2
-	})
+})
 
-// Since all types can be inferred, we can simplify a bit further by removing the paranthesis
-// around the parameters. We'll also put it all on a single line, since it's a bit more clear now:
-reversed = sort(names, { s1, s2 in return s1 > s2 })
+// Since all types can be inferred and we're not using any type annotation on the parameters,
+// we can simplify a bit further by removing the paranthesis around the parameters. We'll also put
+// it all on a single line, since it's a bit more clear now:
+reversed = names.sorted({ s1, s2 in return s1 > s2 })
 
 // If the closuere has only a single expression, then the return statement is also inferred. When
-// this is the case, the closure returns the value of the single expression.
-reversed = sort(names, { s1, s2 in s1 > s2 })
+// this is the case, the closure returns the value of the single expression:
+reversed = names.sorted({ s1, s2 in s1 > s2 })
 
 // We're not done simplifying yet. It turns out we can get rid of the parameters as well. If we
 // remove the parameters, we can still access them because Swift provides shorthand names to
-// inline closures. To access the first parameter, use $0. The second parameter would be $1 and
-// so on.
+// parameters passed to inline closures. To access the first parameter, use $0. The second
+// parameter would be $1 and so on.
 //
 // Here's what that would might like (this will not compile - yet):
 //
-//    reversed = sort(names, { s1, s2 in $0 > $1 })
+//    reversed = names.sorted({ s1, s2 in $0 > $1 })
 //
 // This won't compile because you're not allowed to use shorthand names if you specify the
-// parameter names. Therefore, we need to remove those in order to get it to compile. This makes
+// parameter list. Therefore, we need to remove those in order to get it to compile. This makes
 // for a very short inline closure:
-reversed = sort(names, { $0 > $1 })
+reversed = names.sorted({ $0 > $1 })
 
 // Interestingly enough, the operator < for String types is defined as:
 //
 //     (String, String) -> Bool
 //
-// Notice how this is the same as the closure's type for the sort() routine? Wouldn't it be cool
-// if we could just pass in this operator? It turns out that for inline closures, Swift allows
+// Notice how this is the same as the closure's type for the sorted() routine? Wouldn't it be
+// nice if we could just pass in this operator? It turns out that for inline closures, Swift allows
 // exactly this.
 //
 // Here's what that looks like:
-reversed = sort(names, >)
+reversed = names.sorted(>)
+
+// If you want to just sort a mutable copy of an array (in place) you can use the sort() method
+var mutableCopyOfNames = names
+
+mutableCopyOfNames.sort(>)
+
+mutableCopyOfNames
 
 // ------------------------------------------------------------------------------------------------
 // Trailing Closures
 //
 // Trailing Closures refer to closures that are the last parameter to a function. This special-case
 // syntax allows a few other syntactic simplifications. In essence, you can move trailing closures
-// just outside of the parameter list. Swift's global sort() function uses a trailing closure for
+// just outside of the parameter list. Swift's sorted() member function uses a trailing closure for
 // just this reason.
 //
 // Let's go back to our original call to sort with a fully-formed closure and move the closure
 // outside of the parameter list. This resembles a function definition, but it's a function call.
-reversed = sort(names) {
+reversed = names.sorted {
 		(s1: String, s2: String) -> Bool in
 		return s1 > s2
 	}
@@ -123,7 +131,7 @@ reversed = sort(names) {
 // }
 
 // Let's jump back to our simplified closure ({$0 > $1}) and apply the trailing closure principle:
-reversed = sort(names) {$0 > $1}
+reversed = names.sorted {$0 > $1}
 
 // Another simplification: if a function receives just one closure as the only parameter, you can
 // remove the () from the function call. First, we'll need a function that receives just one

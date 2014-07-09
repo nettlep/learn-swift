@@ -9,7 +9,7 @@ Learn Apple's Swift programming language interactively through these playgrounds
 
 ###What you'll need
 
-  XCode 6 or above (and probably a Mac to run it on.)
+  XCode 6 (beta 3 or later) and probably a Mac to run it on.
 
 ###Purpose & Goal
 
@@ -33,3 +33,8 @@ Learn Apple's Swift programming language interactively through these playgrounds
   information was helpful.
 
   If you don't already have the book, it's free. You should probably get it.
+
+###Contributors
+
+  Thanks to Rafał Wójcik for his quick work to update these playgrounds to
+  incorporate the Swift language changes that came with XCode Beta 3.

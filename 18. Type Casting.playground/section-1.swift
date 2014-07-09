@@ -107,7 +107,7 @@ for item in library
 //
 // Let's see AnyObject in action. We'll define an array of type AnyObject[] and populate it with
 // some movies:
-let someObjects: AnyObject[] =
+let someObjects: [AnyObject] =
 [
 	Movie(name: "2001: A Space Odyssey", director: "Stanley Kubrick"),
 	Movie(name: "Moon", director: "Duncan Jones"),
@@ -127,7 +127,7 @@ for object: AnyObject in someObjects
 }
 
 // Alternatively, we can downcast the array itself rather than each item:
-var someMovies = someObjects as Movie[]
+var someMovies = someObjects as [Movie]
 for movie in someMovies
 {
 	"Movie: '\(movie.name)' was directed by \(movie.director)"
@@ -135,7 +135,7 @@ for movie in someMovies
 
 // Finally, we can avoid the additional local variable and performt he downcast right inside
 // the loop structure:
-for movie in someObjects as Movie[]
+for movie in someObjects as [Movie]
 {
 	"Movie: '\(movie.name)' was directed by \(movie.director)"
 }
@@ -145,7 +145,7 @@ for movie in someObjects as Movie[]
 //
 // Let's see this in action. We'll create an array of type Any[] and fill it with random bits and
 // pieces of stuff:
-var things = Any[]()
+var things = [Any]()
 
 things.append(0)
 things.append(0.0)

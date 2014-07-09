@@ -9,7 +9,7 @@
 // ------------------------------------------------------------------------------------------------
 // For loops
 //
-// We can loop through ranges using the closed-range operator (three dots).
+// We can loop through ranges using the closed-range operator ("...").
 //
 // In the loop below, 'index' is a constant that is automatically declared.
 for index in 1...5
@@ -26,10 +26,10 @@ for index in 1...5
 //
 // index = 0
 
-// We can loop through ranges using the half-closed range operator (with two dots)
+// We can loop through ranges using the half-closed range operator ("..<")
 //
 // We can also reuse the name 'index' because of the scoping noted previously.
-for index in 1..5
+for index in 1 ..< 5
 {
 	"This will print 4 times"
 }

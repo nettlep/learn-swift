@@ -19,8 +19,12 @@
 // Let's use that literal to define and initialize a Dictionary.
 //
 // In this case, we use type annotation to explicitly declare a Dictionary containing String keys
-// and String values:
-var airports: Dictionary<String, String> = ["TYO": "Tokyo", "DUB": "Dublin", "APL": "Apple Intl"]
+// and String values. This uses the syntactic sugar "[ KeyType: ValueType ]" to declare the
+// dictionary.
+var airports: [String : String] = ["TYO": "Tokyo", "DUB": "Dublin", "APL": "Apple Intl"]
+
+// The declaration for airports above could also have been declared in this way:
+var players: Dictionary<String, String> = ["Who" : "First", "What" : "Second"]
 
 // In the case below, the literal contains only Strings for all keys and only Strings for all
 // values, so type inference works in our favor allowing us to avoid the type annotation:
@@ -102,7 +106,7 @@ namesOfIntegers = [:]
 // An immutable dictionary is a constant.
 let immutableDict = ["a": "one", "b": "two"]
 
-// Unlike arrays, you cannot modify the contents of an immutable dictionary. The following lines
+// Similar to arrays, we cannot modify the contents of an immutable dictionary. The following lines
 // will not compile:
 //
 // immutableDict["a"] = "b" // You cannot modify an element
@@ -119,3 +123,4 @@ copiedAges["Peter"] = 24
 
 // And we can see that the original is not changed:
 ages["Peter"]
+

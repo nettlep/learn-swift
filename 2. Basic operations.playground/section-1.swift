@@ -36,7 +36,7 @@ var d = a % b // Floating point remainder
 // The range operator with two dots means up to but NOT including the final value.
 //
 // This is called the "Half-Closed Range Operator"
-for i in 1..10
+for i in 1..<10
 {
 	i // prints 1 through 9
 }

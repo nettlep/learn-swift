@@ -81,7 +81,7 @@ bString
 // type for a property, the input parameter for a method and the return value for a method.
 struct Stack<T>
 {
-	var items = T[]()
+	var items = [T]()
 	mutating func push(item: T)
 	{
 		items.append(item)
@@ -133,7 +133,7 @@ func doSomethingWithKeyValue<KeyType: Hashable, ValueType>(someKey: KeyType, som
 // element from the array with the value being searched for. By including the Equatable, we tell
 // the generic function that it is guaranteed to receive only values that meet that specific
 // criteria.
-func findIndex<T: Equatable>(array: T[], valueToFind: T) -> Int?
+func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int?
 {
 	for (index, value) in enumerate(array)
 	{
@@ -177,7 +177,7 @@ struct StackContainer<T> : Container
 {
 	// Here we find our original stack implementation, unmodified
 	
-	var items = T[]()
+	var items = [T]()
 	mutating func push(item: T)
 	{
 		items.append(item)
@@ -251,7 +251,7 @@ func allItemsMatch
 	}
 	
 	// Check each pair of items to see if they are equivalent
-	for i in 0..someContainer.count
+	for i in 0..<someContainer.count
 	{
 		if someContainer[i] != anotherContainer[i]
 		{

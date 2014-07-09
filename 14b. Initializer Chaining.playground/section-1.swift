@@ -163,9 +163,9 @@ class ClassWithPI
 // initialized and then returned.
 struct CheckerBoard
 {
-	let boardColors: Bool[] =
+	let boardColors: [Bool] =
 	{
-		var temporaryBoard = Bool[]()
+		var temporaryBoard = [Bool]()
 		var isBlack = false
 		for i in 1...10
 		{

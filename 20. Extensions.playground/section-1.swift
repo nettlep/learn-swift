@@ -108,7 +108,7 @@ extension Int
 {
 	func repititions(task: () -> ())
 	{
-		for i in 0..self
+		for i in 0..<self
 		{
 			task()
 		}

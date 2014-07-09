@@ -44,7 +44,7 @@ class DataImporter
 class DataManager
 {
 	@lazy var importer = DataImporter()
-	var data = String[]()
+	var data = [String]()
 }
 
 // Now let's instantiate the data manager and add some simple data to the class:
