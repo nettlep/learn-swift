@@ -14,13 +14,13 @@ let someOtherTuple = (Double(100), Bool(false))
 
 // Decomposing typles looks like this
 let (statusCode, statusMessage) = httpError404
-statusCode
-statusMessage
+println(statusCode) // prints 404
+println(statusMessage) // prints "Not found"
 
 // We can also decompose into variables instead of constants, but you probably figured that out
 var (varStatusCode, varStatusMessage) = httpError404
-varStatusCode
-varStatusMessage
+println(varStatusCode) // prints 404
+println(varStatusMessage) // prints "Not found"
 
 // You can also access them with the dot operator followed by their index:
 httpError404.0
@@ -31,6 +31,11 @@ let namedTuple = (statusCode: 404, message: "Not found")
 
 // When you name the elements you effectively assign names to their indices, so the dot operator
 // works with names or integers:
-namedTuple.statusCode == namedTuple.0
-namedTuple.message == namedTuple.1
+if namedTuple.statusCode == namedTuple.0 {
+ // do something
+}
+
+if namedTuple.message == namedTuple.1 {
+ // do something
+}
 
