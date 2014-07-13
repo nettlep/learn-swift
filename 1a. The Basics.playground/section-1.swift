@@ -56,7 +56,8 @@ let π = 3.14159
 let 你好 = "你好世界"
 let 🐶🐮 = "dogcow"
 
-// You can print a value using println (this doesn't do anything in a playground, though)
+// You can print a value using println (if you wish to see the output in playground to the console you must click 
+// a plus sign that is right of the println declaration)
 let fiveHundred = 500
 println("The current value of fiveHundred is: \(fiveHundred)")
 
