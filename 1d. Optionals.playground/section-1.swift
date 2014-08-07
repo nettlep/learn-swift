@@ -80,14 +80,14 @@ else
 //
 // We can conditionally store the unwrapped value to a stored value if the optional holds a value.
 //
-// In the foloowing block, we'll optionally bind the Int value to a constant named 'intValue'
+// In the following block, we'll optionally bind the Int value to a constant named 'intValue'
 if let intValue = optionalConvertedNumber
 {
 	// No need to use the "!" suffix as intValue is not optional
 	intValue
 	
 	// In fact, since 'intValue' is an Int (not an Int?) we can't use the force-unwrap. This line
-	// of code wont' compile:
+	// of code won't compile:
 	// intValue!
 }
 else

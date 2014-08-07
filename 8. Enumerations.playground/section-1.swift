@@ -5,7 +5,7 @@
 //   Rather that containing "one of a set of integer values" like most C-like languages, Swift's
 //   enumerations can be thought of as holding one named type of a given set of named types.
 //
-//   To clarify: Rather than holding an ingeger value that has been pre-defined integer value
+//   To clarify: Rather than holding an integer value that has been pre-defined integer value
 //   (Error = -1, Success = 0) an enumeration in Swift only associates a name with a type (like
 //   Int, String, Tuple, etc.) These elements of the enumeration can then be assigned "Associated
 //   Values." For example, an enumeration can store an "Error" which is a Tuple with an Int value
