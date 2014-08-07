@@ -31,7 +31,7 @@ class Vehicle
 class Bicycle: Vehicle
 {
 	// We'll make this a 2-wheeled vehicle
-	init()
+	override init()
 	{
 		super.init()
 		numberOfWheels = 2
@@ -46,7 +46,7 @@ bicycle.description()
 class Tandem: Bicycle
 {
 	// This bicycle has 2 passengers
-	init()
+	override init()
 	{
 		super.init()
 		maxPassengers = 2
@@ -61,7 +61,7 @@ class Car: Vehicle
 	var speed: Double = 0.0
 	
 	// New initialization, starting with super.init()
-	init()
+	override init()
 	{
 		super.init()
 		maxPassengers = 5
@@ -143,21 +143,21 @@ automaticCar.gear
 // ------------------------------------------------------------------------------------------------
 // Preenting Overrides
 //
-// We can prevent a subclass from overriding a particular method or property using the '@final'
+// We can prevent a subclass from overriding a particular method or property using the 'final'
 // keyword.
 //
-// @final can be applied to: class, var, func, class methods and subscripts
+// final can be applied to: class, var, func, class methods and subscripts
 //
 // Here, we'll prevent an entire class from being subclassed by applying the . Because of this,
-// the @finals inside the class are not needed, but are present for descriptive purposes. These
-// additional @finals may not compile in the future, but they do today:
-@final class AnotherAutomaticCar: Car
+// the finals inside the class are not needed, but are present for descriptive purposes. These
+// additional finals may not compile in the future, but they do today:
+final class AnotherAutomaticCar: Car
 {
 	// This variable cannot be overridden
-	@final var gear = 1
+	final var gear = 1
 	
 	// We can even prevent overridden functions from being further refined
-	@final override var speed: Double
+	final override var speed: Double
 	{
 		didSet { gear = Int(speed / 10.0) + 1 }
 	}

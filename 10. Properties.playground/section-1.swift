@@ -28,9 +28,9 @@ rangeOfThreeItems.firstValue = 6
 //
 // A Lazy Stored Property is a value that is not calculated until its first use.
 //
-// They are declared using the "@lazy" attribute and may not be constant.
+// They are declared using the "lazy" attribute and may not be constant.
 //
-// Global and local variables are all lazy, except that they don't need the @lazy attribute.
+// Global and local variables are all lazy, except that they don't need the lazy attribute.
 //
 // Here, we'll define a couple classes to showcase Lazy Stored Properties. In this example, let's
 // assume that DataImporter is a time-consuming process, and as such, we will want to use a lazy
@@ -43,14 +43,14 @@ class DataImporter
 
 class DataManager
 {
-	@lazy var importer = DataImporter()
+	lazy var importer = DataImporter()
 	var data = [String]()
 }
 
 // Now let's instantiate the data manager and add some simple data to the class:
 let manager = DataManager()
-manager.data += "Some data"
-manager.data += "Some more data"
+manager.data.append("Some data")
+manager.data.append("Some more data")
 
 // Notice how we haven't used the importer yet, so it is nil:
 manager
@@ -298,3 +298,4 @@ class SomeClass
 	// This is read-only, but you can also do read/write
 	class var computedTypeProperty: Int { return 4 }
 }
+

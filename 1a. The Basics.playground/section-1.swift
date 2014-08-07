@@ -56,13 +56,12 @@ let π = 3.14159
 let 你好 = "你好世界"
 let 🐶🐮 = "dogcow"
 
-// You can print a value using println (this doesn't do anything in a playground, though)
+// You can print a value using println
 let fiveHundred = 500
 println("The current value of fiveHundred is: \(fiveHundred)")
 
-// Since println doesn't work in Playgrounds, we'll just put the raw string on the line
-// which is an expression that evaluates to itself, printing the result in the right-hand
-// pane in the playground, like so:
+// Since we're using Playgrounds, we'll just put the raw string on the line which is an expression
+// that evaluates to itself, printing the result in the right-hand pane in the playground, like so:
 "The current value of fiveHundred is: \(fiveHundred)"
 
 // ------------------------------------------------------------------------------------------------

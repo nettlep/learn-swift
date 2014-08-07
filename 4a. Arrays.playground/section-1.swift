@@ -47,10 +47,7 @@ if !shoppingList.isEmpty { "it's not empty" }
 
 // We can append to the end
 shoppingList.append("Flour")
-shoppingList.count
-
-// We can append to the end with the compound assigmnent operator
-shoppingList += "Baking Powder"
+shoppingList.append("Baking Powder")
 shoppingList.count
 
 // We can append another array of same type
@@ -146,13 +143,6 @@ var a = [1, 2, 3]
 var b = a
 var c = a
 
-// Swift uses an efficient lazy copy to manage memory for arrays. So for the time being, a, b & c
-// all reference the same memory. (Note the use of '===' for testing if the objects are the same
-// instance.)
-if a === b { "a and b share the same elements" }
-if b === c { "b and c share the same elements" }
-if c === a { "c and a share the same elements" }
-
 // However, if we change the contents of one array (mutating it), then it is copied and becomes its
 // own unique entity:
 a[0] = 42
@@ -161,29 +151,15 @@ c[0]
 
 // Now that we've changed a, it should have been copied to its own instance. Let's double-check
 // that only b & c are the same:
-if a === b { "a and b share the same elements" }
-if b === c { "b and c share the same elements" }
-if c === a { "c and a share the same elements" }
+a
+b
+c
 
 // The same is true if we mutate the array in other ways (mofify the array's size)...
 b.append(4)
-
-// And now they should all be unique...
-if a === b { "a and b share the same elements" }
-if b === c { "b and c share the same elements" }
-if c === a { "c and a share the same elements" }
 
 // Now, we have three different arrays...
 a
 b
 c
 
-// This works with sub-arrays, too:
-if b[0...1] === b[0...1]
-{
-	"these guys are shared"
-}
-else
-{
-	"these guys are NOT shared"
-}

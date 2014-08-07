@@ -115,7 +115,7 @@ struct Vector2D
 // the form "vectorA + vectorB", which means we'll be defining an infix operator.
 //
 // Here's what that looks like:
-@infix func + (left: Vector2D, right: Vector2D) -> Vector2D
+func + (left: Vector2D, right: Vector2D) -> Vector2D
 {
 	return Vector2D(x: left.x + right.x, y: left.y + right.y)
 }
@@ -127,32 +127,13 @@ var c = a + b
 
 // We've seen the infix operator at work so let's move on to the prefix and postfix operators.
 // We'll define a prefix operator that negates the vector taking the form (result = -value):
-@prefix func - (vector: Vector2D) -> Vector2D
+prefix func - (vector: Vector2D) -> Vector2D
 {
 	return Vector2D(x: -vector.x, y: -vector.y)
 }
 
 // Check our work:
 c = -a
-
-// We're not allowed to overload the assignment operator (=) but we can overload the Compound
-// Assignment Operator, which combines assignment with another operator, such as addition. These
-// take the form "result += value".
-//
-// Compound Assigment operators use the @assignment attribute. Also, since the left operand is
-// being modified, we must also be sure to specify that parameter as 'inout' in our operator
-// function. In fact, the use of @assignment means that we're modifying an operand so something
-// always has to be treated as inout.
-//
-// Also, Swift's assigment operation expressions do not express a value, so compound assignment
-// operators do not return a value.
-//
-// Let's take a look at one:
-@assignment func += (inout left: Vector2D, right: Vector2D)
-{
-	// Here, we use the addition operator that we defined earlier
-	left = left + right
-}
 
 // Next, let's consider the common prefix increment operator (++a) and postfix increment (a++)
 // operations. Each of these performs the operation on a single value whle also returning the
@@ -163,16 +144,16 @@ c = -a
 // they are also @assigmnent operators (and make use of inout for the parameter.)
 //
 // Let's take a look:
-@prefix @assignment func ++ (inout vector: Vector2D) -> Vector2D
+prefix func ++ (inout vector: Vector2D) -> Vector2D
 {
-	vector += Vector2D(x: 1.0, y: 1.0)
+	vector = vector + Vector2D(x: 1.0, y: 1.0)
 	return vector
 }
 
-@postfix @assignment func ++ (inout vector: Vector2D) -> Vector2D
+postfix func ++ (inout vector: Vector2D) -> Vector2D
 {
 	var previous = vector;
-	vector += Vector2D(x: 1.0, y: 1.0)
+	vector = vector + Vector2D(x: 1.0, y: 1.0)
 	return previous
 }
 
@@ -195,13 +176,13 @@ c
 // So here are our more robust equivalence operators:
 let Epsilon = 0.1e-7
 
-@infix func == (left: Vector2D, right: Vector2D) -> Bool
+func == (left: Vector2D, right: Vector2D) -> Bool
 {
 	if abs(left.x - right.x) > Epsilon { return false }
 	if abs(left.y - right.y) > Epsilon { return false }
 	return true
 }
-@infix func != (left: Vector2D, right: Vector2D) -> Bool
+func != (left: Vector2D, right: Vector2D) -> Bool
 {
 	// Here, we'll use the inverted result of the "==" operator:
 	return !(left == right)
@@ -224,12 +205,12 @@ let Epsilon = 0.1e-7
 // 'operator' keyword, folowed by either 'prefix', 'postfix' or 'infix':
 //
 // Swift meet operator, operator meet swift:
-operator prefix +++ {}
+prefix operator +++ {}
 
 // Now we can declare our new operator:
-@prefix @assignment func +++ (inout vector: Vector2D) -> Vector2D
+prefix func +++ (inout vector: Vector2D) -> Vector2D
 {
-	vector += vector
+	vector = vector + vector
 	return vector
 }
 
@@ -266,7 +247,7 @@ var someVector = Vector2D(x: 5.0, y: 9.0)
 //
 // We'll define a function that adds the 'x' components of two vectors, but subtracts the 'y'
 // components. We'll call this the "+-" operator:
-operator infix +- { associativity left precedence 140 }
+infix operator +- { associativity left precedence 140 }
 func +- (left: Vector2D, right: Vector2D) -> Vector2D
 {
 	return Vector2D(x: left.x + right.x, y: left.y - right.y)

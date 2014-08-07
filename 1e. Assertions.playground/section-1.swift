@@ -7,7 +7,7 @@
 // ------------------------------------------------------------------------------------------------
 
 // Let's start with a value...
-let age = 3;
+let age = 3
 
 // You can assert with a message
 assert(age >= 0, "A person's age cannot be negative")

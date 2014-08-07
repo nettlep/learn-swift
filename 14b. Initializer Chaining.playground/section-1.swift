@@ -95,7 +95,7 @@ class RecipeIngredient: Food
 	// Here, we'll create a convenience initializer that simply provides a default quantity
 	// value of 1. Note that in order for this to compile, we are required to call a designated
 	// initializer.
-	convenience init(name: String)
+	convenience override init(name: String)
 	{
 		self.init(name: name, quantity: 1)
 	}
@@ -118,7 +118,7 @@ class ShoppingListItem: RecipeIngredient
 	var purchased = false
 	var description: String
 	{
-		var output = "\(quantity) x \(name.lowercaseString)"
+		var output = "\(quantity) x \(name)"
 		output += purchased ? " ✔" : " ✘"
 		return output
 	}

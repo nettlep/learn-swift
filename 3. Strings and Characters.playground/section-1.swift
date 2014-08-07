@@ -17,9 +17,9 @@ var str: String = "Albatross! Get your albatross here!"
 "\r"         // Carriage return
 "\""         // Double quote
 "\'"         // Single quote
-"\x24"       // Single-byte Unicode
-"\u2665"     // Double-byte unicode (lower-case 'u')
-"\U0001F49c" // Four-byte unicode (upper-case 'U')
+"\u{24}"       // Single-byte Unicode
+"\u{2665}"     // Double-byte unicode
+"\u{0001F49c}" // Four-byte unicode
 
 // Initializing an empty string - these are equivalent to each other
 var emptyString = ""
@@ -98,11 +98,4 @@ str1 == str2
 str1.hasPrefix("We're")
 str2.hasSuffix("I.")
 str1.hasPrefix("I.")
-
-// Upper-case and lower-case
-str1 = str1.uppercaseString
-str2 = str2.lowercaseString
-
-// They are no longer equal
-str1 == str2
 

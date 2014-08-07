@@ -85,7 +85,7 @@ class Starship: FullyNamed
 	
 	var fullName: String
 	{
-		return (prefix ? prefix! + " " : "") + name
+		return (prefix != .None ? prefix! + " " : "") + name
 	}
 }
 
@@ -357,7 +357,7 @@ objects[2] is HasArea
 // Optional Protocol Requirements
 //
 // Sometimes it's convenient to declare protocols that have one or more requirements that are
-// optional. This is done by prefixing those requirements with the '@optional' keyword.
+// optional. This is done by prefixing those requirements with the 'optional' keyword.
 //
 // The term "optional protocol" refers to protocols that are optional in a very similar since to
 // optionals we've seen in the past. However, rather than stored values that can be nil, they
@@ -372,8 +372,8 @@ objects[2] is HasArea
 // * In order to check if an instance of a class conforms to a given protocol, that protocol must
 //   be declared with the @objc attribute.
 //
-// * This is also the case with optional requirements in protocols. In order to use the @optional
-//   attribute, the protocol must be declared with the @objc attribute.
+// * This is also the case with optional requirements in protocols. In order to use the optional
+//   declaration modifier, the protocol must be declared with the @objc attribute.
 //
 // * Additionally, any class, structure or enumeration that owns an instance that conforms to a
 //   protocol declared with the @objc attribute must also be declared with the @objc attribute.
@@ -381,8 +381,8 @@ objects[2] is HasArea
 // Here's another simple protocol that uses optional requrements:
 @objc protocol CounterDataSource
 {
-	@optional func incrementForCount(count: Int) -> Int
-	@optional var fixedIncrement: Int { get }
+	optional func incrementForCount(count: Int) -> Int
+	optional var fixedIncrement: Int { get }
 }
 
 // In the class below, we'll see that checking to see if an instance conforms to a specific
@@ -406,20 +406,3 @@ objects[2] is HasArea
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -141,7 +141,7 @@ extension Int
 	subscript(digitIndex: Int) -> Int
 	{
 		var decimalBase = 1
-		for _ in 1...digitIndex
+		for _ in 0 ..< digitIndex
 		{
 			decimalBase *= 10
 		}
@@ -170,7 +170,7 @@ extension Character
 	}
 	var kind: Kind
 	{
-		switch String(self).lowercaseString
+		switch String(self)
 		{
 			case "a", "e", "i", "o", "u":
 				return .Vowel

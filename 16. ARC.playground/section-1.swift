@@ -276,16 +276,16 @@ var america = Country(name: "USA", capitalName: "Washington DC")
 // Let's see how this problem can manifest. We'll create a class that represents an HTML element
 // which includes a variable (asHTML) which stores a reference to a closure.
 //
-// Quick note: The asHTML variable is defined as @lazy so that it can reference 'self' within the
-// closure. Try removing the '@lazy' and you'll see that you get an error trying to access 'self'.
+// Quick note: The asHTML variable is defined as lazy so that it can reference 'self' within the
+// closure. Try removing the 'lazy' and you'll see that you get an error trying to access 'self'.
 // This is an error because we're not allowed to access 'self' during Phase 1 initialization. By
-// making 'asHTML' @lazy, we solve this problem by deferring its initialization until later.
+// making 'asHTML' lazy, we solve this problem by deferring its initialization until later.
 class HTMLElement
 {
 	let name: String
 	let text: String?
 	
-	@lazy var asHTML: () -> String =
+	lazy var asHTML: () -> String =
 	{
 		if let text = self.text
 		{
@@ -321,7 +321,7 @@ paragraph = nil
 //
 // Here's how we define a capture list:
 //
-//	@lazy var someClosure: (Int, String) -> String =
+//	lazy var someClosure: (Int, String) -> String =
 //	{
 //		[unowned self] (index: Int, stringToProcess: String) -> String in
 //
@@ -332,7 +332,7 @@ paragraph = nil
 // may not have any parameters. In both cases the method for declaring the capture list doesn't
 // change much. Simply include the capture list followed by the 'in' keyword:
 //
-//	@lazy var someClosure: () -> String =
+//	lazy var someClosure: () -> String =
 //	{
 //		[unowned self] in
 //
@@ -347,7 +347,7 @@ class FixedHTMLElement
 	let name: String
 	let text: String?
 	
-	@lazy var asHTML: () -> String =
+	lazy var asHTML: () -> String =
 	{
 		[unowned self] in
 		if let text = self.text

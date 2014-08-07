@@ -150,11 +150,11 @@ FamilyPet.Ferret.toRaw()
 var pet = FamilyPet.fromRaw("Ferret")
 
 // Let's verify this:
-if pet { "We have a pet!" }
+if pet != .None { "We have a pet!" }
 else { "No pet :(" }
 
 // An example of when a raw doesn't translate to an enum, leaving us with a nil optional:
 pet = FamilyPet.fromRaw("Snake")
-if pet { "We have a pet" }
+if pet != .None { "We have a pet" }
 else { "No pet :(" }
 
