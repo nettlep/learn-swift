@@ -1,0 +1,1 @@
+let copyOfAssumedString: String = assumedString
