@@ -1,0 +1,1 @@
+countElements(originalString)
