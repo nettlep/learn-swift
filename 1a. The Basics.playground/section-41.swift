@@ -1,0 +1,1 @@
+let tirePressurePSI = 52

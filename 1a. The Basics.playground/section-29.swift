@@ -1,0 +1,1 @@
+let `myConstant` = 123.456
