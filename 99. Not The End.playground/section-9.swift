@@ -1,0 +1,1 @@
+var ohrly = pi.dynamicType.infinity
