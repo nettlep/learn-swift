@@ -1,0 +1,1 @@
+let inferredDictionary = ["TYO": "Tokyo", "DUB": "Dublin"]

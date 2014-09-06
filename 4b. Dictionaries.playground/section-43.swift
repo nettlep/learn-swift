@@ -1,0 +1,1 @@
+copiedAges["Peter"] = 24
