@@ -1,0 +1,1 @@
+// constantResolution.width = 320

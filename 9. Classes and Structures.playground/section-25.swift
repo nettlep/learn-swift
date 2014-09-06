@@ -1,0 +1,1 @@
+constantVideoMode.frameRate = 24

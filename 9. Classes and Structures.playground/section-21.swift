@@ -1,0 +1,1 @@
+variableVideoMode.frameRate = 240

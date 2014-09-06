@@ -1,0 +1,2 @@
+someVideoMode === variableVideoMode
+constantVideoMode === variableVideoMode
