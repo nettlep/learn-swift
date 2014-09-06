@@ -1,0 +1,1 @@
+returnValue {return 6}

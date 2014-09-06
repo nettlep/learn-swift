@@ -1,0 +1,1 @@
+reversed = names.sorted {$0 > $1}

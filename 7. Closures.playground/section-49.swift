@@ -1,0 +1,1 @@
+incrementBy10() // returns 50
