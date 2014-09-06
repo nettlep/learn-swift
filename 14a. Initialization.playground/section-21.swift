@@ -1,0 +1,1 @@
+let beetsQuestion = SurveyQuestion2(text: "Do you like beets?")
