@@ -1,0 +1,1 @@
+SomeOtherClass.isGreaterThan100(105)
