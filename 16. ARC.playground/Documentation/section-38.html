@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 39</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <p>Here&#39;s how and why this works.</p>
+<p>The relationship between Customer:CreditCard is very similar to the relationship between Country:City. The two key differences are that (1) the country initializes its own city and the country does not need to reference the city through the optional binding or forced unwrapping because the Country defines the city with the implicitly unwrapped optional property (using the exclamation mark on the type annotation (City!).</p>
+<p>The City uses an unowned Country property in the same way (and for the same reasons) as the CreditCard uses an unowned property of a Customer.</p>
+<p>The Country still uses an optional (though implicitly unwrapped) for the same reason that the Customer uses an optional to store a CreditCard. If we look at Country&#39;s initializer, we see that it initializes a capitalCity by passing &#39;self&#39; to the City initializer. Normally, an initializer cannot reference its own &#39;self&#39; until it has fully initialized the object. In this case, the Country can access its own &#39;self&#39; because once &#39;name&#39; has been initialized, the object is considered fully initialized. This is the case because &#39;capitalCity&#39; is an optional.</p>
+<p>We take this just a step further by declaring &#39;capitalCity&#39; to be an implicitly unwrapped optinoal property so that we can avoid having to deal with unwrapping &#39;capitalCity&#39; whenever we want to access it.</p>
+<h2 id="strong-reference-cycles-for-closures">Strong Reference Cycles for Closures</h2>
+<p>We&#39;ve seen how classes can reference each other creating a cyclic reference because classes are reference types. However, classes aren&#39;t the only way to create a cyclic reference. These problematic references can also happen with closures because they, too, are reference types.</p>
+<p>This happens when a closure captures an instance of a class (simply because it uses the class reference within the closure) and a class maintains a reference to the closure. Note that the references that a closure captures are automatically strong references.</p>
+<p>Let&#39;s see how this problem can manifest. We&#39;ll create a class that represents an HTML element which includes a variable (asHTML) which stores a reference to a closure.</p>
+<p>Quick note: The asHTML variable is defined as lazy so that it can reference &#39;self&#39; within the closure. Try removing the &#39;lazy&#39; and you&#39;ll see that you get an error trying to access &#39;self&#39;. This is an error because we&#39;re not allowed to access &#39;self&#39; during Phase 1 initialization. By making &#39;asHTML&#39; lazy, we solve this problem by deferring its initialization until later.</p>
+
+  </section>
+</div>
+</body>
+</html>

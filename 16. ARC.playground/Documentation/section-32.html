@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 33</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <h2 id="unowned-references">Unowned References</h2>
+<p>Unowned refernces are similar to weak references in that they do not hold a strong reference to an instance. However, the key difference is that if the object the reference is deallocated they will not be set to nil like weak references to. Therefore, it&#39;s important to ensure that any unowned references will always have a value. If this were to happen, accessing the unowned reference will trigger a runtime error. In fact, Swift guraantees that your app will crash in this scenario.</p>
+<p>Unowned references are created using the &#39;unowned&#39; keyword and they must not be optional.</p>
+<p>We&#39;ll showcase this with a Customer and Credit Card. This is a good example case because a customer may have the credit card, or they may close the account, but once a Credit Card has been created, it will always have a customer.</p>
+
+  </section>
+</div>
+</body>
+</html>
