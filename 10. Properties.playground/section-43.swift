@@ -1,0 +1,1 @@
+stepCounter.totalSteps = 200;
