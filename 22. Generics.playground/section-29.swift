@@ -1,0 +1,1 @@
+allItemsMatch(stringStack, ["Alpha", "Beta", "Theta"])

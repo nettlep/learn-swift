@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 27</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <p>The function&#39;s type parameter list places the following restrictions on the types allowed:</p>
+<ul>
+<li>C1 must conform to the Container protocol (C1: Container)</li>
+<li>C2 must also conform to the Container protocol (C1: Container)</li>
+<li>The ItemType for C1 must be the same as the ItemType for C2 (C1.ItemType == C2.ItemType)</li>
+<li>The ItemType for C1 must conform to the Equatable protocol (C1.ItemType: Equatable)</li>
+</ul>
+<p>Note that we only need to specify that C1.ItemType conforms to Equatable because the code only calls the != operator (part of the Equatable protocol) on someContainer, which is the type C1.</p>
+<p>Let&#39;s test this out by passing the same value for each parameter which should definitely return true:</p>
+
+  </section>
+</div>
+</body>
+</html>
