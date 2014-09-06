@@ -1,0 +1,1 @@
+if !shoppingList.isEmpty { "it's not empty" }

@@ -1,0 +1,1 @@
+shoppingList[4...6] = ["Banannas", "Apples"]
