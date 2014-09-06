@@ -1,0 +1,1 @@
+wishHappyBirthday(Individual(name: "Bill", age: 31))

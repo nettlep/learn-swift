@@ -1,0 +1,7 @@
+let d6 = Dice(sides: 6, generator: generator)
+d6.roll()
+d6.roll()
+d6.roll()
+d6.roll()
+d6.roll()
+d6.roll()

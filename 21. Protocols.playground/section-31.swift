@@ -1,0 +1,1 @@
+let textRepresentableThigns: [TextRepresentable] = [d6, tedTheHamster]
