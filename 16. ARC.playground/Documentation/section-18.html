@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 19</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <p>If we try to clean up, the memory will not be deallocated by ARC. Let&#39;s follow along what actually happens a step at a time.</p>
+<p>First, we set &#39;bill&#39; to be nil, which drops the strong reference count for this instance of Tenant down to 1. Since there is still a strong reference held to this instance, it is never deallocated (and the deinit() is also never called on that instance of Person.)</p>
+
+  </section>
+</div>
+</body>
+</html>

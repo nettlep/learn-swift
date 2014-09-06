@@ -1,0 +1,1 @@
+var commonPets: [String] = ["Cats", "Dogs"]

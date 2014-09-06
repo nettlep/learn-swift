@@ -1,0 +1,7 @@
+yetAnotherArithmeticMean()
+yetAnotherArithmeticMean(initialTotal: 1)
+yetAnotherArithmeticMean(initialTotal: 1, values: 2)
+yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3)
+yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4)
+yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4, 5)
+yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4, 5, 6)

@@ -1,0 +1,1 @@
+var maxAmplituedFound = AudioSample.min

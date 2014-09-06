@@ -1,0 +1,2 @@
+helloworld += String(bang)
+helloworld

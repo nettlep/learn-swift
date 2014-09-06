@@ -1,0 +1,1 @@
+let someString = "This will be a String"

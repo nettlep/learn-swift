@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 3</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <p>Since this should be pretty clear, let&#39;s jump into parameters for methods with internal and external names.</p>
+<p>The defaults for external names are different for methods than they are for global functions.</p>
+<p>For methods, the default behavior is that the caller must always specify all but the first external parameter name when calling the method. Member authors need not specify the external names for those parameters as the default is to treat all parameters as if they had the &quot;#&quot; specifier, which creates an external parameter name that mirrors the local parameter name.</p>
+<p>To override this default-external-names-for-second-and-beyond-parameters, specify an &quot;_&quot; as the external parameter name for all but the first parameter.</p>
+<p>If you want the caller to also use external name for the first parameter, be sure to add your own &#39;#&#39; symbol to the local name or specify the external name explicitly.</p>
+<p>Here&#39;s a class that exercises the various combinations of internal and external name usages:</p>
+
+  </section>
+</div>
+</body>
+</html>

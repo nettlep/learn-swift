@@ -1,0 +1,1 @@
+let threeFeetInMeters = 3.ftToMeters

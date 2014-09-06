@@ -1,0 +1,4 @@
+extension Hamster: TextRepresentable
+{
+	
+}

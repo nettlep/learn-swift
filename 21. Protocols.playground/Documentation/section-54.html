@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 55</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <h2 id="optional-protocol-requirements">Optional Protocol Requirements</h2>
+<p>Sometimes it&#39;s convenient to declare protocols that have one or more requirements that are optional. This is done by prefixing those requirements with the &#39;optional&#39; keyword.</p>
+<p>The term &quot;optional protocol&quot; refers to protocols that are optional in a very similar since to optionals we&#39;ve seen in the past. However, rather than stored values that can be nil, they can still use optional chaining and optional binding for determining if an optional requirement has been satisfied and if so, using that requirement.</p>
+<p>As with Protocol Conformance, a protocol that uses optional requirements must also be prefixed with the &#39;@objc&#39; attribute.</p>
+<p>A special note about @objc attribute:</p>
+<ul>
+<li>In order to check if an instance of a class conforms to a given protocol, that protocol must be declared with the @objc attribute.</li>
+<li>This is also the case with optional requirements in protocols. In order to use the optional declaration modifier, the protocol must be declared with the @objc attribute.</li>
+<li>Additionally, any class, structure or enumeration that owns an instance that conforms to a protocol declared with the @objc attribute must also be declared with the @objc attribute.</li>
+</ul>
+<p>Here&#39;s another simple protocol that uses optional requrements:</p>
+
+  </section>
+</div>
+</body>
+</html>

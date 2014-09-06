@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 1</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <h1 id="initializer-chaining">Initializer Chaining</h1>
+<h2 id="things-to-know-">Things to know:</h2>
+<ul>
+<li>Initializer Chaining refers to the way in which initialization takes place along the class hierarchy.</li>
+<li>Designated Initializers are those that are responsible for ensuring that the instance of a class, structure or enumeration is properly initialized. These are the initializers you&#39;ve seen so far. Designated initializers are also resonsible for calling the superclass&#39; initializer.</li>
+<li>Convenience Initializers are initializers that are provided for specialized initialization and must call one of the designated initializers within a class in order to fulfill the requirement of properly initializing a class.</li>
+</ul>
+<hr>
+<p>Designated Initializers are the normal initializers (&quot;init(...)&quot;) functions that you&#39;ve seen so far. If the system creates an initializer for you, it will be a designated initializer.</p>
+<p>Convenience Initializers allow you to offer different code-paths through initialization, which call upon the designated initializers to do the heavy lifting. They use the keyword &quot;convenience&quot;. They are actually different than designated initializers because Swift uses the difference (designated vs. convenience) to perform two-phase initialization, which we&#39;ll cover shortly.</p>
+<p>Here&#39;s what a simple case looks like with a designated and convenience initializer:</p>
+
+  </section>
+</div>
+</body>
+</html>

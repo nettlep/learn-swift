@@ -1,0 +1,1 @@
+assert(age >= 0, "A person's age cannot be negative")

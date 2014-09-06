@@ -1,0 +1,1 @@
+var america = Country(name: "USA", capitalName: "Washington DC")

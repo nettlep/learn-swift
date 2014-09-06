@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 13</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <p>Let&#39;s see type constraints in action. We&#39;ll create a function that finds a given value within an array and returns an optional index into the array where the first element was found.</p>
+<p>Take notice the constraint &quot;Equatable&quot; on the type T, which is key to making this function compile. Without it, we would get an error on the conditional statement used to compare each element from the array with the value being searched for. By including the Equatable, we tell the generic function that it is guaranteed to receive only values that meet that specific criteria.</p>
+
+  </section>
+</div>
+</body>
+</html>

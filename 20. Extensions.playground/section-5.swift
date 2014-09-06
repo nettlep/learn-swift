@@ -1,0 +1,1 @@
+let oneInchInMeters = 1.inchToMeters

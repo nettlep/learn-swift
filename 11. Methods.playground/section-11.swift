@@ -1,0 +1,1 @@
+let fixedPoint = Point2(x: 3)

@@ -1,0 +1,1 @@
+// var failure: String = nil // Won't compile

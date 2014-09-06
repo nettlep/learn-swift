@@ -1,0 +1,1 @@
+var pet = FamilyPet.fromRaw("Ferret")

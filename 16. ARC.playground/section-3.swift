@@ -1,0 +1,1 @@
+var person: Person? = Person(name: "Bill")

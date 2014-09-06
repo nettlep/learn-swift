@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 5</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <h2 id="two-phase-initialization">Two-Phase Initialization</h2>
+<p>Two-phase initialization is a new concept enforced by Swift. Think of it like this:</p>
+<ul>
+<li>Phase 1: Subclasses MUST FIRST initialize any stored properties that are part of their subclass. They must do this before they are allowed to cusomize a super&#39;s stored property. Subclasses MUST THEN call the super&#39;s initializer, which will repeat this process until the top-most superclass (the base class) is reached.</li>
+</ul>
+<p>At this point we can assume that the class is fully initialized (but not necessarily customized by the subclasses that may need to alter the initialization results.</p>
+<ul>
+<li>Phase 2: In the base class&#39; initializer, we can customize its properties before it returns to the caller (a subclass.) That subclass is then allowed to write to any/all stored properties defined by itself or the superclass chain. This continues until you get the the bottom-most subclass.</li>
+</ul>
+<p>A note about convenience initializers:</p>
+<p>Convenience initializers must always call into a designated initializer from the current class. A designated initializer for a subclass must then into a super&#39;s iniitializer, which may also be a convenience initializer, because that convenience initializer will be required to eventually call a designated initializer before going higher up the chain.</p>
+<p>Let&#39;s derive a class from Food so we can see this in action:</p>
+
+  </section>
+</div>
+</body>
+</html>

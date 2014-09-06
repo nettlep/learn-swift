@@ -1,0 +1,1 @@
+let someFloat: Float = 1234.56

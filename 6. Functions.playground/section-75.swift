@@ -1,0 +1,1 @@
+doDoMul(doMul, 5, 5)

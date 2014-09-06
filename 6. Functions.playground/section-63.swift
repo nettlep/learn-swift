@@ -1,0 +1,4 @@
+func doNothing()
+{
+	return
+}

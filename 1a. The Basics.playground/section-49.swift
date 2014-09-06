@@ -1,0 +1,1 @@
+let someDouble = 1234.56

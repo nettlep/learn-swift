@@ -1,0 +1,1 @@
+let lotsOfCheese = ShoppingListItem(name: "cheese", quantity: 99)

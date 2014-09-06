@@ -1,0 +1,1 @@
+var anotherRect = Rect(origin: Point(x: 1.0, y: 1.0), size: Size(width: 3.0, height: 2.0))

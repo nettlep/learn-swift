@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 1</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <h1 id="enumerations">Enumerations</h1>
+<h2 id="things-to-know-">Things to know:</h2>
+<ul>
+<li><p>Enumerations in Swift are different from their popular counterparts in C-like languages. Rather that containing &quot;one of a set of integer values&quot; like most C-like languages, Swift&#39;s enumerations can be thought of as holding one named type of a given set of named types.</p>
+</li>
+<li><p>To clarify: Rather than holding an integer value that has been pre-defined integer value (Error = -1, Success = 0) an enumeration in Swift only associates a name with a type (like Int, String, Tuple, etc.) These elements of the enumeration can then be assigned &quot;Associated Values.&quot; For example, an enumeration can store an &quot;Error&quot; which is a Tuple with an Int value for the error code and a String containing the message. Each time a function or piece of code assignes or returns an Error(Int, String), it can set populate the Tuple with Int/String par for the specific error condition.</p>
+</li>
+<li><p>Alternative to the enumeration storing named types, Swift enumerations can have a type. If that type is Int, then they will behave more like their C-style counterparts.</p>
+</li>
+</ul>
+<hr>
+<p>Here is the simple enumeration.</p>
+<p>Unlike their C counterparts, the members of the enumeration below are not integer values (0, 1, 2, etc.) Instead, each member is a fully-fledged value in its own right.</p>
+
+  </section>
+</div>
+</body>
+</html>

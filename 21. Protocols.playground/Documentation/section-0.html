@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 1</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <h1 id="protocols">Protocols</h1>
+<h2 id="things-to-know-">Things to know:</h2>
+<ul>
+<li>Protocols define a required set of functionality (including methods and properties) for a class, structure or enumeration.</li>
+<li>Protocols are &quot;adopted&quot; by a class, structure or enumeration to provide the implementation. This is called &quot;conforming&quot; to a protocol.</li>
+<li>As you should already be aware, protocols are often used for delegation.</li>
+<li><p>Protocol Syntax looks like this:</p>
+<p>  protocol FirstProtocol
+  {    </p>
+<pre><code>  // protocol definition goes here
+</code></pre><p>  }</p>
+</li>
+<li><p>Protocol adoption looks like this:</p>
+<p>  struct SomeStructure: FirstProtocol, AnotherProtocol
+  {</p>
+<pre><code>  // structure definition goes here
+</code></pre><p>  }</p>
+<p>  class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol
+  {</p>
+<pre><code>  // class definition goes here
+</code></pre><p>  }</p>
+</li>
+</ul>
+<hr>
+<h2 id="property-requirements">Property requirements</h2>
+<ul>
+<li>A protocol can require the conforming type to provide an instance of a property or type property.</li>
+<li>The protocol can also specify if the property must be gettable or gettable and settable. If a protocol only requires a gettable property, the conforming class can use a stored property or a computed property. Also, the conforming class is allowed to add a setter if it needs.</li>
+<li>Property requirements are always declared as variable types with the &#39;var&#39; introducer.</li>
+</ul>
+<p>Let&#39;s take a look at a simple protocol. As you&#39;ll see, we only need to define the properties in terms of &#39;get&#39; and &#39;set&#39; and do not provide the actual functionality.</p>
+
+  </section>
+</div>
+</body>
+</html>

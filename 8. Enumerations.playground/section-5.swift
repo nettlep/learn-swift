@@ -1,0 +1,1 @@
+var directionToHead = CompassPoint.West

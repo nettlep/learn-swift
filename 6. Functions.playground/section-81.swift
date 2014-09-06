@@ -1,0 +1,4 @@
+func getNop() -> () -> ()
+{
+	return nop
+}

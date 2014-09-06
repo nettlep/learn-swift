@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Section 23</title>
+  <meta id="xcode-display" name="xcode-display" content="render">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="content-wrapper">
+  <section class="section">
+    <p>At this point, we have two instances that still exist in memory, but cannot be cleaned up because we don&#39;t have any references to them in order to solve the problem.</p>
+<h2 id="resolving-strong-reference-cycles-between-class-instances">Resolving Strong Reference Cycles between Class Instances</h2>
+<p>Swift provides two methods to resolve strong reference cycles: weak and unowned references.</p>
+<p>Weak references allow an instance to be held without actually having a strong hold on it (and hence, not incrementing the reference count for the target object.)</p>
+<p>Use weak references when it&#39;s OK for a reference to become nil sometime during its lifetime. Since the Apartment can have no tenant at some point during its lifetime, a weak reference is the right way to go.</p>
+<p>Weak references must always be optional types (because they may be required to be nil.) When an object holds a weak reference to an object, if that object is ever deallocated, Swift will locate all the weak references to it and set those references to nil.</p>
+<p>Weak references are declared using the &#39;weak&#39; keyword.</p>
+<p>Let&#39;s fix our Apartment class. Note that we only have to break the cycle. It&#39;s perfectly fine to let the Tenant continue to hold a strong reference to our apartment. We will also create a new Tenant class (we&#39;ll just give it a new name, &quot;NamedTenant&quot;), but only so that we can change the apartment type to reference our fixed Apartment class.</p>
+
+  </section>
+</div>
+</body>
+</html>

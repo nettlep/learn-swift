@@ -1,0 +1,1 @@
+var incrementBy10 = makeIncrementor(forIncrement: 10)

@@ -1,0 +1,1 @@
+shoppingList[0] = "Six Eggs"

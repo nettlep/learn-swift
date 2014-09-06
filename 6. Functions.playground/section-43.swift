@@ -1,0 +1,6 @@
+anotherArithmeticMean(initialTotal: 1)
+anotherArithmeticMean(initialTotal: 1, 2)
+anotherArithmeticMean(initialTotal: 1, 2, 3)
+anotherArithmeticMean(initialTotal: 1, 2, 3, 4)
+anotherArithmeticMean(initialTotal: 1, 2, 3, 4, 5)
+anotherArithmeticMean(initialTotal: 1, 2, 3, 4, 5, 6)

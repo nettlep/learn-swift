@@ -1,0 +1,1 @@
+var anotherThreeDoubles = Array(count: 3, repeatedValue: 2.5)

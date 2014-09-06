@@ -1,0 +1,7 @@
+arithmeticMean()
+arithmeticMean(1)
+arithmeticMean(1, 2)
+arithmeticMean(1, 2, 3)
+arithmeticMean(1, 2, 3, 4)
+arithmeticMean(1, 2, 3, 4, 5)
+arithmeticMean(1, 2, 3, 4, 5, 6)
