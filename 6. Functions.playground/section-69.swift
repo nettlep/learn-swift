@@ -1,0 +1,1 @@
+let doAddMul: (a: Int, b: Int, Int) -> Int = addMul
