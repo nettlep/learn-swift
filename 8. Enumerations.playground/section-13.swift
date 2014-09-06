@@ -1,0 +1,1 @@
+var productBarcode = Barcode.UPCA(0, 8590951226, 3)
