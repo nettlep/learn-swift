@@ -54,7 +54,7 @@ struct BlackjackCard
 				case .Jack, .Queen, .King:
 					return Values(first: 10, second: nil)
 				default:
-					return Values(first: self.toRaw(), second: nil)
+					return Values(first: self.rawValue, second: nil)
 			}
 		}
 	}
@@ -65,7 +65,7 @@ struct BlackjackCard
 	
 	var description: String
 	{
-		var output = "A \(suit.toRaw()) with a value of \(rank.values.first)"
+		var output = "A \(suit.rawValue) with a value of \(rank.values.first)"
 		if let second = rank.values.second
 		{
 			output += " or \(second)"
@@ -84,4 +84,4 @@ let theAceOfSpades = BlackjackCard(rank: .Ace, suit: .Spades)
 theAceOfSpades.description
 
 // To access the nested type, we can drill down into the type using type names:
-let heartsSymbol = String( BlackjackCard.Suit.Hearts.toRaw() )
+let heartsSymbol = String( BlackjackCard.Suit.Hearts.rawValue )

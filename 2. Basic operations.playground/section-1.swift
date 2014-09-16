@@ -76,15 +76,10 @@ a + b
 // String concatenation uses the + operator:
 "hello, " + "world"
 
-// You can add characters, too, which form a string
+// To add characters, convert them to a string
 let dog: Character = "🐶"
-let cow: Character = "🐮" // Why is this an "Enum Value" ?
-let dogCow = dog + cow
-
-// You can also add characters to a string
-let str = "abc"
-let chr: Character = "d"
-chr + str + chr
+let cow: Character = "🐮"
+let dogCow = String(dog) + String(cow)
 
 // Ternary operators work on three targets:
 truefalse ? a : b

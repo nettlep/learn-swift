@@ -118,8 +118,8 @@ enum StatusCode: Int
 	case YetAnotherResult // Unspecified values are auto-incremented from the previous value
 }
 
-// We can get the raw value of an enumeration value with the toRaw() method:
-StatusCode.OtherResult.toRaw()
+// We can get the raw value of an enumeration value with the rawValue member:
+StatusCode.OtherResult.rawValue
 
 // We can give enumerations many types. Here's one of type Character:
 enum ASCIIControlCharacter: Character
@@ -143,18 +143,18 @@ enum FamilyPet: String
 }
 
 // And we can get their raw value as well:
-FamilyPet.Ferret.toRaw()
+FamilyPet.Ferret.rawValue
 
 // We can also generate the enumeration value from the raw value. Note that this is an optional
 // because not all raw values will have a matching enumeration:
-var pet = FamilyPet.fromRaw("Ferret")
+var pet = FamilyPet(rawValue: "Ferret")
 
 // Let's verify this:
 if pet != .None { "We have a pet!" }
 else { "No pet :(" }
 
 // An example of when a raw doesn't translate to an enum, leaving us with a nil optional:
-pet = FamilyPet.fromRaw("Snake")
+pet = FamilyPet(rawValue: "Snake")
 if pet != .None { "We have a pet" }
 else { "No pet :(" }
 

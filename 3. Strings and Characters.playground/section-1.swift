@@ -69,14 +69,6 @@ countElements(originalString)
 // Strings can be concatenated with strings and characters
 var helloworld = "hello, " + "world"
 
-// Add a character
-var bang: Character = "!"
-helloworld + bang
-
-// Concatenate a character onto the end of the string
-helloworld += bang
-helloworld
-
 // ------------------------------------------------------------------------------------------------
 // String interpolation
 //

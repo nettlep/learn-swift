@@ -367,7 +367,7 @@ nameLoop: for name in names
 				break characterLoop
 			
 			default:
-				result += character
+				result += String(character)
 		}
 	}
 }
@@ -386,7 +386,7 @@ nameLoop: for name in names
 				continue characterLoop
 			
 			default:
-				result += character
+				result += String(character)
 		}
 	}
 }
@@ -406,7 +406,7 @@ nameLoop: for name in names
 				break nameLoop
 			
 			default:
-				result += character
+				result += String(character)
 		}
 	}
 }

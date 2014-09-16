@@ -176,7 +176,7 @@ assumedString = nil
 // let errorString: String = assumedString
 
 // Like any other optional, we can still check if it holds a value:
-if assumedString
+if assumedString != nil
 {
 	"We have a value"
 }

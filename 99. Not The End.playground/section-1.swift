@@ -57,29 +57,3 @@ var ohrly = pi.dynamicType.infinity
 // Happy coding!
 //
 // - Paul Nettle
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
