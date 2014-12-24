@@ -26,7 +26,7 @@ Learn Apple's Swift programming language interactively through these playgrounds
 
 ###Source of Content
 
-  I created these while working my way through the "Laugnage Guide" section of
+  I created these while working my way through the "Language Guide" section of
   Apple's book, "The Swift Programming Language". I feel the information from
   that section is represented here fairly completely and very concisely. Many
   of the samples come directly from the book. Some portions from the book's
