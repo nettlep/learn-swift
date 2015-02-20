@@ -1,4 +1,4 @@
-Swift 學習
+學習 Swift
 ===========
 
   透過遊樂場來互動式學習蘋果電腦的 Swift 程式語言。
@@ -32,7 +32,7 @@ Swift 學習
 ###正體中文版本的專案位置
 
   [learn-swift](https://github.com/tsunghao/learn-swift/tree/translate_zh-TW)
-  
+
 ###翻譯進度
 README.md<br />
 1a. The Basics.playground
