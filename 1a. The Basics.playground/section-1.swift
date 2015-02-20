@@ -1,118 +1,107 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 該知道的事：
 //
-// * Swift is Apple's new programming language for iOS and OSX. If you know C or Objective-C, then
-//   these playgrounds should serve as a solid primer for making the switch to Swift.
+// * Swift 是蘋果電腦為了 iOS 以及 OSX 設計的新程式語言。如果你懂 C 語言或 Objective-C 語言，那麼這些遊樂場應當
+//   是個幫助你轉換到 Swift 語言的可靠入門手冊。
 //
-// * Some experience programming in a C-like langauge is expected. If not, then I'm sorry but
-//   you're just not the target audience.
+// * 預期讀者擁有一些類 C 語言程式的開發經驗。如果不具備，那我感到遺憾，你並不是目標聽眾。
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
-// Constants & Variables - These are known as "Stored Values" in Swift
+// 常數與變數 - 這些都是 Swift 程式語言中的 "儲存值"
 
-// Use the 'let' keyword to define a constant
+// 使用 'let' 關鍵字來定義一個常數
 let maximumNumberOfLoginAttempts = 10
 
-// Use the 'var' keyword to define a variable
+// 使用 'var' 關鍵字來定義一個變數
 //
-// Tip: only use variables when you need a stored value that changes. Otherwise, prefer constants.
+// 提示: 當你要儲存的數值會改變的時候才使用變數。否則，寧可使用常數。
+//
 var currentLoginAttempt = 0
 
-// Constants cannot change. This line wouldn't compile:
+// 常數不可改變，下面這一行無法編譯：
 // maximumNumberOfLoginAttempts = 9
 
-// Variables can change:
+// 變數可以改變：
 currentLoginAttempt += 1
 
-// You also can't redeclare a variable or constant once it has been declared. These lines
-// won't compile:
+// 你也不能重複宣告一個已經宣告過的變數或常數，下面這兩行都不能編譯：
 // let maximumNumberOfLoginAttempts = 10
-// var currentLoginAttempt = "Some string which is not an Int"
+// var currentLoginAttempt = "一些不是 Int 的字串"
 
-// You can combine them on a single line with a comma
+// 你可以透過逗號的分隔在同一行內一次宣告多個變數
 let a = 10, b = 20, c = 30
 var x = 0.0, y = 0.0, z = 0.0
 
-// Specifying the type with type annotations
+// 使用類型註解來指定類型
 //
-// The built-in types in Swift are: Int, Double, Float, Bool, String, Array, Dictionary
-// There are variations of these (like UInt16), but those are the basic types. Note that all of
-// these types are capitalized.
+// Swift 內建的類型為： Int, Double, Float, Bool, String, Array, Dictionary
+// 還有一些是前面這些類型的變化型(例如 Uint16)，不過這裡列出來的都是基本類型。請注意所有類型的首字母都是大寫。
 //
-// Because of inference (assuming 42 is an Int an "some text" is a String), type annotations are
-// usually pretty rare in Swift
+// 因為類型能自動推斷(42 代表 Int 而 "某些文字" 代表 String)，所以在 Swift 中通常很少使用類型註解。
 //
-// Here's how you specify the type. If we didn't specify the type as Double, tye type would have
-// been inferred to be Int.
+// 這裡展示了如何使用類型註解來指定類型。如果沒有指定變數的類型為 Double，那麼類型將被自動推斷為 Int。
 var SomeDouble: Double = 4
 
-// Constant & Variable names cannot contain any mathematical symbols, arrows private-use (or
-// invalid) Unicode code points or line-and-box drawing characters. Nor can they begin with a
-// number. Otherwise, it's open season for naming your variables! (yes, really!)
+// 常數與變數的命名不能包含數學符號、箭頭、保留的(或不合法的)萬國碼或方框繪製字元，也不能使用數字當變數的開頭。
+// 除此之外沒有任何其它規定。隨心所欲命名變數名稱的時代開始了！(確實如此！)
 //
-// Here are some oddly named, but perfectly valid, constants:
+//
+// 這裡的常數命名雖然奇特但完全合法：
 let π = 3.14159
 let 你好 = "你好世界"
 let 🐶🐮 = "dogcow"
 
-// You can print a value using println
+// 你可以使用 println() 函式印出值：
 let fiveHundred = 500
 println("The current value of fiveHundred is: \(fiveHundred)")
 
-// Since we're using Playgrounds, we'll just put the raw string on the line which is an expression
-// that evaluates to itself, printing the result in the right-hand pane in the playground, like so:
+// 因為我們正在使用遊樂場，所以只需要直接將字串打出來程式就會將它顯示在右方的面板上，例如下面這樣：
 "The current value of fiveHundred is: \(fiveHundred)"
 
 // ------------------------------------------------------------------------------------------------
-// A note about variable names
+// 關於變數名稱的注意事項
 //
-// As with most languages, you cannot give an identifier (such as a variable or constant name,
-// class name, etc.) the same name as a keyword. For example, you can't define a constant named
-// "let":
+// 對於絕大多數的程式語言來說，你不能將關鍵字當作命名(變數、常數或類別)時的名稱。例如，你無法將一個常數命名為 "let"
 //
-// The following line of code will not compile:
+// 下面這行程式碼無法編譯：
 //
 // let let = 0
 //
-// However, sometimes it would be convenient to do so and Swift provides a means to enable this
-// by surrounding the identifier with backticks (`). Here's an example:
+// 然而，有的時候這麼做可以帶來一些方便，而 Swift 可以藉由在變數名稱的前後各加一個反引號(`)來達成這個需求：
 let `let` = 42.0
 
-// We can now use `let` like any normal variable:
+// 現在我們可以像使用一般變數一樣地使用 `let`：
 x = `let`
 
-// This works for any keyword:
+// 這個方法可以使用在任何關鍵字上：
 let `class` = "class"
 let `do` = "do"
 let `for` = "for"
 
-// Additionally, it's important to know that this works on non-colliding identifier names:
+// 另外，重要的事是了解這個方法也能用在不是關鍵字的變數名稱上：
 let `myConstant` = 123.456
 
-// Also note that `myConstant` and myConstant refer to the same constant:
+// 而且留意 `myConstant` 以及 myConstant 所指的是同一個常數：
 myConstant
 
 // ------------------------------------------------------------------------------------------------
-// Comments
+// 註解
 //
-// You've probably already figured this out, but anything after the "//" is a comment. There's more
-// to comments, though:
+// 或許你已經搞清楚了，但還是說明一下，任何在 "//" 後方的東西都是註解。以下還有更多使用註解的方法：
 
-/* This is a comment
-   that spans multiple lines */
+/* 這是一個跨越了
+   多行的多行註解 */
 
-// The multi-line comments are handy because they can nest, which allows you to safely comment out
-// blocks of code, even if they have multi-line comments in them:
+// 多行註解方便之處在於它們支援巢狀結構，讓你放心地註解掉一段已經有跨越了多行註解的程式碼
 
 /* 
-	// Some variable
+    // 某個變數
 	var someVar = 10
 
-	/* A function
+	/* 一個函式
      * 
-     * This is a common way to comment functions, but it makes it difficult to comment out these
-     * blocks.
+     * 這是一個註解函式的常見方式，但這個方式會讓這段程式碼難以一次全部註解掉
      */
     func doSomething()
     {
@@ -121,120 +110,113 @@ myConstant
 */
 
 // ------------------------------------------------------------------------------------------------
-// Semicolons
+// 分號
 //
-// Semicolons on the end of a line are optional, but the preferred style for Swift is to not use
-// them to terminate lines.
+// 可自行決定要不要在一行的結尾加上分號，但 Swift 偏好的風格是不在結尾處加上分號。
 var foo1 = 0
-var foo2 = 0; // optional semicolon
+var foo2 = 0; // 可加可不加的分號
 
-// However, if you want to put two lines of code on one line, you'll need the semicolon to separate
-// them.
+// 然而，如果你想把兩行程式碼放在同一行內，就必須使用分號來區隔它們。
 foo1 = 1; foo2 = 2
 
 // ------------------------------------------------------------------------------------------------
-// Integers
+// 整數
 //
-// There are multiple types of integers. Signed and unsigned with sizes of 8, 16, 32 and 64 bits.
-// Here are a couple samples:
-let meaningOfLife: UInt8 = 42 // Unsigned 8-bit integer
-let randomNumber: Int32 = -34 // Signed 32-bit integer
+// 整數有多種類型，有號、無號搭配上 8、16、32、以及 64 位元的大小。
+// 這裏有兩個例子：
+let meaningOfLife: UInt8 = 42 // 無號的 8 位元整數
+let randomNumber: Int32 = -34 // 有號的 32 位元整數
 
-// There is also Int and UInt, the defaults. These will default to the size of the current
-// platform's native word size. On 32-bit platforms, Int will be equivalent to Int32/UInt32. On
-// 64-bit platforms it is equivalent to Int64/UInt64.
+// 默認的整數型是 Int 以及 Uint。這些型別的大小會依據程式執行平台上一個字(word)的大小做調整。
+// 在一個 32 位元的平台上，Int 的大小會等同於 Int32/UInt32，
+// 在 64 位元的平台上，它的大小會等同於 Int64/UInt64。
 //
-// Similarly, there is
-//
-// Tip: For code interoperability, prefer Int over its counterparts.
+// 提示：偏好使用 Int 來取代它的類似型別可提升程式碼的可移植性
 let tirePressurePSI = 52
 
-// To find the bounds of any integer, try ".min" or ".max"
+// 試著在 int 型別的後方加上 ".min" 或 ".max" 來獲取它大小值的極限
 UInt8.min
 UInt8.max
 Int32.min
 Int32.max
 
 // ------------------------------------------------------------------------------------------------
-// Floating point numbers
+// 浮點數
 //
-// Double is a 64-bit floating point numbers and Float is a 32-bit floating point number
+// Double 是個 64 位元的浮點數，Float 是個 32 位元的浮點數
 let pi: Double = 3.14159
-let pie: Float = 100 // ... becase it's 100% delicious!
+let pie: Float = 100 // ... 因為派 100% 好吃！
 
 // ------------------------------------------------------------------------------------------------
-// Type Safety and Type Inference
+// 類型安全以及類型推斷
 //
-// Swift is a strongly typed language, and as such, every stored value MUST have a type and can
-// only be used where that specific type is expected.
+// Swift 是個強型別的語言，正因為如此，每一個儲存值都必須有個類型，而且僅能使用在這個類型被允許的操作上。
 //
-// Integer literals are inferred to be Int
+// 整數文字的類型會被自動推斷為 Int
 let someInt = 1234
 
-// Floating point literals are always inferred to be Double
+// 浮點數文字的類型總是被自動推斷為 Double
 let someDouble = 1234.56
 
-// If you want a Float instead, you must use type annotation
+// 如果你想要的類型是 Float，你必須使用類型註解來顯式地聲明 Float
 let someFloat: Float = 1234.56
 
-// String literals are inferred to be String type
+// 字串文字的類型會被自動推斷為 String
 let someString = "This will be a String"
 
-// Here's a bool
+// 這裡是一個布爾類型
 let someBool = true
 
-// These lines won't compile because we are specifying a type that doesn't match the given value
+// 以下這三行無法編譯因為我們顯式地提供了不符合文字類別的類型註解
 // let someBool: Bool = 19
 // let someInteger: Int = "45"
 // let someOtherInt: Int = 45.6
 
 // ------------------------------------------------------------------------------------------------
-// Numeric literals
+// 數值文字
 //
-// You can specify numbers in a few interesting ways
+// 你可以使用一些有趣的方式來指定數值
 let decimalInteger = 17
-let binaryInteger = 0b10001 // 17 in binary notation
-let octalInteger = 0o21 // ...also 17 (Octal, baby!)
-let hexInteger = 0x11 // ...and 17 in Hexidecimal
+let binaryInteger = 0b10001 // 使用 2 進位來表示 17
+let octalInteger = 0o21 // ...依然是 17 (8 進位啊, 親愛的！)
+let hexInteger = 0x11 // ...17 的 16 進位
 
-// Floating point numbers can be specified in a few different ways as well. Here are a few raw
-// examples (not assigned to variables):
-1.25e2 // Scientific notation
+// 浮點數也能使用多種方式來指定數值，這裡有一些直接的例子：(沒有將值賦予給變數)
+1.25e2 // 科學計數法
 1.25e-2
-0xFp2 // Break this down into "0xF", "p", "2". Read as 15 (0xF) to the power of (p) 2, which is 60
+0xFp2 // 將它拆解為 "0xF"、"p"、"2"。解讀為 15 (0xF) 乘上 1 往左位移 2 次 (p), 結果為 60
 0xFp-2
 0xC.3p0
 
-// We can pad our literals as well:
-000123.456 // Zero padding
-0__123.456 // Underscores are just ignored
+// 也可以補齊數值文字
+000123.456 // 補零
+0__123.456 // 下劃線會被無視
 
-// Numeric type conversion
+// 數值類型的轉換
 
-// A number that won't fit in the given type will not compile
+// 不匹配類型註解的數字是無法編譯的
 // let cannotBeNegative: UInt8 = -1
 // let tooBig: Int8 = Int8.max + 1
 
-// Since the default type for numeric values is Int, you need to specify a different type
+// 因為數值類型的默認類型是 Int，因此你需要使用類型註解來指定為不同的類型
 let simpleInt = 2_000 // Int
-let twoThousand: UInt16 = 2_000 // Specified as UInt16
-let one: UInt8 = 1 // Specified as UInt8
+let twoThousand: UInt16 = 2_000 // 指定為 UInt16
+let one: UInt8 = 1 // 指定為 UInt8
 
-// This will infer a UInt16 based on the types of both operands
+// 這會基於兩個運算元的類型自動推斷為 UInt16
 let twoThousandAndOne = twoThousand + UInt16(one)
 
-// Conversions between integer and floating point types must be made explicit
-let three = 3 // Inferred to be Int
-let pointOneFourOneFiveNine = 0.14159 // Inferred to be Double
-let doublePi = Double(three) + pointOneFourOneFiveNine // Explicit conversion of Int to Double
+// 在整數與浮點數之間轉換必須顯式地聲明
+let three = 3 // 自動推斷為 Int
+let pointOneFourOneFiveNine = 0.14159 // 自動推斷為 Double
+let doublePi = Double(three) + pointOneFourOneFiveNine // 顯式轉換 Int 類型到 Double 類型
 
-// The inverse is also true - conversion from floating point to integer must be explicit
+// 這個規定在反向轉換的時候也是成立的 - 從浮點數轉換到整數必須顯式地聲明
 //
-// Conversions to integer types from floating point simply truncate the fractional part. So
-// doublePi becomes 3 and -doublePi becomes -3
+// 從浮點數轉換到整數會直接截斷小數點後的部份，因此 doublePi 會變成 3，而 -doublePi 變成 -3
 let integerPi = Int(doublePi)
 let negativePi = Int(-doublePi)
 
-// Literal numerics work a little differently since the literal values don't have an explicit
-// type assigned to them. Their type is only inferred at the point they are evaluated.
+// 數值文字在未使用類型註解指定類型的時候，作用的方式不太一樣。
+// 它們的類型將在執行運算時才被自動推斷出來：
 let someValue = 3 + 0.14159
