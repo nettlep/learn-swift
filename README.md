@@ -29,10 +29,9 @@
 
   感謝 Rafał Wójcik 迅速地更新了這些遊樂場以配合 Xcode 測試版本 3 對 Swift 的改動。
 
-###正體中文版本的專案位置
+###原始的英文版本
 
-  [learn-swift](https://github.com/tsunghao/learn-swift/tree/translate_zh-TW)
+  [learn-swift](https://github.com/nettlep/learn-swift) by [Paul Nettle](https://github.com/nettlep)
 
 ###翻譯進度
-README.md<br />
-1a. The Basics.playground
+1c. Tuples.playground/
