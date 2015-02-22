@@ -1,41 +1,38 @@
-learn-swift
+學習 Swift
 ===========
 
-Learn Apple's Swift programming language interactively through these playgrounds.
+  透過遊樂場來互動式學習蘋果電腦的 Swift 程式語言。
 
-###Target Audience
+###目標聽眾
 
-  Programmers familiar with C++ and/or Objective-C.
+  熟悉 C++ 與/或 Objective-C 的程式設計師。
 
-###What you'll need
+###行前準備
 
-  You will need XCode 6.0 GM (or later) or 6.1 Beta 2 (or later) and probably
-  a Mac to run it on.
+  你會需要 XCode 6.0 GM (或以上) 或 6.1 測試版本 2 (或以上)，或許還需要一台蘋果電腦來執行它。
 
-###Purpose & Goal
+###宗旨與目標
 
-  More than a primer, these playgrounds are intended to get programmers up to
-  speed on Swift as fast as possible so they can begin using Swift productively.
+  不僅只是入門而已，這些遊樂場的目的在儘可能地縮短程式設計師開始使用 Swift 做開發的時間。
 
-  These playgrounds only cover the language. They do not dig into the Swift 
-  Standard Library or other APIs.
+  這些遊樂場只包含了語言本身，並沒有深入 Swift 的標準函式庫或第三方的 API。
 
-  To increase your understanding, you are encouraged to experiment with them
-  along the way. Play the 'what-if' game. These are live playgrounds which offer
-  near-realtime feedback of edits.
+  為了讓理解更為深入，鼓勵你在學習的過程中儘可能的動手試試看，就當是玩個 "要是...又會如何？" 的遊戲。這些栩栩如生的遊樂場提供了任何改動近乎即時的反應結果。
 
-###Source of Content
+###內容的程式碼
 
-  I created these while working my way through the "Language Guide" section of
-  Apple's book, "The Swift Programming Language". I feel the information from
-  that section is represented here fairly completely and very concisely. Many
-  of the samples come directly from the book. Some portions from the book's
-  "Language Reference" section were also included where I felt a bit more
-  information was helpful.
+  當我在閱讀 "Swift 程式語言" 這本書的 "語言指南" 章節時，建立了這些遊樂場檔案。我覺得從該章節擷取至此的訊息相當完整而且十分的簡明扼要，許多程式碼的例子都是直接引用書本中的範例，其中一部份來自書本中的 "語言參考" 章節，因為我覺得一些額外的訊息是有幫助的。
 
-  If you don't already have the book, it's free. You should probably get it.
+  如果你還沒擁有這本書，或許應該去弄一本，畢竟它是免費的。
 
-###Contributors
+###貢獻者
 
-  Thanks to Rafał Wójcik for his quick work to update these playgrounds to
-  incorporate the Swift language changes that came with XCode Beta 3.
+  感謝 Rafał Wójcik 迅速地更新了這些遊樂場以配合 Xcode 測試版本 3 對 Swift 的改動。
+
+###正體中文版本的專案位置
+
+  [learn-swift](https://github.com/tsunghao/learn-swift/tree/translate_zh-TW)
+
+###翻譯進度
+README.md<br />
+1a. The Basics.playground
