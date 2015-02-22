@@ -1,36 +1,35 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Tuples are groups of values combined into a single, compound value
+// * 一組值可以結合成一個單一的複合類型，這個複合類型就稱之為元組
 // ------------------------------------------------------------------------------------------------
 
-// Defining a Tuple - use parenthesis around the comma-delimited list of values
+// 定義一個元組 - 使用一組括弧將使用逗號分割開的一系列值包在一起
 //
-// This Tuple doesn't specify types, so it relies on inference
+// 這個元組並沒有指定其中數值的類型，它靠的是類型的自動推斷
 let httpError404 = (404, "Not found")
 
-// We can also specify the type in order to avoid inferrence
+// 也能自己指定類型來避免自動推斷
 let someOtherTuple = (Double(100), Bool(false))
 
-// Decomposing typles looks like this
+// 將元組分解為個別常數的方式就像這樣
 let (statusCode, statusMessage) = httpError404
 statusCode
 statusMessage
 
-// We can also decompose into variables instead of constants, but you probably figured that out
+// 也能將元組分解為個別變數而不是常數，不過我想你已經試出來了
 var (varStatusCode, varStatusMessage) = httpError404
 varStatusCode
 varStatusMessage
 
-// You can also access them with the dot operator followed by their index:
+// 你也能使用 . 運算子加上元組中元素的索引值來存取它們
 httpError404.0
 httpError404.1
 
-// Alternatively, you can name the elements of a Tuple
+// 除此之外，還可以為元組中的元素命名
 let namedTuple = (statusCode: 404, message: "Not found")
 
-// When you name the elements you effectively assign names to their indices, so the dot operator
-// works with names or integers:
+// 當你為元組中的元素命名後，就可以使用 . 運算子加上元組中元素的命名值或索引值來存取它們，兩種做法是完全等效的
 namedTuple.statusCode == namedTuple.0
 namedTuple.message == namedTuple.1
 

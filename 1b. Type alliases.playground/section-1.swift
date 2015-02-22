@@ -1,17 +1,16 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Type Aliases allow you to provide a different name for types,
-//   similar to 'typedef' in C.
+// * 類型別名允許你使用不同的名稱來代表一個類型，與 C 語言中的 'typedef' 類似
 // ------------------------------------------------------------------------------------------------
 
-// Create an alias for UInt16 called "AudioSample"
+// 為 UInt16 建立一個叫做 "AudioSample" 的類型別名
 typealias AudioSample = UInt16
 
-// This actually calls UInt16.min
+// 這個表達式其實呼叫的是 UInt16.min
 var maxAmplituedFound = AudioSample.min
 
-// We can also typealias custom types
+// 也可以為自定義類型建立類型別名
 struct MySimpleStruct
 {
 	static let a = 99
