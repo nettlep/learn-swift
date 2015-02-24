@@ -33,14 +33,14 @@ currentLoginAttempt += 1
 let a = 10, b = 20, c = 30
 var x = 0.0, y = 0.0, z = 0.0
 
-// 使用類型註解來指定類型
+// 使用型別註解(type annotation)來指定型別
 //
-// Swift 內建的類型為： Int, Double, Float, Bool, String, Array, Dictionary
-// 還有一些是前面這些類型的變化型(例如 Uint16)，不過這裡列出來的都是基本類型。請注意所有類型的首字母都是大寫。
+// Swift 內建的型別為： Int, Double, Float, Bool, String, Array, Dictionary
+// 還有一些是前面這些型別的變化型(例如 Uint16)，不過這裡列出來的都是基本型別。請注意所有型別的首字母都是大寫。
 //
-// 因為類型能自動推斷(42 代表 Int 而 "某些文字" 代表 String)，所以在 Swift 中通常很少使用類型註解。
+// 因為型別能自動推斷(inference)(42 代表 Int 而 "某些文字" 代表 String)，所以在 Swift 中通常很少使用型別註解。
 //
-// 這裡展示了如何使用類型註解來指定類型。如果沒有指定變數的類型為 Double，那麼類型將被自動推斷為 Int。
+// 這裡展示了如何使用型別註解來指定型別。如果沒有指定變數的型別為 Double，那麼型別將被自動推斷為 Int。
 var SomeDouble: Double = 4
 
 // 常數與變數的命名不能包含數學符號、箭頭、保留的(或不合法的)萬國碼或方框繪製字元，也不能使用數字當變數的開頭。
@@ -52,7 +52,7 @@ let π = 3.14159
 let 你好 = "你好世界"
 let 🐶🐮 = "dogcow"
 
-// 你可以使用 println() 函式印出值：
+// 你可以使用 println 函式印出值：
 let fiveHundred = 500
 println("The current value of fiveHundred is: \(fiveHundred)")
 
@@ -122,7 +122,7 @@ foo1 = 1; foo2 = 2
 // ------------------------------------------------------------------------------------------------
 // 整數
 //
-// 整數有多種類型，有號、無號搭配上 8、16、32、以及 64 位元的大小。
+// 整數有多種型別，有號、無號搭配上 8、16、32、以及 64 位元的大小。
 // 這裏有兩個例子：
 let meaningOfLife: UInt8 = 42 // 無號的 8 位元整數
 let randomNumber: Int32 = -34 // 有號的 32 位元整數
@@ -148,26 +148,26 @@ let pi: Double = 3.14159
 let pie: Float = 100 // ... 因為派 100% 好吃！
 
 // ------------------------------------------------------------------------------------------------
-// 類型安全以及類型推斷
+// 型別安全以及型別推斷
 //
-// Swift 是個強型別的語言，正因為如此，每一個儲存值都必須有個類型，而且僅能使用在這個類型被允許的操作上。
+// Swift 是個強型別的語言，正因為如此，每一個儲存值都必須有個型別，而且僅能使用在這個型別被允許的操作上。
 //
-// 整數文字的類型會被自動推斷為 Int
+// 整數文字的型別會被自動推斷為 Int
 let someInt = 1234
 
-// 浮點數文字的類型總是被自動推斷為 Double
+// 浮點數文字的型別總是被自動推斷為 Double
 let someDouble = 1234.56
 
-// 如果你想要的類型是 Float，你必須使用類型註解來顯式地聲明 Float
+// 如果你想要的型別是 Float，你必須使用型別註解來顯式地聲明 Float
 let someFloat: Float = 1234.56
 
-// 字串文字的類型會被自動推斷為 String
+// 字串文字的型別會被自動推斷為 String
 let someString = "This will be a String"
 
-// 這裡是一個布爾類型
+// 這裡是一個布爾型別
 let someBool = true
 
-// 以下這三行無法編譯因為我們顯式地提供了不符合文字類別的類型註解
+// 以下這三行無法編譯因為我們顯式地提供了不符合文字類別的型別註解
 // let someBool: Bool = 19
 // let someInteger: Int = "45"
 // let someOtherInt: Int = 45.6
@@ -192,24 +192,24 @@ let hexInteger = 0x11 // ...17 的 16 進位
 000123.456 // 補零
 0__123.456 // 下劃線會被無視
 
-// 數值類型的轉換
+// 數值型別的轉換
 
-// 不匹配類型註解的數字是無法編譯的
+// 不匹配型別註解的數字是無法編譯的
 // let cannotBeNegative: UInt8 = -1
 // let tooBig: Int8 = Int8.max + 1
 
-// 因為數值類型的默認類型是 Int，因此你需要使用類型註解來指定為不同的類型
+// 因為數值型別的默認型別是 Int，因此你需要使用型別註解來指定為不同的型別
 let simpleInt = 2_000 // Int
 let twoThousand: UInt16 = 2_000 // 指定為 UInt16
 let one: UInt8 = 1 // 指定為 UInt8
 
-// 這會基於兩個運算元的類型自動推斷為 UInt16
+// 這會基於兩個運算元的型別自動推斷為 UInt16
 let twoThousandAndOne = twoThousand + UInt16(one)
 
 // 在整數與浮點數之間轉換必須顯式地聲明
 let three = 3 // 自動推斷為 Int
 let pointOneFourOneFiveNine = 0.14159 // 自動推斷為 Double
-let doublePi = Double(three) + pointOneFourOneFiveNine // 顯式轉換 Int 類型到 Double 類型
+let doublePi = Double(three) + pointOneFourOneFiveNine // 顯式轉換 Int 型別到 Double 型別
 
 // 這個規定在反向轉換的時候也是成立的 - 從浮點數轉換到整數必須顯式地聲明
 //
@@ -217,6 +217,6 @@ let doublePi = Double(three) + pointOneFourOneFiveNine // 顯式轉換 Int 類�
 let integerPi = Int(doublePi)
 let negativePi = Int(-doublePi)
 
-// 數值文字在未使用類型註解指定類型的時候，作用的方式不太一樣。
-// 它們的類型將在執行運算時才被自動推斷出來：
+// 數值文字在未使用型別註解指定型別的時候，作用的方式不太一樣。
+// 它們的型別將在執行運算時才被自動推斷出來：
 let someValue = 3 + 0.14159
