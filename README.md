@@ -1,6 +1,6 @@
 學習 Swift
 ===========
-	
+
   透過遊樂場來互動式學習蘋果電腦的 Swift 程式語言。
 
 ###目標聽眾
@@ -34,4 +34,4 @@
   這個正體中文的專案翻譯自 [Paul Nettle](https://github.com/nettlep) 的 [learn-swift](https://github.com/nettlep/learn-swift)。
 
 ###翻譯進度
-1c. Tuples.playground/
+1d. Optionals.playground/
