@@ -34,4 +34,4 @@
   這個正體中文的專案翻譯自 [Paul Nettle](https://github.com/nettlep) 的 [learn-swift](https://github.com/nettlep/learn-swift)。
 
 ###翻譯進度
-1e. Assertions.playground/
+2. Basic operations.playground/
