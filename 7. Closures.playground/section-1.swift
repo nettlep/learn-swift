@@ -1,37 +1,33 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Closures are blocks of code.
+// * 閉包(closure)代表了一段程式碼區塊
 //
-// * The can be passed as parameters to functions much like Function Types. In fact, functions
-//   are a special case of closures.
+// * 可以將閉包如一般函式般地當作參數傳入函式。事實上，函式就是閉包中的特例
 //
-// * Closures of all types (including nested functions) employ a method of capturing the surrounding
-//   context in which is is defined, allowing it to access constants and variables from that
-//   context.
+// * 所有型別的閉包(包括巢狀結構的函式)都運用一個方法來捕獲和包含在它上下文中的任意常數和變數的參考，讓它能夠存取在這個
+//   內文之中的常數和變數
 // ------------------------------------------------------------------------------------------------
 
-// Closures can use constant, variable, inout, variadics, tuples for their parameters. They can
-// return any value, including Tuples. They cannot, however, have default parameters.
+// 閉包可以使用常數，變數，進-出參數，可變參數，元組來當作它們的傳入參數。他們可以回傳任何型別的值，包括元組。然而，
+// 它們不可以使用有默認值的參數
 //
-// The basic syntax is:
+// 基本的語法是：
 //
-// { (parameters) -> return_type in
-//   ... statements ...
+// { (傳入參數) -> 回傳值的型別 in
+//   ... 表達式 ...
 // }
 //
-// Here's an example of a simple String comparison closure that might be used for sorting Strings:
+// 這裡有個使用閉包來比較字串的簡單例子，或許可以用在替字串做排序：
 //
 // { (s1: String, s2: String) -> Bool in
 //   return s1 < s2
 // }
 //
-// Here's an example using Swift's 'sorted' member function. It's important to note that this
-// function receives a single closure.
+// 這裡是個使用了 Swift 陣列型別所擁有的 'sorted' 方法的例子，注意，這個方法接收的參數是一個閉包：
 //
-// These can be a little tricky to read if you're not used to them. To understand the syntax, pay
-// special attention to the curly braces that encapsulate the closure and the parenthesis just
-// outside of those curly braces:
+// 如果不習慣閉包的話，這段程式碼的語法會讓你感到困惑。為了搞清楚這個語法，要特別留意它使用了一組大括號 {} 將整個
+// 閉包的範圍封裝起來，更外層的一組括號 () 再將大括號 {} 包起來：
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 var reversed = [String]()
 reversed = names.sorted({
@@ -40,65 +36,57 @@ reversed = names.sorted({
 })
 
 // ------------------------------------------------------------------------------------------------
-// Inferring Type from Context
+// 從內文中自動推斷型別
 //
-// Like functions, closures have a type.
+// 就像函式一樣，閉包也有型別
 //
-// If the type is known (as is always the case when passing a closure as a parameter to a function)
-// then the return type of the closure can be inferred, allowing us to simplify the syntax of our
-// call to sort.
+// 如果型別已知(始終將閉包當作參數傳入函式的狀況)，那麼閉包的回傳值型別可以被自動推斷。讓我們得以簡化呼叫 sort 
+// 函式的語法
 //
-// The following call is identical to the one above with the exception that "-> Bool" was removed:
+// 下面呼叫函式的方式與上面的那個完全相同，除了移除了 "-> Bool" 的回傳值部份：
 reversed = names.sorted({
     (s1: String, s2: String) in
 		return s1 > s2
 })
 
-// Just as the return type can be inferred, so can the parameter types. This allows us to simplify
-// the syntax a bit further by removing the type annotations from the closure's parameters.
+// 就像回傳值型別可以被自動推斷，參數也一樣。這個行為讓我們可以移除閉包中傳入參數的型別註解，使得語法更加簡化
 //
-// The following call is identical to the one above with the exception that the parameter type
-// annotations (": String") have been removed:
+// 下面呼叫函式的方式與上面的那個完全相同，除了移除了 (": String") 的型別註解部份：
 reversed = names.sorted({
     (s1, s2) in
 		return s1 > s2
 })
 
-// Since all types can be inferred and we're not using any type annotation on the parameters,
-// we can simplify a bit further by removing the paranthesis around the parameters. We'll also put
-// it all on a single line, since it's a bit more clear now:
+// 因為所有型別都可以被自動推斷，所以不需要在傳入參數前加上型別註解，我們可以將參數兩邊的括號移除讓語法進一步
+// 簡化。我們也可以將整個表達式都放在同一行，因為它現在看起來更清楚了：
 reversed = names.sorted({ s1, s2 in return s1 > s2 })
 
-// If the closuere has only a single expression, then the return statement is also inferred. When
-// this is the case, the closure returns the value of the single expression:
+// 如果這個閉包只有一個表達式，那麼回傳的陳述(return)也可以被自動推斷。以這個例子而言，閉包中回傳值所使用的
+// 單行陳述句可以被簡化為：
 reversed = names.sorted({ s1, s2 in s1 > s2 })
 
-// We're not done simplifying yet. It turns out we can get rid of the parameters as well. If we
-// remove the parameters, we can still access them because Swift provides shorthand names to
-// parameters passed to inline closures. To access the first parameter, use $0. The second
-// parameter would be $1 and so on.
+// 簡化的過程還沒完呢。原來，我們也可以移除閉包的傳入參數。如果我們移除了傳入參數，仍然可以透過 Swift 提供的
+// 對參數的簡稱來存取這些傳入參數。使用 $0 來存取第一個參數，$1 存取第二個參數，以此類推。
 //
-// Here's what that would might like (this will not compile - yet):
+// 這兒是閉包移除傳入參數後大致上的樣子(還不能編譯)
 //
 //    reversed = names.sorted({ s1, s2 in $0 > $1 })
 //
-// This won't compile because you're not allowed to use shorthand names if you specify the
-// parameter list. Therefore, we need to remove those in order to get it to compile. This makes
-// for a very short inline closure:
+// 這還不能編譯的原因，在於如果你提供了傳入參數列表，則不可以使用對傳入參數的簡稱。因此，為了讓這個表達式可以
+// 被編譯，我們需要移除所提供的傳入參數列表，這造就了以下這個非常簡短的行內閉包：
 reversed = names.sorted({ $0 > $1 })
 
-// Interestingly enough, the operator < for String types is defined as:
+// 有趣的是，String 型別裡頭的 > 運算子，其實被定義為：
 //
 //     (String, String) -> Bool
 //
-// Notice how this is the same as the closure's type for the sorted() routine? Wouldn't it be
-// nice if we could just pass in this operator? It turns out that for inline closures, Swift allows
-// exactly this.
+// 有留意到這個跟 sorted() 方法的閉包型別是如何地相似嗎？如果我們能夠只傳入這個 > 運算子不是很好嗎？結論是
+// Swift 允許我們針對行內閉包這麼做：
 //
-// Here's what that looks like:
+// 這是只將 > 運算子傳入行內閉包的樣子：
 reversed = names.sorted(>)
 
-// If you want to just sort a mutable copy of an array (in place) you can use the sort() method
+// 如果你只想要對一個可變陣列的複製變數排序，可以使用 sort() 方法
 var mutableCopyOfNames = names
 
 mutableCopyOfNames.sort(>)
@@ -106,23 +94,21 @@ mutableCopyOfNames.sort(>)
 mutableCopyOfNames
 
 // ------------------------------------------------------------------------------------------------
-// Trailing Closures
+// 尾隨閉包
 //
-// Trailing Closures refer to closures that are the last parameter to a function. This special-case
-// syntax allows a few other syntactic simplifications. In essence, you can move trailing closures
-// just outside of the parameter list. Swift's sorted() member function uses a trailing closure for
-// just this reason.
+// 尾隨閉包是指函式的最後一個參數是閉包。這個特殊的語法允許了一些語法上的簡化。本質上來說，你可以將尾隨閉包移出傳入參
+// 數列表而改為擺在函式的後方。Swift 的 sorted() 成員函式就使用了尾隨閉包的概念
 //
-// Let's go back to our original call to sort with a fully-formed closure and move the closure
-// outside of the parameter list. This resembles a function definition, but it's a function call.
+// 讓我們回到原本呼叫 sorted 函式的完整閉包語法，而且將閉包移出傳入參數列表。這看起來像定義一個函式，但其實是在函式
+// 的後方呼叫了閉包
+//
 reversed = names.sorted {
 		(s1: String, s2: String) -> Bool in
 		return s1 > s2
 	}
 
-// Note that the opening brace for the closure must be on the same line as the function call's
-// ending paranthesis. This is the same functinon call with the starting brace for the closure
-// moved to the next line. This will not compile:
+// 請留意閉包的左大括號 { 必須跟函式結尾處的括號在同一行上。下面的這個例子是同段程式碼，但把閉包開始的左大括號放在下
+// 一行，導致無法編譯：
 //
 // reversed = sort(names)
 // {
@@ -130,76 +116,71 @@ reversed = names.sorted {
 //   return s1 > s2
 // }
 
-// Let's jump back to our simplified closure ({$0 > $1}) and apply the trailing closure principle:
+// 讓我們跳轉回使用參數簡稱的閉包並套用尾隨閉包的規則：
 reversed = names.sorted {$0 > $1}
 
-// Another simplification: if a function receives just one closure as the only parameter, you can
-// remove the () from the function call. First, we'll need a function that receives just one
-// parameter, a closure:
+// 另一個簡化的方式：如果一個函式接收一個閉包當作唯一的傳入參數，你可以移除參數列表兩邊的括號 ()。首先，我們需要一
+// 個只接收一個閉包當作傳入參數的函式：
 func returnValue(f: () -> Int) -> Int
 {
-	// Simply return the value that the closure 'f' returns
+    // 只是將閉包中回傳的值回傳出去
 	return f()
 }
 
-// Now let's call the function with the parenthesis removed and a trailing closure:
+// 現在讓我們呼叫這個移除了括號的函式並將閉包傳進去：
 returnValue {return 6}
 
-// And if we apply the simplification described earlier that implies the return statement for
-// single-expresssion closures, it simplifies to this oddly-looking line of code:
+// 然後如果我們將先前提過的，當”閉包只有一個表達式，那麼回傳的陳述也可以被自動推斷“的簡化規則應用在上面，那上面的
+// 函式會變成以下這行看起來怪怪的程式碼：
 returnValue {6}
 
 // ------------------------------------------------------------------------------------------------
-// Capturing Values
+// 捕獲值
 //
-// The idea of capturing is to allow a closure to access the variables and constants in their
-// surrounding context.
+// 捕獲值的概念就是讓一個閉包能夠存取在它上下文中的變數與常數
 //
-// For example, a nested function can access contstans and variables from the function in which
-// it is defined. If this nested function is returned, each time it is called, it will work within
-// that "captured" context.
+// 舉例來說，一個巢狀結構的函式可以從它被定義的函式中存取常數跟變數。即使這個巢狀函式已經回傳導致作用範圍不存在，
+// 閉包仍然能夠針對它先前已捕獲的值做操作
 //
-// Here's an example that should help clear this up:
+// 這裡應當是一個幫助你搞清楚這個規則的例子：
 func makeIncrementor(forIncrement amount: Int) -> () -> Int
 {
 	var runningTotal = 0
 	
-	// runningTotal and amount are 'captured' for the nested function incrementor()
+    // runningTotal 以及 amount 的狀態都被內部的巢狀函式 '捕獲了'
 	func incrementor() -> Int
 	{
 		runningTotal += amount
 		return runningTotal
 	}
 
-	// We return the nested function, which has captured it's environment
+    // 回傳這個捕獲了變數現狀的巢狀函式
 	return incrementor
 }
 
-// Let's get a copy of the incrementor:
+// 讓我們使用新的變數來製作一個 incrementor：
 var incrementBy10 = makeIncrementor(forIncrement: 10)
 
-// Whenever we call this function, it will return a value incremented by 10:
-incrementBy10() // returns 10
-incrementBy10() // returns 20
+// 每當呼叫一次這個函式，它都會回傳一個增加了 10 的值：
+incrementBy10() // 回傳 10
+incrementBy10() // 回傳 20
 
-// We can get another copy of incrementor that works on increments of 3.
+// 我們可以製作另外一個會將值增加 3 的 incrementor
 var incrementBy3 = makeIncrementor(forIncrement: 3)
-incrementBy3() // returns 3
-incrementBy3() // returns 6
+incrementBy3() // 回傳 3
+incrementBy3() // 回傳 6
 
-// 'incrementBy10' and 'incrementBy3' each has its own captured context, so they work independently
-// of each other.
-incrementBy10() // returns 30
+// 'incrementBy10' 以及 'incrementBy3'各擁有自己所捕獲的內文，所以它們彼此的運作是獨立的
+incrementBy10() // 回傳 30
 
-// Closures are reference types, which allows us to assign them to a variable. When this happens,
-// the captured context comes along for the ride.
+// 閉包是參考型別，我們將一個閉包賦值給一個變數的時候，其實參考的是同一個位址。從下面這個例子可以知道，所捕獲的內
+// 文是同一份資料
 var copyIncrementBy10 = incrementBy10
-copyIncrementBy10() // returns 40
+copyIncrementBy10() // 回傳 40
 
-// If we request a new incremntor that increments by 10, it will have a separate and unique captured
-// context:
+// 如果我們另外製作了一個也將值增加 10 的 incrementor，它會擁有自己獨立的一份內文：
 var anotherIncrementBy10 = makeIncrementor(forIncrement: 10)
-anotherIncrementBy10() // returns 10
+anotherIncrementBy10() // 回傳 10
 
-// Our first incrementor is still using its own context:
-incrementBy10() // returns 50
+// 我們的第一個 incrementor 使用的仍然是它自己的內文：
+incrementBy10() // 回傳 50
