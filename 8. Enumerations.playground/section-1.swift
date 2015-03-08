@@ -1,26 +1,22 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Enumerations in Swift are different from their popular counterparts in C-like languages.
-//   Rather that containing "one of a set of integer values" like most C-like languages, Swift's
-//   enumerations can be thought of as holding one named type of a given set of named types.
+// * Swift 中的列舉(enumeration)與其他的類 C 語言們不太一樣。在絕大多數的類 C 語言裡頭，列舉儲存了"一組整數值"
+//   。而 Swift 裡的列舉可被視為儲存一組具有自訂名稱的型別
 //
-//   To clarify: Rather than holding an integer value that has been pre-defined integer value
-//   (Error = -1, Success = 0) an enumeration in Swift only associates a name with a type (like
-//   Int, String, Tuple, etc.) These elements of the enumeration can then be assigned "Associated
-//   Values." For example, an enumeration can store an "Error" which is a Tuple with an Int value
-//   for the error code and a String containing the message. Each time a function or piece of code
-//   assignes or returns an Error(Int, String), it can set populate the Tuple with Int/String par
-//   for the specific error condition.
+//   澄清一下：與其保存該整數型預定義的值，(Error = -1, Success = 0)，Swift 中的列舉只關聯了一個具有自訂名稱的
+//   型別(如整數、字串、元組等等)。還可以將"相關值"賦值給這些列舉的成員，舉例來說，一個叫做 Error 的列舉值，可以儲
+//   存一個裡頭包含了一個整數型別的錯誤碼，以及一個字串型別的元組。每一次當函式或一段程式碼賦值或回傳這個具有相關值
+//   的列舉 Error(Int, String) 時，它都可以使用不同的 Int/String 來填滿這個元組以代表特定的錯誤狀態
 //
-// * Alternative to the enumeration storing named types, Swift enumerations can have a type. If
-//   that type is Int, then they will behave more like their C-style counterparts.
+// * 不僅只是儲存具有自訂名稱的型別，也可以將 Swift 中的列舉指定為特定的型別。如果這個型別是 Int，那麼這個列舉的行
+//   為就會比較像其他類 C 語言中的列舉
 // ------------------------------------------------------------------------------------------------
 
-// Here is the simple enumeration.
+// 這兒的例子是一個單純的列舉
 //
-// Unlike their C counterparts, the members of the enumeration below are not integer values (0,
-// 1, 2, etc.) Instead, each member is a fully-fledged value in its own right.
+// 不像其他類 C 語言，列舉中的成員型別並不是整數型(0, 1, 2 等等)。取而代之的是每一個列舉中的成員，都是一個完整而獨
+// 立的值，它們都具有自定義的型別名稱 Planet
 enum Planet
 {
 	case Mercury
@@ -33,25 +29,24 @@ enum Planet
 	case Neptune
 }
 
-// You can also combine members onto a single line if you prefer, or mix them up. This has no
-// effect on the enumeration itself.
+// 你也可以將多個成員放在同一行，或乾脆全放在一起。這對列舉本身不會造成任何影響
 enum CompassPoint
 {
 	case North, South
 	case East, West
 }
 
-// Let's store an enumeration value into a variable. We'll let the compiler infer the type:
+// 讓我們將一個列舉儲存到變數中。可以讓編譯器自動推斷這個變數的型別：
 var directionToHead = CompassPoint.West
 
-// Now that directionToHead has a CompassPoint type (which was inferred) we can set it to a
-// different CompassPoint value using a shorter syntax:
+// 現在 directionToHead 這個變數的型別是 CompassPoint (靠自動推斷而得)。我們可以使用這個簡化的語法，使用其他的
+// CompassPoint 內容值來為這個變數賦值：
 directionToHead = .East
 
-// We can use a switch to match values from an enumeration.
+// 我們可以使用 switch 來匹配列舉中的值
 //
-// Remember that switches have to be exhaustive. But in this case, Swift knows that the CompassType
-// enumeration only has 4 values, so as long as we cover all 4, we don't need the default case.
+// switch 結構必須窮舉所有可能的情況。在這個例子中，Swift 的編譯器曉得這個型別為 CompassType 的列舉只有 4 種可能
+// 的情況，因此只要這 4 種情況都被包含了，我們就不需要使用 default case
 switch directionToHead
 {
 	case .North:
@@ -65,25 +60,25 @@ switch directionToHead
 }
 
 // ------------------------------------------------------------------------------------------------
-// Associated Values
+// 相關值
 //
-// Associated values allows us to store information with each member of the switch using a Tuple.
+// 我們可以在 switch-case 中，使用元組來取得列舉成員內含的相關值
 //
-// The following enumeration will store not only the type of a barcode (UPCA, QR Code) but also
-// the data of the barcode (this is likely a foreign concept for most.)
+// 下面這個型別為 Barcode 的列舉，不只儲存了一個條碼的型別(UPCA, QR Code)，也儲存了條碼的內容(這對大多數人應該
+// 是一個陌生的概念)
 enum Barcode
 {
-	case UPCA(Int, Int, Int) // UPCA with associated value type (Int, Int, Int)
-	case QRCode(String)      // QRCode with associated value type of String
+	case UPCA(Int, Int, Int) // 擁有 3 個 Int 型別相關值的 UPCA
+	case QRCode(String)      // 擁有 1 個 String 型別相關值的 QRCode
 }
 
-// Let's specify a UPCA code (letting the compiler infer the enum type of Barcode):
+// 讓我們宣告一個變數為 UPCA (讓編譯器自動推斷列舉是 Barcode 型別)
 var productBarcode = Barcode.UPCA(0, 8590951226, 3)
 
-// Let's change that to a QR code (still of a Barcode type)
+// 讓我們將這個變數更改為 QRCode (仍然是 Barcode 型別)
 productBarcode = .QRCode("ABCDEFGHIJKLMNOP")
 
-// We use a switch to check the value and extract the associated value:
+// 我們使用 switch 語句來檢查這個變數的值，並且從變數中取出列舉成員的相關值：
 switch productBarcode
 {
 	case .UPCA(let numberSystem, let identifier, let check):
@@ -92,49 +87,46 @@ switch productBarcode
 		"QR: \(productCode)"
 }
 
-// Using the switch statement simplification (see the Switch statement section) to reduce the
-// number of occurrances of the 'let' introducer:
+// 使用簡化的 switch 語句(請看控制流程章節)來減少 'let' 關鍵字的使用次數：
 switch productBarcode
 {
-	// All constants
+    // 所有常數
 	case let .UPCA(numberSystem, identifier, check):
 		"UPCA: \(numberSystem), \(identifier), \(check)"
 	
-	// All variables
+    // 所有變數
 	case var .QRCode(productCode):
 		"QR: \(productCode)"
 }
 
 // ------------------------------------------------------------------------------------------------
-// Raw values
+// 原始值
 //
-// We can assign a type to an enumeration. If we use Int as the type, then we are effectively
-// making an enumeration that functions like its C counterpart:
+// 我們可以指定列舉的型別。如果我們使用 Int 當作列舉的型別，那麼這個列舉的行為將會跟其他類 C 語言的列舉一樣：
 enum StatusCode: Int
 {
 	case Error = -1
 	case Success = 9
 	case OtherResult = 1
-	case YetAnotherResult // Unspecified values are auto-incremented from the previous value
+	case YetAnotherResult // 未指定值的列舉成員，其值會自動從上一個列舉成員的值加 1
 }
 
-// We can get the raw value of an enumeration value with the rawValue member:
+// 我們可以透過 rawValue 這個成員屬性來取得列舉成員的原始值：
 StatusCode.OtherResult.rawValue
 
-// We can give enumerations many types. Here's one of type Character:
+// 我們可以指定不同的型別給列舉，這兒是一個指定為 Character 型別的列舉：
 enum ASCIIControlCharacter: Character
 {
 	case Tab = "\t"
 	case LineFeed = "\n"
 	case CarriageReturn = "\r"
 	
-	// Note that only Int type enumerations can auto-increment. Since this is a Character type,
-	// the following line of code won't compile:
+    // 請注意只有 Int 型別的列舉成員值會自動增加。因為這個列舉的型別是 Character，所以下一行無法編譯：
 	//
 	// case VerticalTab
 }
 
-// Alternatively, we could also use Strings
+// 另外，我們也可以指定列舉為 String 型別：
 enum FamilyPet: String
 {
 	case Cat = "Cat"
@@ -142,18 +134,17 @@ enum FamilyPet: String
 	case Ferret = "Ferret"
 }
 
-// And we can get their raw value as well:
+// 而且我們也可以取得它們的原始值：
 FamilyPet.Ferret.rawValue
 
-// We can also generate the enumeration value from the raw value. Note that this is an optional
-// because not all raw values will have a matching enumeration:
+// 我們也可以透過原始值來產生列舉值。請留意回傳的結果是一個可選型別，因為無法保證傳入的原始值一定有相應的列舉值：
 var pet = FamilyPet(rawValue: "Ferret")
 
-// Let's verify this:
+// 讓我們檢查一下：
 if pet != .None { "We have a pet!" }
 else { "No pet :(" }
 
-// An example of when a raw doesn't translate to an enum, leaving us with a nil optional:
+// 另一個例子，當傳入的原始值沒有相應的列舉值時，將會得到一個內容物為 nil 的可選型別：
 pet = FamilyPet(rawValue: "Snake")
 if pet != .None { "We have a pet" }
 else { "No pet :(" }

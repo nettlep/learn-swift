@@ -1,94 +1,88 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Arrays are ordered lists of elements
+// * 陣列(Array)型別是一連串有序元素的集合
 //
-// * The types of values that can be stored in an array must always be made clear either through
-//   explicit type annotation or through type inference and does not have to be a base class type.
+// * 能夠儲存在陣列型別的元素型別必須明確，要嘛是透過顯示地做型別註解指定型別，要嘛是透過型別自動推斷，
+//   而且這些元素的型別不僅止於基礎型別
 //
-// * Arrays are type-safe and always clear about what they contain.
+// * 陣列型別是型別安全的，而且它們包含的元素型別必須明確
 //
-// * Arrays are value types, but Swift is smart about only copying when necessary to improve
-//   performance.
+// * 陣列型別是值型別，但 Swift 聰明地在真正需要的時候才做複製以提升效能
 //
-// * Immutable arrays are immutable in terms of the array itself and the contents of the array.
-//   This means you can't add/remove an element nor can you modify an element of an immutable
-//   array.
+// * 在不可變陣列名稱中的不可變，其對象在於陣列本身以及它的內容物。這表示你不能新增/移除任何一個元素，也不能修改
+//   陣列中的任何元素
 // ------------------------------------------------------------------------------------------------
 
-// Create an array of Strings
+// 創建一個 String 型別的陣列
 var someArray = Array<String>()
 
-// Shorter, more common way to define an array of Strings
+// 簡化的寫法，這是定義一個 String 陣列更常見的做法
 var shorter: [String]
 
-// This is an array literal. Since all members are of type String, this will create a String array.
+// 這是描述一個陣列的語法。因為所有的成員都是 String 型別，所以會創建一個 String 陣列。
 //
-// If all members are not the same type (or cannot be inferred to a homogenized type) then you
-// would get a compiler error.
+// 假使不是所有的成員型別都相同(或被自動推斷為相同的型別)，那麼你會得到一個編譯錯誤
 ["Eggs", "Milk"]
 
-// Let's create an array with some stuff in it. We'll use an explicit String type:
+// 讓我們創建一個裡頭有些東西的陣列。這裡將顯式地指定 String 型別：
 var commonPets: [String] = ["Cats", "Dogs"]
 
-// We can also let Swift infer the type of the Array based on the type of the initializer members.
+// 我們也能讓 Swift 根據陣列在初始化時的成員型別來自動推斷陣列的型別
 //
-// The folowing is an array of Strings
+// 下面的例子就是一個 String 型別的陣列
 var shoppingList = ["Eggs", "Milk"]
 
 // ------------------------------------------------------------------------------------------------
-// Accessing and modifying an Array
+// 存取以及修改一個陣列
 //
-// We can get the number of elements
+// 我們能夠取得一個陣列中元素的個數
 shoppingList.count
 
-// We can check to see if it's empty
+// 我們能夠檢查一個陣列是否為空
 if !shoppingList.isEmpty { "it's not empty" }
 
-// We can append to the end
+// 我們能附加新的元素到陣列的尾部
 shoppingList.append("Flour")
 shoppingList.append("Baking Powder")
 shoppingList.count
 
-// We can append another array of same type
+// 我們能增加相同型別的陣列到陣列的尾部(透過 + 運算子)
 shoppingList += ["Chocolate Spread", "Cheese", "Butter"]
 shoppingList.count
 
-// We can get elements from the array by indexing them
+// 我們能藉由索引值來存取陣列中的特定元素
 shoppingList[0]
 shoppingList[1]
 
-// We can modify an existing item
+// 我們能修改存放在陣列中的元素
 shoppingList[0] = "Six Eggs"
 
-// We can use a range operator to modify existing items. This operation modifies a range with
-// a target range. If the target range has more or fewer elements in it, the size of the array
-// will be adjusted.
+// 我們能使用範圍運算子來修改存放在陣列中的元素，這個操作修改了範圍運算子中指定範圍的所有元素。如果範圍運算子所
+// 操作的範圍大小與原本陣列的大小不同，那麼這個陣列的大小將會被自動調整為操作範圍的大小
 //
-// Here, we replace 3 items with only two, removing an item:
+// 在此，我們將 3 個元素取代為 2 個，移除 1 個元素：
 shoppingList[4...6] = ["Banannas", "Apples"]
 
-// Or we can replace two items with three, inserting a new item:
+// 或者也可以將 2 個元素取代為 3 個，插入一個新元素：
 shoppingList[4..<6] = ["Limes", "Mint leaves", "Sugar"]
 
-// We can insert an item at a given index
+// 我們可以插入一個元素到指定的索引
 shoppingList.insert("Maple Syrup", atIndex: 3)
 
-// We can remove the last element. During this, we can preserve the value of what was removed
-// into a stored value
+// 我們可以移除最後一個元素。在此期間，可以透過將這個移除的元素儲存起來以保留這個元素。
 let apples = shoppingList.removeLast()
 
 // ------------------------------------------------------------------------------------------------
-// Enumeration
+// 列舉
 //
-// We can iterate over the the array using a for-in loop
+// 我們可以使用 for-in 的語法格式來迭代一個陣列
 for item in shoppingList
 {
 	item
 }
 
-// We can also use the the enumerate() method to return a tuple containing the index and value
-// for each element:
+// 我們也可以使用 enumerate() 這個方法來回傳一個包含了每個元素的索引以及值的元組：
 for (index, value) in enumerate(shoppingList)
 {
 	index
@@ -96,69 +90,63 @@ for (index, value) in enumerate(shoppingList)
 }
 
 // ------------------------------------------------------------------------------------------------
-// Creating and initializing an array
+// 創建並初始化一個陣列
 //
-// Earlier, we saw how to declare an array of a given type. Here, we see how to declare an array
-// type and then assign it to a stored value, which gets its type by inference:
+// 早先，我們看過如何宣告一個指定好型別的陣列。在這裡，我們會看到如何先宣告一個陣列，然後再將值塞給它以通過自動
+// 推斷來決定它的型別：
 var someInts = [Int]()
 
-// Add the number '3' to the array
+// 將數字 '3' 加到陣列裡頭
 someInts.append(3)
 someInts
 
-// We can assign it to an empty array, but we don't modify the type, since someInts is already
-// an Int[] type.
+// 我們可以將陣列的值指定為空陣列，但不要修改陣列的型別，因為 someInts 早已是一個 Int 型別的陣列
 someInts = []
 
-// We can initialize an array and and fill it with default values
+// 我們可以指定一個陣列的型別然後將它填滿特定的初始值
 var threeDoubles = [Double](count: 3, repeatedValue: 3.3)
 
-// We can also use the Array initializer to fill it with default values. Note that we don't need to
-// specify type since it is inferred:
+// 我們也可以使用陣列的初始化函式直接將它填滿特定的初始值，注意我們不需要指定陣列的型別，因為可以透過初始化元素
+// 的型別來自動推斷：
 var anotherThreeDoubles = Array(count: 3, repeatedValue: 2.5)
 
-// If you store an array in a constant, it is considered "Immutable"
+// 如果使用 let 宣告了一個常數陣列，這個陣列會被視為 "不可變陣列"
 let immutableArray = ["a", "b"]
 
-// In terms of immutability, it's important to consider that the array and its contents are treated
-// separately. Therefore, you can change the contents of an immutable array, but you can't change
-// the array itself.
+// 就不可變這個詞而言，你不能修改不可變陣列中的內含元素，也不能修改不可變陣列本身
 //
-// We can't change the contents of an immutable array:
+// 我們不能更動不可變陣列中的元素內容：
 //
 // immutableArray[0] = "b"
 //
-// Nor can we change the size or add an element, you will get a compiler error:
+// 也不能更改不可變陣列的大小或新增元素，這麼做只會招來編譯錯誤：
 //
 // immutableArray += "c"
 
 // ------------------------------------------------------------------------------------------------
-// Arrays are Value Types
+// 陣列是值型別
 //
-// Arrays are value types that only copy when necessary, which is only when the array itself
-// changes (not the contents.)
+// 陣列是值型別，它只有在必要的時候才做複製，這個時機是陣列自己本身(非內容元素)做更動的時候
 //
-// Here are three copies of an array:
+// 這邊有代表相同陣列的三個變數：
 var a = [1, 2, 3]
 var b = a
 var c = a
 
-// However, if we change the contents of one array (mutating it), then it is copied and becomes its
-// own unique entity:
+// 然而，如果我們修改了其中一個陣列的內容(改變它)，那麼它會獨立為新的陣列實體：
 a[0] = 42
 b[0]
 c[0]
 
-// Now that we've changed a, it should have been copied to its own instance. Let's double-check
-// that only b & c are the same:
+// 改變了 a 陣列的值後，它會被複製到新的記憶體區塊，獨立擁有自己的實體。讓我們再次確認只有 b 與 c 是一樣的：
 a
 b
 c
 
-// The same is true if we mutate the array in other ways (mofify the array's size)...
+// 如果使用不同的方式去改變陣列(改變陣列的大小)，獨立為新陣列實體的概念也是相同的...
 b.append(4)
 
-// Now, we have three different arrays...
+// 現在，我們擁有了三個完全不同的陣列...
 a
 b
 c

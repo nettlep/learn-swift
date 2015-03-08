@@ -1,108 +1,101 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Assuming knowledge of C here, so a lot will be left out that is the the same, such as
-//   "let i = 1 + 2"
+// * 假設已具備了 C 語言的背景知識，因為道理都相同，所以許多東西的細節不會再提。例如 "let i = 1 + 2"
 //
-// * Unary operators work on a single target. Of them, you have prefix operators such as !b or
-//   postfix operators such as i++.
+// * 一元運算子使用在一個對象上。其中，可以使用前綴語法如 !b 或是後綴語法如 i++.
 //
-// * Binary operators work on two targets and are infix operators because they go between two
-//   values, such as a + b
+// * 二元運算子使用在兩個對象上，因為使用在兩個值中間，因此它們是中綴語法，例如 a + b
 //
-// * Ternary operators work on three targets. There is only one ternary: a ? b : c.
+// * 三元運算子使用在三個對象上，只有一種三元運算子的使用方式：a ? b : c
 // ------------------------------------------------------------------------------------------------
 
-// We have our standard assignment operator (=). Note that the assignment operator in Swift does
-// not actually return a value, so the statment "if (x = y) {}" will not work. This helps prevent
-// accidental assignments during conditionals.
+// 一開始是標準的賦值運算子 (=)。在 Swift 中需留意的，是這個賦值的行為並不會回傳一個值，因此像這種表達式
+// "if (x = y) {}" 是沒有作用的，這個方式避免了在條件語句中的意外賦值
 var a = 10.0
 var b = 3.0
 
-// Assignment can also take multiple values (for Tuples):
+// 可以一次賦值多個對象(使用在元組上)
 let (x, y) = (5, 6)
 x
 y
 
-// Aside from the standard mathematics operators (+, -, /, *), there is also the remainder operator
-// (%) which is not to be confused with modulo. They work differently because of the way remainders
-// are calculated for negative numbers and can be used with floating point values.
-var c = a / b // Floatng point result
-var d = a % b // Floating point remainder
+// 撇開標準的數學運算符不談，另外還有不會搞混的取餘運算子(%)，與 C 語言方式不太相同，因為餘數可以從負數跟浮點數中求得
+var c = a / b // 浮點數的計算結果
+var d = a % b // 浮點數的餘數
 
 // ------------------------------------------------------------------------------------------------
-// Range operators
+// 範圍運算子
 //
-// The range operator with two dots means up to but NOT including the final value.
+// 使用兩個點加上一個小於符號 ..< 的範圍運算子表示包含起始值，但不包含結尾值
 //
-// This is called the "Half-Closed Range Operator"
+// 這個稱為 "半封閉的範圍運算子"
 for i in 1..<10
 {
-	i // prints 1 through 9
+	i // 從 1 印到 9
 }
 
-// The range operator with three dots is inclusive with last value like
+// 使用三個點 ... 的範圍運算子表示包含起始值，而且包含結尾值
 //
-// This is called the "Closed Range Operator"
+// 這個稱為 "封閉的範圍運算子"
 for i in 1...10
 {
-	i // prints 1 through 10
+	i // 從 1 印到 10
 }
 
 // ------------------------------------------------------------------------------------------------
-// Unary, Binary and Ternary operators
+// 一元、二元以及三元運算子
 //
-// Unary prefix operators appear before their taget. Here we increment a then negate it:
+// 一元前綴運算子出現在目標對象的前面，這裡我們將目標對象加 1 後再轉為負數：
 ++a
 a = -a
 
-// You can also use the uniary + operator, though it doesn't do anything
+// 你也可以如此使用一元運算子中的 + 運算子，雖然這麼做一點用也沒有
 a = +a
 
-// We have the compound assigment operator
+// 使用複合運算子來對變數增加 10 後再賦值
 a += 10
 
-// The logical NOT
+// 邏輯 '非'
 var truefalse = true
 truefalse = !truefalse
 
-// Unary postfix operators appear after their target: i++
+// 一元後綴運算子出現在目標對象的後面：i++
 a--
 a
 
-// Binary operators are infix because they appear between to targets
+// 二元運算子是中綴的，因為它們出現在兩個目標對象的中間
 a + b
 
-// String concatenation uses the + operator:
+// 使用 + 運算子來連結字串
 "hello, " + "world"
 
-// To add characters, convert them to a string
+// 將字元轉為字串後，也可以透過 + 運算子來連結它們
 let dog: Character = "🐶"
 let cow: Character = "🐮"
 let dogCow = String(dog) + String(cow)
 
-// Ternary operators work on three targets:
+// 三元運算子使用在三個對象上
 truefalse ? a : b
 
 // ------------------------------------------------------------------------------------------------
-// Identity operators
+// 比較運算子
 //
-// We can test if the object reference refers to the same instance of an object (as opposed to two
-// objects that are "equivalent" based on some compare logic.) We do this with the === operator:
+// 可以使用 === 來測試兩個物件參照的對象相不相同(而不是測試兩個物件相不相同)
 class myclass {}
 var c1 = myclass()
 var c2 = myclass()
 c1 === c2
 c1 === c1
 
-// String comparisons are case sensitive
+// 比較字串的大小寫相不相同
 "abc" == "abc"
 "abc" == "ABC"
 
 // ------------------------------------------------------------------------------------------------
-// Logical operators
+// 邏輯運算子
 //
-// Comparisons use the logical operators with AND, OR and NOT
+// 使用 &&、|| 以及 ! 這些邏輯運算字來做比較
 if (true && false) || !(false && true)
 {
 	"true"
