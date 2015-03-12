@@ -1,45 +1,42 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Subscripts allow you to declare functionality for instances to make use of the subscript
-//   operator ( [] ).
+// * 下標腳本(subscript)允許你可以使用下標腳本運算子 "[]" 來操作一個實體
 //
-// * Subscripts are available for classes, structures and enumerations.
+// * 下標腳本可以使用在類別、結構以及列舉上
 //
-// * Subscripts are declared much like getters and setters for properties.
+// * 下標腳本的宣告方式類似於屬性的 getter 以及 setter 方法
 // ------------------------------------------------------------------------------------------------
 
-// Subscripts are declared like getters and setters, and follow the same syntax rules for
-// read-only and read-write variants. They also can employ the same syntactic simplifications
-// available for getters and setters.
+// 下標腳本的宣告方式就像屬性的 getter 以及 setter 方法，而且也使用一樣的語法規則來支援唯讀以及讀寫兩種變形。它們
+// 也可以使用跟 getter 以及 setter 相同的語法簡化
 //
-// Here's a structure that utilizes a subscript so that we can see the syntax of the declaration.
+// 這兒是一個使用了下標腳本的結構，我們可從中瞭解使用下標腳本的語法
 struct TimesTable
 {
 	let multiplier: Int
 	
-	// Read-only subscript using simplified getter syntax
+    // 唯讀的下標腳本使用了簡化了的 getter 語法
 	subscript(index: Int) -> Int
 	{
 		return multiplier * index
 	}
 
-	// Overloaded subscript for type Double, also read-only using the simplified getter syntax
+    // 覆寫了 Double 型別的下標腳本，也使用了簡化了的 getter 語法來製作唯讀屬性
 	subscript(index: Double) -> Int
 	{
 		return multiplier * Int(index)
 	}
 }
 
-// We can now make use of our newly created subscripts
+// 我們現在如此使用剛創建的下標腳本
 let threeTimesTable = TimesTable(multiplier: 3)
 threeTimesTable[3]
 threeTimesTable[4.0]
 
-// Subscripts can take any parameter type and variadic parameters, but cannot use inout or default
-// parameters.
+// 下標腳本接受任何型別的參數以及可變參數，但不能使用進-出參數(inout)或擁有默認值的參數
 //
-// Here's a more complex example:
+// 這兒有另一個複雜一點的例子：
 struct Matrix
 {
 	let rows: Int
@@ -58,7 +55,7 @@ struct Matrix
 		return row >= 0 && row < rows && column >= 0 && column < columns
 	}
 	
-	// Subscript with getter & setter as well as dual-parameter subscript
+    // 使用了 getter 與 setter 以及兩個傳入參數的下標腳本
 	subscript(row: Int, column: Int) -> Double
 	{
 		get
@@ -74,7 +71,7 @@ struct Matrix
 	}
 }
 
-// We'll create a standard 4x4 identity matrix
+// 創建一個標準的 4x4 方陣
 var matrix = Matrix(rows: 4, columns: 4)
 matrix[0,0] = 1
 matrix[1,1] = 1
