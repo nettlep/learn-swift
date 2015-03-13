@@ -1,11 +1,10 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * There is no default base class for Swift objects. Any class that doesn't derive from
-//   another class is a base class.
+// * Swift 的物件並沒有默認的基礎類別。所有不繼承其他類別的類別，都是基礎類別。
 // ------------------------------------------------------------------------------------------------
 
-// Let's start with a simple base class:
+// 讓我們從一個簡單的基礎類別開始：
 class Vehicle
 {
 	var numberOfWheels: Int
@@ -16,7 +15,7 @@ class Vehicle
 		return "\(numberOfWheels) wheels; up to \(maxPassengers) passengers"
 	}
 	
-	// Must initialize any properties that do not have a default value
+    // 必須初始化仍未擁有默認值的所有屬性
 	init()
 	{
 		numberOfWheels = 0
@@ -25,12 +24,12 @@ class Vehicle
 }
 
 // ------------------------------------------------------------------------------------------------
-// Subclasses
+// 子類別
 //
-// Now let's subclass the Vehicle to create a two-wheeled vehicle called a Bicycle
+// 現在讓我們從 Vehicle 中創建一個子類別，這是個名稱為 Bicycle 的雙輪車輛
 class Bicycle: Vehicle
 {
-	// We'll make this a 2-wheeled vehicle
+    // 設置這個車輛的輪子數目為 2
 	override init()
 	{
 		super.init()
@@ -38,14 +37,14 @@ class Bicycle: Vehicle
 	}
 }
 
-// We can call a member from the superclass
+// 我們可以呼叫父類別的成員
 let bicycle = Bicycle()
 bicycle.description()
 
-// Subclasses can also be subclassed
+// 子類別可以繼續被其他類別繼承
 class Tandem: Bicycle
 {
-	// This bicycle has 2 passengers
+    // 這個腳踏車可以承載 2 個乘客
 	override init()
 	{
 		super.init()
@@ -53,14 +52,13 @@ class Tandem: Bicycle
 	}
 }
 
-// Here, we'll create a car that includes a new description by overriding the superclass' instance
-// method
+// 我們創建一個包含了新的 description 方法的 Car 類別，這個 description 方法覆寫了父類別中的實體方法
 class Car: Vehicle
 {
-	// Adding a new property
+    // 增加一個新屬性
 	var speed: Double = 0.0
 	
-	// New initialization, starting with super.init()
+    // 新的建構器，裡頭會先執行 super.init()
 	override init()
 	{
 		super.init()
@@ -68,42 +66,38 @@ class Car: Vehicle
 		numberOfWheels = 4
 	}
 	
-	// Using the override keyword to specify that we're overriding a function up the inheritance
-	// chain. It is a compilation error to leave out 'override' if a method exists up the chain.
+    // 使用 override 關鍵字來指出我們覆寫了繼承鍊中的的同名方法。如果你沒有使用 'override' 關鍵字，但繼承鍊中
+    // 有同名的方法，將會導致編譯錯誤
 	override func description() -> String
 	{
-		// We start with the default implementation of description then tack our stuff onto it
+        // 我們增加了一些東西到 description 方法的默認實作裡頭
 		return super.description() + "; " + "traveling at \(speed) mph"
 	}
 }
 
-// Here, we'll check our description to see that it does indeed give us something different from
-// the superclass' default description:
+// 我們來檢查一下，是否 Car 類別的 description 方法不同於它的父類別的同名方法：
 let car = Car()
 car.speed = 55
 car.description()
 
 // ------------------------------------------------------------------------------------------------
-// Overriding Properties
+// 覆寫屬性
 //
-// We can override property getters and setters. This applies to any property, including stored and
-// computed properties
+// 我們可以覆寫屬性的 getter 以及 setter 方法。這可以使用在任何種類的屬性上，包括儲存屬性以及計算屬性
 //
-// When we do this, our overridden property must include the name of the property as well as the
-// property's type.
+// 當我們這麼做的時候，被覆寫掉的屬性必須包含屬性的名稱以及型別
 class SpeedLimitedCar: Car
 {
-	// Make sure to specify the name and type
+    // 確定指出了屬性的名稱以及型別
 	override var speed: Double
 	{
 		get
 		{
 			return super.speed
 		}
-		// We need a setter since the super's property is read/write
+        // 我們需要一個 setter 方法，因為父類別中的此屬性為讀/寫
 		//
-		// However, if the super was read-only, we wouldn't need this setter unless we wanted to
-		// add write capability.
+        // 然而如果父類別中的此屬性是唯讀的，我們就不需要 setter 方法，除非我們希望為這個屬性增加可寫入的能力
 		set
 		{
 			super.speed = min(newValue, 40.0)
@@ -111,52 +105,51 @@ class SpeedLimitedCar: Car
 	}
 }
 
-// We can see our override in action
+// 我們對這個類別的 getter/setter 覆寫已經發揮了作用
 var speedLimitedCar = SpeedLimitedCar()
 speedLimitedCar.speed = 60
 speedLimitedCar.speed
 
-// We can also override property observers
+// 我們也可以覆寫屬性監視器
 class AutomaticCar: Car
 {
 	var gear = 1
 	override var speed: Double
 	{
-		// Set the gear based on changes to speed
+        // 基於 speed 變數的值來調整 gear 變數
 		didSet { gear = Int(speed / 10.0) + 1 }
 	
-		// Since we're overriding the property observer, we're not allowed to override the
+        // 因為我們覆寫了屬性監視器，所以不被允許覆寫 getter/setter 方法
 		// getter/setter.
 		//
-		// The following lines will not compile:
+        // 下面這兩行不能編譯：
 		//
 		// get { return super.speed }
 		// set { super.speed = newValue }
 	}
 }
 
-// Here is our overridden observers in action
+// 我們對這個類別的屬性監視器覆寫已經發揮了作用
 var automaticCar = AutomaticCar()
 automaticCar.speed = 35.0
 automaticCar.gear
 
 // ------------------------------------------------------------------------------------------------
-// Preenting Overrides
+// 防止覆寫
 //
-// We can prevent a subclass from overriding a particular method or property using the 'final'
-// keyword.
+// 我們可以使用 'final 關鍵字來防止子類別覆寫掉父類別特定的方法或屬性
 //
-// final can be applied to: class, var, func, class methods and subscripts
+// 'final' 關鍵字可以使用在 class、var、func、class func 以及 subscript 關鍵字前
 //
-// Here, we'll prevent an entire class from being subclassed by applying the . Because of this,
-// the finals inside the class are not needed, but are present for descriptive purposes. These
-// additional finals may not compile in the future, but they do today:
+// 這兒我們已在最外頭的 'class' 關鍵字前加上 'final'，這個動作就已經防止了整個類別被子類別覆寫，因為如此，在這
+// 個類別裡頭的 'final' 關鍵字其實都不需要，加上 'final' 關鍵字是為了描述的方便。或許這些多餘的 'final' 關鍵
+// 字在未來 Swift 版本更新的時候無法編譯，但目前還沒有問題：
 final class AnotherAutomaticCar: Car
 {
-	// This variable cannot be overridden
+    // 不能覆寫這個變數
 	final var gear = 1
 	
-	// We can even prevent overridden functions from being further refined
+    // 防止函式被進一步修改
 	final override var speed: Double
 	{
 		didSet { gear = Int(speed / 10.0) + 1 }
