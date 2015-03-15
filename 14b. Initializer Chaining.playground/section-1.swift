@@ -1,118 +1,102 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Initializer Chaining refers to the way in which initialization takes place along the class
-//   hierarchy.
+// * 建構器鏈指發生在類別階層中的建構過程
 //
-// * Designated Initializers are those that are responsible for ensuring that the instance of a
-//   class, structure or enumeration is properly initialized. These are the initializers you've
-//   seen so far. Designated initializers are also resonsible for calling the superclass'
-//   initializer.
+// * 指定建構器確保類別、結構或列舉中的屬性都被初始化了，截至目前為止見到的都是指定建構器。指定建構器也要負責呼叫
+//   父類別的建構器
 //
-// * Convenience Initializers are initializers that are provided for specialized initialization
-//   and must call one of the designated initializers within a class in order to fulfill the
-//   requirement of properly initializing a class.
+// * 便利建構器提供特定的初始化過程，為了滿足完整初始化一個類別的需求，便利建構器必須呼叫同類別中的指定建構器
 // ------------------------------------------------------------------------------------------------
 
-// Designated Initializers are the normal initializers ("init(...)") functions that you've seen
-// so far. If the system creates an initializer for you, it will be a designated initializer.
+// 截至目前為止，你看過的一般建構器 "init(...)" 都是指定建構器。如果系統幫你創建了一個默認的建構器，它也會是指定
+// 建構器
 //
-// Convenience Initializers allow you to offer different code-paths through initialization, which
-// call upon the designated initializers to do the heavy lifting. They use the keyword
-// "convenience". They are actually different than designated initializers because Swift uses the
-// difference (designated vs. convenience) to perform two-phase initialization, which we'll cover
-// shortly.
+// 便利建構器允許你透過呼叫其他的指定建構器，在建構過程中提供不同的程式碼路徑。它們使用的是 convenience 這個關鍵
+// 字。實際上它們不同於指定建構器，因為 Swift 使用了不同的關鍵字來表示我們即將提到的兩段式建構過程
 //
-// Here's what a simple case looks like with a designated and convenience initializer:
+// 這兒是一個擁有指定建構器以及便利建構器的的基本類別：
 class Food
 {
 	var name: String
 
-	// Designated initializer - required as the class does not have a default value for 'name'.
-	// There can be more than one of these, but the fewer the better, usually, design-wise.
+    // 指定建構器 - 如果沒有給予 'name' 屬性默認值，那就需要一個指定建構器。雖然可以擁有多個指定建構器，但通常越
+    // 少越好 - 明智地規劃你的設計
 	init(name: String)
 	{
 		self.name = name
 	}
 	
-	// Here, we'll use a convenience initializer to initialize 'name' to an unnamed Food
+    // 我們使用便利建構器來初始化 'name' 屬性為 "[unnamed]“
 	convenience init()
 	{
-		// Must call the designated in same class
+        // 必須呼叫同一類別中的指定建構器
 		self.init(name: "[unnamed]")
 	}
 }
 
-// Here we make use of our two initializers
+// 我們在這兒呼叫這兩個建構器
 let namedMeat = Food(name: "Bacon")
 let mysteryMeat = Food()
 
 // ------------------------------------------------------------------------------------------------
-// Two-Phase Initialization
+// 兩段式建構過程
 //
-// Two-phase initialization is a new concept enforced by Swift. Think of it like this:
+// 兩段式建構過程是 Swift 程式語言中的新概念，它運作的方式像這樣：
 //
-// Phase 1: Subclasses MUST FIRST initialize any stored properties that are part of their subclass.
-//          They must do this before they are allowed to cusomize a super's stored property.
+// 階段一：子類別首先必須初始化任何屬於這個子類別的儲存屬性。在它們被允許更動父類別的儲存屬性之前，必須先完成這個動
+//        作
 //
-//          Subclasses MUST THEN call the super's initializer, which will repeat this process
-//          until the top-most superclass (the base class) is reached.
+//        然後子類別必須呼叫它父類別的建構器，重複這個過程直到最頂端的父類別(基礎類別)
 //
-//          At this point we can assume that the class is fully initialized (but not necessarily
-//          customized by the subclasses that may need to alter the initialization results.
+//        至此我們可以假設這個類別已經初始化完成了(但可能還需要更改初始化的值為其他自定義的值)
 //
-// Phase 2:	In the base class' initializer, we can customize its properties before it returns to
-//          the caller (a subclass.) That subclass is then allowed to write to any/all stored
-//          properties defined by itself or the superclass chain. This continues until you get the
-//          the bottom-most subclass.
+// 階段二：在基礎類別的建構器中，我們可以在將這些屬性值回傳給子類別以前，先使用指定建構器來自定義它們的值。然後這個
+//        接收了自定義新值的子類別，也可以修改任何定義在它或它父類別繼承鏈中的屬性值，然後再將值回傳給這個子類別的
+//        子類別，重複這個過程直到回到最底端的子類別。(一開始呼叫建構器的類別)
 //
-// A note about convenience initializers:
+// 關於便利建構器的註解：
 //
-// Convenience initializers must always call into a designated initializer from the current class.
-// A designated initializer for a subclass must then into a super's iniitializer, which may also
-// be a convenience initializer, because that convenience initializer will be required to
-// eventually call a designated initializer before going higher up the chain.
+// 便利建構器必須呼叫同類別中的指定建構器。一個子類別的指定建構器也必須呼叫父類別的建構器，這個被呼叫的父類別建構器
+// 可以是便利建構器，因為便利建構器終究必須在回到更上一層的父類別前，先呼叫指定建構器
 //
-// Let's derive a class from Food so we can see this in action:
+// 讓我們從 Food 類別中，衍生一個 RecipeIngredient 類別，來看看這個兩段式建構過程的實際運作方式：
 class RecipeIngredient: Food
 {
 	var quantity: Int
 	
-	// This is a designated initializer (because it has no 'convenience' keyword)
+    // 這是一個指定建構器(因為它沒有 'convenience' 關鍵字)
 	init(name: String, quantity: Int)
 	{
-		// We must initialize our new stored properties first (this is Phase 1)
+        // 我們必須先初始化儲存值(這是階段一)
 		self.quantity = quantity
 		
-		// Next, we must call super's initializer (still, Phase 1)
+        // 然後，我們必須呼叫父類別的建構器(仍然是階段一)
 		super.init(name: name)
 		
-		// Only after the super's initializer is called, can we customize any properties that
-		// originated from someplace up the class hierarchy chain.
+        // 只有當父類別的建構器被呼叫完畢後，我們才能開始自定義已建構完成類別中的屬性(階段二)
 		self.name = "Ingredient: " + name
 	}
 
-	// Here, we'll create a convenience initializer that simply provides a default quantity
-	// value of 1. Note that in order for this to compile, we are required to call a designated
-	// initializer.
+    // 在這兒，我們創建了一個便利建構器，它的用途不過是提供 quantity 這個屬性一個 1 的默認值。為了通過編譯，留意
+    // 我們需要呼叫指定建構器
 	convenience override init(name: String)
 	{
 		self.init(name: name, quantity: 1)
 	}
 }
 
-// Now we can call our various initializers to see them in action:
+// 現在我們可以呼叫各個建構器，看看它們實際運作的狀況：
 let oneMysteryItem = RecipeIngredient()
 let oneBacon = RecipeIngredient(name: "Bacon")
 let sixEggs = RecipeIngredient(name: "Eggs", quantity: 6)
 
 // ------------------------------------------------------------------------------------------------
-// Inheriting a full set of the super's initializers
+// 完整繼承一個父類別中的建構器
 //
-// In the following class, we don't specify any initializer, but that's OK because we have default
-// values for the stored property (purchased).
+// 在下面的類別中，我們不指定任何建構器，這不成問題，因為所有的屬性都有它們自己的默認值
 //
-// Not providing any initializer at all allows us to gain a full set of the super's initializers.
+// 沒提供自定義的建構器，讓這個類別擁有從父類別中繼承的全部建構器
 class ShoppingListItem: RecipeIngredient
 {
 	var purchased = false
@@ -124,10 +108,10 @@ class ShoppingListItem: RecipeIngredient
 	}
 }
 
-// Let's initialize our new ShoppingListItem using the super's initializer
+// 讓我們使用父類別的建構器來初始化這個 ShoppingListItem 類別
 let lotsOfCheese = ShoppingListItem(name: "cheese", quantity: 99)
 
-// Here, we can create an array of ShippingListItems
+// 我們可以創建一個 ShoppingListItem 類別的陣列
 var breakfastList = [
 	ShoppingListItem(),
 	ShoppingListItem(name: "Bacon"),
@@ -135,17 +119,13 @@ var breakfastList = [
 ]
 
 // ------------------------------------------------------------------------------------------------
-// For individual properties, we can set their default value with a closure or function instead
-// of just a literal value.
+// 對於個別屬性來說，與其直接使用表達式來設定它們的值，我們也可以使用閉包或函式來設定這些屬性的默認值
 //
-// In the example below, we use a closure to calculate the default value for 'estimatedPi'. Note
-// the parenthesis at the end of the closure. Without them, we would be asking to set 'estimatedPI'
-// to a closure type rather than to the result of the closure. Also, the parenthesis tell it to
-// execute the closure immediately.
+// 在下面的例子中，我們使用一個閉包來為 'estimatedPi' 屬性計算默認值。請留意在閉包結尾處的那一對括號。如果移除了這對
+// 括號，編譯器會要求我們將 'estimatedPI' 屬性設置為閉包型別，而不是閉包的執行結果。此外，這對括號也表示馬上執行這個
+// 閉包
 //
-// Also note that these closures used for default values for properties are not allowed to access
-// any of the other properties of the class because it's assumed that they have not yet been
-// initialized.
+// 也請留意這個用來設置此屬性默認值的閉包，並不允許存取同類別中的其他屬性，因為那些屬性會被假設尚未完成初始化
 class ClassWithPI
 {
 	let estimatedPI: Double =
@@ -153,14 +133,13 @@ class ClassWithPI
 		let constant1 = 22.0
 		let constant2 = 7.0
 		
-		// Must return the type specified by the property
+        // 必須回傳這個屬性被指定的型別
 		return constant1 / constant2
 	}()
 }
 
-// Here's a more pracitcal example. Note that since the closure is required to return the type
-// of the property it is initializing, it must create a temporary of the same type which is
-// initialized and then returned.
+// 這裡有個更實用的例子。因為閉包的回傳值，必須是這個正在被初始化的屬性的型別，所以必須創建一個同型別的暫存變數，將它
+// 初始化後再回傳以對屬性賦值
 struct CheckerBoard
 {
 	let boardColors: [Bool] =
@@ -178,7 +157,7 @@ struct CheckerBoard
 			isBlack = !isBlack
 		}
 		
-		// Return the temporary in order to set 'boardColors'
+        // 回傳這個暫存變數以設定 'boardColors' 的值
 		return temporaryBoard
 	}()
 	
@@ -188,7 +167,7 @@ struct CheckerBoard
 	}
 }
 
-// We can now check our work
+// 現在來檢查一下結果
 var board = CheckerBoard()
-board.squareIsBlackAtRow(1, column: 1) // Should be false
-board.squareIsBlackAtRow(1, column: 2) // Should be true
+board.squareIsBlackAtRow(1, column: 1) // 應該是 false
+board.squareIsBlackAtRow(1, column: 2) // 應該是 true
