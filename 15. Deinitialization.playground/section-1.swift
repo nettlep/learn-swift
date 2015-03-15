@@ -1,19 +1,17 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Deinitializers are called automatically before a class instance is
-//   deallocated,so you can access all properties in the deinitializer.
+// * 解構器在類別實體所佔據的記憶體空間被釋放之前會被自動呼叫，所以在解構器中，可以存取所有的屬性
 //
-// * You cannot call them directly.
+// * 你不能直接呼叫它們
 //
-// * The superclass' deinitializer is called before the subclass'.
+// * 解構器的呼叫順序，父類別優先於子類別
 //
-// * Swift uses ARC to manage memory, so deinitializers shouldn't always
-//   be necessary. However, you might open a file and need to close it
-//   when a class is deallocated.
+// * Swift 使用自動參考計數(ARC)來管理記憶體，所以不應依賴解構器。然而，你或許需要在一個類別實體的生命週期結束之
+//   前，關閉你先前開啟的檔案控制器
 // ------------------------------------------------------------------------------------------------
 
-// Let's create a couple classes to work with...
+// 讓我們創建兩個類別來試試解構器...
 struct Bank
 {
 	static var coinsInBank = 10_000
@@ -44,28 +42,25 @@ class Player
 		coinsInPurse += coins
 	}
 	
+    // 這個 Player 類別的解構器做的事，就是在 Player 實體的生命週期結束前，將硬幣存回銀行
 	deinit
 	{
 		Bank.receiveCoins(coinsInPurse)
 	}
 }
 
-// Let's exercise the Player class a bit and create a new player with 100
-// coins in his purse (pulled from the Bank.)
+// 讓我們使用 Player 類別創建一個錢包裡頭有 100 個硬幣的玩家(從銀行領出來)
 var playerOne: Player? = Player(coins: 100)
 playerOne!.coinsInPurse
 Bank.coinsInBank
 
-// The Player now wins 2000 coins!
+// 這個玩家贏得了 2000 個硬幣！
 playerOne!.winCoins(2_000)
 playerOne!.coinsInPurse
 Bank.coinsInBank
 
-// When we cause playerOne to be deallocated, the deinitializer is called
+// 當我們主動結束這個玩家類別實體的生命週期時，解構器會被自動呼叫
 playerOne = nil
 
-// This should print 12000 coins, but the playgrounds don't appear to do
-// this correctly. If you put this code into a project and compile/run
-// it (with minor changes to print variables using println) then you
-// will see that the bank does indeed have 12000 coins.
+// 現在銀行裡頭有 12000 枚硬幣(2100 + 9900)
 Bank.coinsInBank

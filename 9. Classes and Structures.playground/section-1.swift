@@ -1,39 +1,36 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// Classes and structures can both:
+// 類別與結構都能夠：
 //
-// * Define properties to store values
-// * Define methods to provide functionality
-// * Define subscripts to provide access to their values using subscript syntax
-// * Define initializers to set up their initial state
-// * Be extended to expand their functionality beyond a default implementation
-// * Conform to protocols to provide standard functionality of a certain kind
+// * 定義用來儲存值的屬性
+// * 定義提供功能的方法
+// * 定義用來存取值的下標腳本
+// * 定義將內容值初始化的建構器
+// * 透過擴展來增加默認的功能
+// * 符合某類別的協定以提供該類別的標準功能
 //
-// Only classes have:
+// 類別才有的特性：
 //
-// * Inheritance enables one class to inherit the characteristics of another.
-// * Type casting enables you to check and interpret the type of a class instance at runtime.
-// * Deinitializers enable an instance of a class to free up any resources it has assigned.
-// * Reference counting allows more than one reference to a class instance.
+// * 繼承允許一個類別繼承另外一個類別的特性
+// * 型別轉換讓你在運行時可以檢查以及解釋類別實體的型別
+// * 解構子讓一個類別的實體釋放它被分配的資源
+// * 參照計數允許對一個類別實體的多次參考
 // ------------------------------------------------------------------------------------------------
 
-// First, let's create a basic structure with a couple of simple properties.
+// 首先，讓我們創建一個有幾個簡單屬性的基本結構
 //
-// Our structure must have all of its properties initialized, either with default values or through
-// initialization (described later.) For now, we'll just ensure they're all initialized with
-// default values.
+// 結構裡頭的屬性必須初始化，要不是宣告的時候有默認值，就是透過建構器(晚點談)。目前來說，我們只要確保它們都被默認值
+// 初始化了即可
 struct Resolution
 {
 	var width = 1280
 	var height = 1024
 }
 
-// Similarly, a basic class with a few properties, fully initialized. Notice that the first
-// property is an instance of the Resolution structure.
+// 同樣的，這兒是一個全被初始化了，擁有幾個屬性的基本類別。請留意第一個屬性是 Resolution 結構的實體
 //
-// Also, note that the final member, the 'name' property, does not need to be initialized because
-// optionals are initalized to nil by default.
+// 再來注意最後一個名為 'name' 的成員，我們沒有顯式地替它做初始化的原因，在於可選型別默認會被初始化為 nil
 class VideoMode
 {
 	var resolution = Resolution()
@@ -42,96 +39,89 @@ class VideoMode
 	var name: String?
 }
 
-// Here are some instances of our structure and class:
+// 這兒是一些我們結構與類別的實體：
 var someResolution = Resolution()
 var someVideoMode = VideoMode()
 
 // ------------------------------------------------------------------------------------------------
-// Accessing properties
+// 存取屬性
 //
-// We can access members of the class or structure using the dot operator:
+// 我們可以使用點運算子 "." 來存取類別或結構的成員：
 someResolution.width
 someVideoMode.resolution.width
 
-// In Objective-C, if an object contained a structure, the sub-properties (the properties of the
-// structure inside the object) could not be modified directly. Instead the entire structure would
-// have to be replaced completely. This is not the case for Swift.
+// 在 Objective-C 裡頭，如果一個物件包含了一個結構，這個子屬性(包含在這個物件的結構中的屬性)是不能直接做修改的。
+// 這在 Swift 中不成問題，此操作不需要先初始化 Resolution 結構
 someVideoMode.resolution.width = 2880
 someVideoMode.resolution.height = 1800
 
 // ------------------------------------------------------------------------------------------------
-// Structures and Enumerations are Value Types
+// 結構與列舉都是值型別
 //
-// This means that when passing an instance of a structure or enumeration to a function (or
-// assigning an instance of a structure or enumeration to another value), the structure or
-// enumeration is copied.
+// 這表示當傳遞一個結構或列舉的實體進函式時(或將一個結構或列舉的實體賦值給另外一個變數)，事實上是對這個結構或列舉做
+// 了值拷貝
 //
-// Let's create two independent copies of a Resolution structure
+// 讓我們創建兩個獨立的 Resolution 結構
 let constantResolution = Resolution()
 var variableResolution = constantResolution
 
-// We can modify the variable resolution:
+// 我們可以修改 variableResolution 的屬性
 variableResolution.width = 320
 variableResolution.height = 200
 
-// We can see that the original (from where the variable copy originated) is unchanged:
+// 然後發現用來賦值的變數 constantResolution 成員的屬性沒有變：
 constantResolution
 
-// Note that since structures and enumerations are value types, we are unable to modify the
-// contents of constant intances.
+// 留意，因為結構以及列舉都是值型別，我們不能修改宣告為常數的實體內容：
 //
-// The following will not compile:
+// 下面這一行不能編譯:
 //
 // constantResolution.width = 320
 
 // ------------------------------------------------------------------------------------------------
-// Classes are Reference Types:
+// 類別是參考型別：
 //
-// This means that when passing an instance of an object to a function (or assigning an instance
-// of an object to another value), the new value will hold a reference to the original object.
+// 這表示當傳遞一個物件的實體進函式(或將這個實體賦值給其他變數時)，新的變數儲存的指向原本物件的參照
 //
-// Let's create an object and assign it's instance to another variable:
+// 讓我們創建一個物件並將它賦值給其他變數：
 let constantVideoMode = VideoMode()
 var variableVideoMode = constantVideoMode
 
-// If we modify the variable..
+// 如果我們修改了 variableVideoMode...
 variableVideoMode.frameRate = 240
 
-// ...we can see that the other instance is also modified:
+// ...我們可以發現另外一個實體也被修改了：(即使它被宣告為常數)
 constantVideoMode.frameRate
 
-// In addition to this, we can even modify the 'constantVideoMode' instance. This is the case
-// because it is a reference type and modifing the contents do not modify the reference itself.
+// 此外，我們甚至可以修改 'constantVideoMode' 實體。能發生這種情況，是因為它是參考型別，而且修改屬性的動作並沒有
+// 動到常數代表的參考本身(修改的是屬性，不是自己)
 constantVideoMode.frameRate = 24
 
-// We cannot, however, modify the instance variable.
+// 然而，我們不能修改這個變數實體
 //
-// This line of code will not compile:
+// 這一行將無法編譯：
 //
 // constantVideoMode = VideoMode
 
 // ------------------------------------------------------------------------------------------------
-// Memberwise Initializers for Structure Types
+// 結構型別裡頭針對個別成員的建構器
 //
-// We can set the properties without the need to create a specialiized init routine. If a struct
-// (not a class) does not have any initializers, then Swift will provide a "Memberwise Initializer"
-// for us automatically.
+// 我們不需要為了設置屬性的值而特別撰寫一些初始化的程序。如果一個結構(非類別)沒有任何建構器，那麼 Swift 將會自動提供
+// 我們 "針對個別成員的建構器"
 //
-// Here's what tha memberwise initializer looks like. It's pretty self-explanatory in that it is
-// an initializer that includes one externally named parameter for each property in the structure.
+// 針對個別成員的建構器而言，這兒有個再明顯不過的例子。它就是讓結構中的每一個屬性都包含了外部參數名稱的建構器。
 let vga = Resolution(width: 640, height: 480)
 
 // ------------------------------------------------------------------------------------------------
-// Identity operators
+// 恆等運算子
 //
-// Since classes are reference types, we can check to see if they are 'identical' with the
-// Identity (===) operator:
+// 因為類別是參考型別，我們使用恆等運算子 (===) 來檢查它們是否參考到同一個類別實體位址：
 someVideoMode === variableVideoMode
 constantVideoMode === variableVideoMode
 
-// Identical-to is not the same as equal to:
+// 恆等於跟等於是不一樣的：( === 不是 == )
 //
-// The following line will not compile as it uses the equality operator and VideoMode hasn't
-// defined an equality operator:
+// 下面這一行無法編譯，因為它使用了等於(==)運算子，但 Swift 的類別型別無法使用等於運算子的比較：
 //
 // constantVideoMode == variableVideoMode
+

@@ -1,41 +1,39 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Properties store values in classes, structures and enumerations.
+// * 屬性儲存了類別、結構以及列舉中的值
 // ------------------------------------------------------------------------------------------------
 
-// Here's a structure with a couple simple stored properties:
+// 這兒是一個裡頭有幾個簡單屬性的結構：
 struct FixedLengthRange
 {
 	var firstValue: Int
 	let length: Int
 }
 
-// Structures must have all of their properties initialized upon instantiation.
+// 結構必須在初始化的時候將其中的每個屬性都初始完成
 //
-// This won't compile since the struct includes properties that havn't been initialized with
-// default values:
+// 以下這一行無法編譯，因為結構裡頭的屬性並未初始化完成：
 //
 // var anotherRangeOfThreeItems = FixedLengthRange()
 //
-// In order to instantiate a FixedLengthRange struct, we must use the memberwise initializer. Note
-// that this will initialize a constant property and a variable property inside the struct:
+// 為了實體化一個 FixedLengthRange 結構，我們必須使用針對個別成員的建構器。注意這個將會實體化結構中的一個常數以及
+// 一個變數：
 var rangeOfThreeItems = FixedLengthRange(firstValue: 0, length: 3)
 rangeOfThreeItems.firstValue = 6
 
 // ------------------------------------------------------------------------------------------------
-// Lazy Stored Properties
+// 延遲儲存屬性
 //
-// A Lazy Stored Property is a value that is not calculated until its first use.
+// 一個延遲儲存屬性在它被使用之前不會計算它的初始值
 //
-// They are declared using the "lazy" attribute and may not be constant.
+// 它們被宣告為 "lazy" 屬性，並且不能是常數
 //
-// Global and local variables are all lazy, except that they don't need the lazy attribute.
+// 全域的常數/變數不需要特別加上 "lazy" 就會延遲計算，區域常數/變數不會延遲計算
 //
-// Here, we'll define a couple classes to showcase Lazy Stored Properties. In this example, let's
-// assume that DataImporter is a time-consuming process, and as such, we will want to use a lazy
-// stored property whenever we use it. This way, if we end up never using it, we never pay the
-// penalty of instantiating it.
+// 在這兒，我們會定義一些類別來展示這個延遲儲存屬性。在這個例子中，讓我們假設 DataImporter 是個耗時的程序，正因為如
+// 此，我們會想在使用這個耗時的類別的時候，加上延遲儲存屬性。如此一來，如果完全沒有使用到這個屬性，那就永遠不需要為了
+// 這個耗時的初始化付出代價
 class DataImporter
 {
 	var filename = "data.txt"
@@ -47,29 +45,28 @@ class DataManager
 	var data = [String]()
 }
 
-// Now let's instantiate the data manager and add some simple data to the class:
+// 現在讓我們實體化這個 DataManager，然後為這個類別增加一些簡單的資料：
 let manager = DataManager()
 manager.data.append("Some data")
 manager.data.append("Some more data")
 
-// Notice how we haven't used the importer yet, so it is nil:
+// 注意我們還沒有使用這個有延遲儲存屬性的 importer，所以它的值還是 nil：
 manager
 
-// So now let's access it:
+// 現在讓我們存取這個屬性：
 manager.importer.filename
 
-// And now we see the importer was created:
+// 此時這個 impoter 屬性已經被創建出來了：
 manager
 
 // ------------------------------------------------------------------------------------------------
-// Computed Properties
+// 計算屬性
 //
-// Computed properties don't store data, but rather use getters and setters for accessing values
-// that are computed up on request.
+// 計算屬性沒有直接儲存值，它使用 getters 以及 setter 來存取當需要的時候才被計算出來的值
 //
-// Computed Properties are available for global as well as local variables.
+// 在全域以及區域範圍都可以定義計算屬性的變數
 //
-// We'll start with a few structures that we'll use to show how computed properties work.
+// 我們從一些結構開始，將使用它們來展示儲存屬性是如何運作的
 struct Point
 {
 	var x = 0.0, y = 0.0
@@ -79,13 +76,12 @@ struct Size
 	var width = 0.0, height = 0.0
 }
 
-// The following structure includes a computed property with a Point type named 'center'. Notice
-// that 'center' is variable (not constant) which is a requirement of computed properties.
+// 下列的結構包含了一個名稱為 'center' 的 Point 型別計算屬性。留意 'center' 是一個變數，而非常數。這是一個計算屬性
+// 的基本要求
 //
-// Every computed property must have a getter, but does not need a setter. If we provide a setter,
-// we need to know the new value being assigned to the computed property. We've called this
-// value 'newCenter'. Note that this value does not have a type annotation because the computed
-// property already knows that it is a Point type. Providing a type annotation would be an error.
+// 每一個計算屬性都必須擁有 getter 方法，但不一定需要 setter。如果提供了 setter 方法，那麼我們必須知道這個將要被賦
+// 值到計算屬性的新值。這個新值的名稱為'newCenter'。注意，這個值不能使用型別註解，因為計算屬性早已知道它是 Point 型
+// 別，顯式地加上型別註解將引起編譯錯誤
 struct Rect
 {
 	var origin = Point()
@@ -106,28 +102,27 @@ struct Rect
 	}
 }
 
-// Here, we'll create a square from our Rect structure
+// 這兒，我們將會創建一個 Rect 型別的 square 變數
 var square = Rect(origin: Point(x: 0.0, y: 0.0), size: Size(width: 10.0, height: 10.0))
 
-// We can now get the center point, computed from the Rect's origin and size. Being a computed
-// property, we can treat it just like any other peroperty.
+// 我們現在可以取用 square 中從 Rect 的原點以及大小等屬性中計算出來的 center 點。作為一個計算屬性，我們使用它的方式
+// 跟其他種屬性沒有什麼不同
 let initialSquareCenter = square.center
 
-// Since we provided a setter, we can also set the center point as if it is a stored property.
-// This will effectively update the Rect's origin and size based on the specified center point.
+// 因為我們提供了 setter 方法，所以也可以把 center 點當作一般儲存值一樣地設值。這個動作會基於新的 center 點來更新原
+// 本 Rect 結構中 origin 點的值
 square.center = Point(x: 15, y: 15)
 
-// We can see that the origin has been updated from (0, 0) to (10, 10):
+// 我們可以看看這個 origin 點的值已經從 (0, 0) 被更新到 (10, 10)：
 square.origin
 
-// Shorthand Setter Declaration
+// Setter 方法的簡寫宣告
 //
-// The computed property's setter from the Rect structure provided a parameter on the setter named
-// 'newCenter'. If we don't specify this parameter, Swift will automatically generate an input
-// value named 'newValue' for us.
+// Rect 結構中提供了一個名為 'newCenter' 的參數給計算屬性的 setter 方法。如果我們不指定這個參數，Swift 將會自動地
+// 為我們產生一個名為 'newValue' 的參數
 //
-// Here, AlternativeRect is the same declaration as Rect above, except that the setter uses
-// Swift's default setter value, 'newValue':
+// 這裡 AlternativeRect 結構跟 Rect 結構的宣告幾乎一模一樣，只差在 setter 方法使用了 Swift 的默認 'newValue'
+// 參數
 struct AlternativeRect
 {
 	var origin = Point()
@@ -148,7 +143,7 @@ struct AlternativeRect
 	}
 }
 
-// We can also have a read-only computed property by simply omitting the setter:
+// 我們也可以藉著只提供 getter 方法，來擁有一個唯讀的計算屬性
 struct Cube
 {
 	var width = 0.0, height = 0.0, depth = 0.0
@@ -161,9 +156,8 @@ struct Cube
 	}
 }
 
-// Alternatively, Swift allows us to shorten the syntax of a read-only computed property by
-// omitting the get{} construct and inserting the code for the getter directly into the property
-// declaration:
+// 除此之外，Swift 允許我們使用捨去了 get{} 區塊的簡化語法來使用唯讀的計算屬性。你只需要將計算屬性的宣告區塊直接擺在
+// 變數名稱下方即可：
 struct AnotherCube
 {
 	var width = 0.0, height = 0.0, depth = 0.0
@@ -173,32 +167,28 @@ struct AnotherCube
 	}
 }
 
-// Let's declare our structure and read the 'volume' property
+// 讓我們宣告一個 AnotherCube 結構並且讀取其中的 'volume' 屬性
 var cube = AnotherCube(width: 4, height: 5, depth: 2)
 cube.volume
 
-// Since the 'volume' property is read-only, if we tried to assign a value to it, it would
-// would generate a compiler error.
+// 因為 'volume' 屬性是唯讀的，如果我們試著賦值給它，將會產生一個編譯錯誤
 //
-// The following line of code will not compile:
+// 下面這一行程式碼無法編譯：
 //
 // cube.volume = 8.0
 
 // ------------------------------------------------------------------------------------------------
-// Property Observers
+// 屬性監視器
 //
-// Property observers allow us to respond to changes in a property's value. We can declare an
-// observer that contains our code that is run just before a property is set (optionally allowing
-// us to alter the value being set) and an observer that is run just after a property has been
-// modified.
+// 屬性監視器允許我們對屬性值的改變做回應。我們可以宣告一個在屬性值將改變前觸發的屬性監視器(讓我們選擇性地改變將被更新
+// 的值)，或者是屬性值已改變後的時候觸發的屬性監視器，這個屬性監視器會包含一段我們自己寫的程式碼區塊
 //
-// Property observers are available for global as well as local variables.
+// 在全域以及區域範圍都可以為變數定義屬性監視器
 //
-// These observers are not called when a property is first initialized, but only when it changes.
+// 這些屬性監視器在屬性初始化的時候不會觸發，僅只在屬性值改變的時候才觸發
 //
-// Similar to setters, each 'willSet' and 'didSet' will receive a parameter that represents (in 
-// the case of 'willSet') the value about to be assigned to the property and (in the case of
-// 'didSet') the value that was previously stored in the property prior to modification.
+// 與 setter 函式相似，每一個 'willSet' 以及 'didSet' 都會接收一個代表(以 'willSet' 方法為例)即將被賦值進屬性
+// 的參數以及(以 'willSet' 方法為例)這個屬性在被改變前的原始值
 class StepCounter
 {
 	var totalSteps: Int = 0
@@ -214,15 +204,15 @@ class StepCounter
 	}
 }
 
-// Let's create an instance of StepCounter so we can try out our observer
+// 讓我們創建一個 StepCounter 的實體，以試試寫好的屬性監視器
 let stepCounter = StepCounter()
 
-// The following will first call 'willSet' on the 'totalSteps' property, followed by a change to
-// the value itself, followed by a call to 'didSet'
-stepCounter.totalSteps = 200;
+// 下面的表達式先會呼叫 totalSteps 屬性的 'willSet' 方法，接下來是改變 totalSteps 屬性的值，最後才是呼叫這個屬性
+// 的 'didSet' 方法
+stepCounter.totalSteps = 200
 
-// Similar to setters, we can shorten our observers by omitting the parameter list for each. When
-// we co this, Swift automatically provides parameters named 'newValue' and 'oldValue'
+// 類似於 setter 方法，我們可以靠著捨棄掉 'willSet' 以及 'didSet' 方法中的參數，來簡化個別的屬性監視器。當這麼做的
+// 時候，Swift 會自動地分別為這些方法提供 'newValue' 以及 'oldValue' 的參數
 class StepCounterShorter
 {
 	var totalSteps: Int = 0
@@ -232,11 +222,10 @@ class StepCounterShorter
 	}
 }
 
-// We can also override the value being set by modifying the property itself within the 'didSet'
-// observer. This only works in the 'didSet'. If you attempt to modify the property in 'willSet'
-// you will receive a compiler warning.
+// 我們也可以在 'didSet' 屬性監視器中，藉著直接改變屬性的值來覆寫掉先前的寫入操作。如果你在 'willSet' 方法中修改屬性
+// ，將會得到一個編譯警告
 //
-// Let's try wrapping our value to the range of 0...255
+// 讓我們試著將 totalSteps 這個屬性的範圍限制在 0...255
 class StepCounterShorterWithModify
 {
 	var totalSteps: Int = 0
@@ -247,39 +236,34 @@ class StepCounterShorterWithModify
 }
 var stepper = StepCounterShorterWithModify()
 stepper.totalSteps = 345
-stepper.totalSteps // This reports totalSteps is now set to 89
+stepper.totalSteps // 這一行回傳 totalSteps 的值已設置為 89
 
 // ------------------------------------------------------------------------------------------------
-// Type Properties
+// 型別屬性
 //
-// Until now, we've been working with Instance Properties and Instance Methods, which are
-// associated to an instance of a class, structure or enumeration. Each instance gets its own copy
-// of the property or method.
+// 到現在為止，我們使用的實體屬性以及實體方法，都是類別、結構或列舉的實體。每一個實體都有它們自己獨立的屬性或方法
 //
-// Type properties are properties that are attached to the class, structure or enumeration's type
-// itself and not any specific instance. All instances of a type will share the same Type Property.
+// 型別屬性是附屬在類別上的屬性，結構或列舉本身並不屬於任何一個特定的實體。所有擁有相同型別的實體都會共享同一份型別屬性
 //
-// These are similar to 'static' properties in C-like languages.
+// 對於值型別而言(結構和列舉)，使用 'static' 關鍵字來定義型別屬性，對於參考型別而言(類別)，使用 'class' 關鍵字來定
+// 義型別屬性
 //
-// For Value types (structs, enums) we use the 'static' keyword. For Class types with the 'class'
-// keyword.
+// 這相似於類 C 語言中的 'static' 變數
 //
-// Type properties can be in the form of stored properties or computed properties. As with normal
-// stored or computed properties, all the same rules apply except that stored type properties must
-// always have a default value. This exception is necessary because the initializer (which we'll
-// learn about later) is associated to a specific instance and as such, cannot be reliable for
-// initializing type properties.
+// 對於值型別而言(結構和列舉)，可以定義儲存屬性和計算型別屬性，對於一般的儲存屬性或計算屬性來說，除了儲存屬性總是必須有
+// 初始值以外，所有的規則都是一樣的。為什麼有這個例外的原因，在於每個實體都有屬於自己的獨立建構器(以後會談)，正因為如此
+// ，無法用來初始化型別屬性
 //
-// Here is a class with a couple of type properties
+// 這兒是一個擁有幾個型別屬性的結構
 struct SomeStructure
 {
 	static var storedTypeProperty = "some value"
 	
-	// Here's a read-only computed type property using the short-hand read-only syntax
+    // 這裡有一個使用了語法簡寫的唯讀計算屬性
 	static var computedTypeProperty: Int { return 4 }
 }
 
-// Similarly, here's an enumeration with a couple of type properties
+// 同樣的，這裡是一個擁有幾個型別屬性的列舉
 enum SomeEnum
 {
 	static let storedTypeProperty = "some value"
@@ -287,15 +271,13 @@ enum SomeEnum
 	static var computedTypeProperty: Int { return 4 }
 }
 
-// Classes are a little different in that they cannot contain stored type properties, but may
-// only contain computed type properties
+// 類別有一點不同的地方，在於它們無法定義儲存型別屬性，但是可以定義計算型別屬性
 class SomeClass
 {
-	// The following line won't compile because classes aren't allowed stored type properties
+    // 下面這一行無法編譯，因為類別不允許儲存型別屬性
 	//
 	// class var storedTypeProperty = "some value"
 	
-	// This is read-only, but you can also do read/write
+    // 這是唯讀的，但你也可以定義可讀寫的計算型別屬性
 	class var computedTypeProperty: Int { return 4 }
 }
-

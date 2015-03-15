@@ -1,20 +1,16 @@
 // ------------------------------------------------------------------------------------------------
-// Things to know:
+// 本篇須知：
 //
-// * Swift provides an initializer (which partially resembles a function) to ensure that every
-//   property in a class, structure or enumeration is fully initialized.
+// * Swift 提供一個建構器(initializer, 有點像函式)來確保類別、結構或列舉中的每個屬性都被初始化了
 //
-// * Optionals do not need to be initialized as they are automatically initialized to nil if no
-//   default value is provided.
+// * 可選型別不需要初始化，因為如果沒給它們默認值的話，它們會被自動初始化為 nil
 // ------------------------------------------------------------------------------------------------
 
-// Here's a basic use of an initializer.
+// 這裡是建構器的基本使用方式
 //
-// The Fahrenheit class will create a 'temperature' property that does not have a default value.
-// Because there is no default value, the property must be initialized in the initializer.
+// Fahrenheit 類別將創建一個沒有默認值的 'temperature' 屬性。因為沒有默認值，這個屬性必須在建構器中被初始化
 //
-// Without the initializer, we would get an error whenever we tried to instantiate the Fahrenheit
-// class.
+// 如果沒有替這個類別加上建構器，我們會在試著實體化 Fahrenheit 類別的時候，得到一個編譯錯誤
 struct Fahrenheit
 {
 	var temperature: Double
@@ -25,51 +21,48 @@ struct Fahrenheit
 	}
 }
 
-// Since the class can fully initialize itself, we can safely instantiate it with no error:
+// 因為這個類別已被完全的初始化，我們可以順利地將它實體化：
 var f = Fahrenheit()
 
-// Since the temperature is always defined as "32.0", it is cleaner and preferred to use a default
-// value instead of setting it inside the initializer:
+// 因為 temperature 屬性總是被設置為 "32.0"，因此比較建議而且更加清楚的做法是直接將它的默認值設置為 32.0，而不是
+// 在建構器中將它初始化
 struct AnotherFahrenheit
 {
 	var temperature: Double = 32.0
 }
 
-// Initializers can also include parameters. Here's an example of using a parameter to initialize
-// the class's temperature to a given value.
+// 建構器也可以包含參數。這兒有一個使用了參數的建構器例子，它使用傳進去的參數來替類別的 temperature 屬性初始化：
 //
-// The following class contains two initializers:
+// 下面的類別包含了兩種建構器：
 struct Celsius
 {
 	var temperatureInCelsius: Double = 0.0
 	
-	// Initialize our temperature from Fahrenheit
+    // 基於 Fahrenheit 的值來初始化 temperature
 	init(fromFahrenheit fahrenheit: Double)
 	{
 		temperatureInCelsius = (fahrenheit - 32.0) / 1.8
 	}
 	
-	// Initialize our temperature from Kelvin
+    // 基於 Kelvin 的值來初始化 temperature
 	init(kelvin: Double)
 	{
 		temperatureInCelsius = kelvin - 273.15
 	}
 }
 
-// Now let's try our new initializers
+// 現在讓我們來試試新的建構器
 let boilingPotOfWater = Celsius(fromFahrenheit: 212.0)
 let freezingPointOfWater = Celsius(kelvin: 273.15)
 
-// External parameter names are automatically generated for the initializer. In order to opt-out
-// of this automated convenience, you can specify "_" for the extnenal name explicitly.
+// 建構器會自動產生外部參數名稱。你可以在外部參數上顯式地使用 "_" 符號來避免這個自動產生外部參數名稱的行為：
 //
-// Here's a class that defines two initializers - one that makes use of the automatic external
-// name generation and one that opts out:
+// 這兒是一個定義了兩種建構器的類別 - 一個使用自動產生的外部參數名稱，另一個不使用外部參數名稱：
 struct Color
 {
-	let red = 0.0, green = 0.0, blue = 0.0
+	var red = 0.0, green = 0.0, blue = 0.0
 	
-	// This initializer will make use of automatically generated exernal names
+    // 建構器將自動產生外部參數名稱
 	init(red: Double, green: Double, blue: Double)
 	{
 		self.red = red
@@ -77,7 +70,7 @@ struct Color
 		self.blue = blue
 	}
 	
-	// This initializer opts out by explicitly declaring external names with "_"
+    // 這個建構器在外部參數上顯式地使用 "_" 符號來避免使用外部參數名稱
 	init(_ red: Double, _ blue: Double)
 	{
 		self.red = red
@@ -86,21 +79,21 @@ struct Color
 	}
 }
 
-// Here, we can see our efforts pay off:
+// 這兒，我們可以看到修改已經生效：
 let magenta = Color(red: 1.0, green: 0.0, blue: 1.0)
 let purple = Color(1.0, 0.5)
 
-// Optional properties do not need to be initialized:
+// 可選型別不需要被初始化：
 class SurveyQuestion
 {
 	var text: String
 	
-	// Response is optional, and is automatically initialized to nil
+    // response 屬性是可選型別，它會自動初始化為 nil
 	var response: String?
 
 	init(text: String)
 	{
-		// We only need to initialize 'text'
+        // 我們只需要初始化 'text' 屬性
 		self.text = text
 	}
 	
@@ -110,89 +103,87 @@ class SurveyQuestion
 	}
 }
 
-// Constants need initialization as well. In the following example, our constant has a default
-// value. However, if we initialize the class with the init(text: String) initializer, we can
-// modify the default value to use the one passed in:
+// 常數也必須初始化。在下面的範例中，我們的常數 text1 有默認值，常數 text2 沒有默認值：
 class SurveyQuestion2
 {
-	// Default value of "No question"
-	let text: String = "No question"
+    // 默認值是 "No question"
+	let text1: String = "No question"
+    let text2: String
 	
 	var response: String?
 	
-	init(text: String)
+    init(text: String, response: String)
 	{
-		// Initializing the constant, 'text', even though it has a default value, we can modify
-		// that default value here
-		self.text = text
+        // 無法對已經賦值的常數重複賦值，此行無法編譯
+        // self.text1 = text
+
+        // 還沒賦值的常數可以在建構器中賦值
+		self.text2 = text
+        self.response = response
 	}
 	
 	init()
 	{
-		// We do nothing here and let the default value for 'text' define its value
+        // 如果這個建構式什麼也不做，會無法通過編譯，因為常數 text2 沒有默認值
+        self.text2 = ""
 	}
 	
 	func ask() -> String
 	{
-		return text
+		return text2
 	}
 }
 
-// Here, we initialize the class with a blank initializer (calling init()) to let text's default
-// value initialize the stored value
+// 這兒，我們可以使用空白的建構器來初始化這個類別(呼叫 init())。讓 'text1' 屬性的默認值來初始化它的儲存值，
+// 'text2' 屬性會設定為空字串 ""
 let noQuestion = SurveyQuestion2()
 
-// Here, we'll us an aalternat initializer to specify a different value for 'text'
-let beetsQuestion = SurveyQuestion2(text: "Do you like beets?")
+// 這兒，我們使用另一個建構器來初始化類別中的所有屬性：
+let beetsQuestion = SurveyQuestion2(text: "Do you like beets?", response: "Yes, I do!")
+// 變數 response 與常數 text2 在建構器中修改成功，但常數 text1 無法重複賦值
+beetsQuestion
 
 // ------------------------------------------------------------------------------------------------
-// Default Initializer
+// 默認建構器
 //
-// If all properties have default values (including optionals defaulting to nil) AND you do not
-// create your own initlializer AND there is no superclass, Swift will create a default
-// initializer (with no parameters) for you. This initializer sets all properties to their
-// default values.
+// 如果所有的屬性都有默認值(包含可選型別的自動默認值 nil)，加上你沒有創建自己的建構器，加上這個類別不繼承任何父類別
+// ，Swift 會幫你創建默認的建構器(沒有任何參數)。這個建構器將所有的屬性初始化為它們的默認值。
 //
-// If you create your own initializer, Swift will not create the default initializer. If you want
-// your custom initializers as well as the default initializer, then put your initializers in an
-// extension.
+// 如果你創建了自己的建構器，Swift 就不會自動創建默認建構器。如果你不只想要自定義的建構器，也想要默認建構器，那麼就
+// 將你自己的建構器放在擴展(extension)中(以後的章節會談)
 class ShoppingListItem
 {
 	var name: String?
 	var quantity = 1
 	var purchased = false
 	
-	// No init(...) initializer
+    // 不需要自定義 init(...) 建構器，因為會自動創建
 }
 
 // ------------------------------------------------------------------------------------------------
-// Memberwise Initializers for Structure Types
+// 結構型別中針對個別成員的建構器
 //
-// Similar to the default initializer for classes, structures that do not implement an initializer
-// but have default values for their stored properties will get a default memberwise initializer.
+// 就像類別中的建構器，一個沒有實作自定義建構器，但所有屬性都有默認值的結構，會自動產生一個針對個別成員的建構器
 //
-// As with classes, if you want your custom initializers as well as the default memberwise
-// initializer, then put your initializers in an extension.
+// 跟類別相同，如果你不只想要自定義的建構器，也想要默認的針對個別成員的建構器，就將你自己的建構器放在擴展中
 struct Size
 {
 	var width = 0.0
 	var height = 0.0
 }
 
-// Here, we call the default memberwise initializer that Swift created for us
+// 在這兒，我們呼叫 Swift 替我們自動產生的針對個別成員的建構器
 let twoByTwo = Size(width: 2.0, height: 2.0)
 
 // ------------------------------------------------------------------------------------------------
-// Initializer Delegatgion for Value Types
+// 值型別的代理建構器
 //
-// Sometimes, it's convenient to have multiple initializers that call other initializers to do
-// some of the heavy lifting.
+// 有時候，擁有呼叫其他建構器來幫助我們做初始化的多個建構器是很方便的
 //
-// In the following example, we have a class 'Rect' that has multiple initializers. One that
-// initializes our rect given an origin and size, while another that calls upon the origin/size
-// initializer from calculations based on the a center point.
+// 在下面的例子中，'Rect' 是一個擁有多個建構器的結構。其中一個建構器使用傳入的 origin 以及 size 來初始化結構，
+// 另一個建構器，使用傳入的 center 以及 size 計算出 origin 之後，再呼叫 origin 以及 size 的建構器來初始化結構
 //
-// This concept is further extended in "Initializer Chaining", covered later.
+// 之後的 "建構器鏈" 章節中會對這個概念做進一步的延伸
 struct Point
 {
 	var x = 0.0
@@ -204,20 +195,18 @@ struct Rect
 	var origin = Point()
 	var size = Size()
 	
-	// We create a basic initializer to use the default values Since we define other initializers,
-	// the system won't create this for us, so we need to define it ourselves. Since we're using
-	// the defaults, it is an empty closure.
+    // 我們創建了一個使用默認值來初始化的基本建構器。因為我們定義了別的建構器，所以系統不會自動幫我們創建這個基本建構
+    // 器，因此我們必須自行定義。既然使用默認值為屬性做初始化，所以這個基本建構器裡頭什麼也不用做
 	init() {}
 	
-	// Init from origin/size
+    // 使用 origin/size 來初始化
 	init(origin: Point, size: Size)
 	{
 		self.origin = origin
 		self.size = size
 	}
 	
-	// Init from center/size - note how we use the init(origin:size) to  perform actual
-	// initialization
+    // 從 center/size 來初始化 - 注意我們是如何使用 init(origin: Point, size: Size) 來執行實際的初始化過程
 	init(center: Point, size: Size)
 	{
 		let originX = center.x - size.width / 2
@@ -226,7 +215,7 @@ struct Rect
 	}
 }
 
-// Here, we call the three initializers:
+// 我們在這兒分別呼叫三種不同的建構器：
 let basicRect = Rect()
 let originRect = Rect(origin: Point(x: 2.0, y: 2.0), size: Size(width: 5.0, height: 5.0))
 let centerRect = Rect(center: Point(x: 4.0, y: 4.0), size: Size(width: 3.0, height: 3.0))
