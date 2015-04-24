@@ -7,7 +7,7 @@
 //   are a special case of closures.
 //
 // * Closures of all types (including nested functions) employ a method of capturing the surrounding
-//   context in which is is defined, allowing it to access constants and variables from that
+//   context in which it is defined, allowing it to access constants and variables from that
 //   context.
 // ------------------------------------------------------------------------------------------------
 
@@ -65,11 +65,11 @@ reversed = names.sorted({
 })
 
 // Since all types can be inferred and we're not using any type annotation on the parameters,
-// we can simplify a bit further by removing the paranthesis around the parameters. We'll also put
+// we can simplify a bit further by removing the parenthesis around the parameters. We'll also put
 // it all on a single line, since it's a bit more clear now:
 reversed = names.sorted({ s1, s2 in return s1 > s2 })
 
-// If the closuere has only a single expression, then the return statement is also inferred. When
+// If the closure has only a single expression, then the return statement is also inferred. When
 // this is the case, the closure returns the value of the single expression:
 reversed = names.sorted({ s1, s2 in s1 > s2 })
 
@@ -120,8 +120,8 @@ reversed = names.sorted {
 		return s1 > s2
 	}
 
-// Note that the opening brace for the closure must be on the same line as the function call's
-// ending paranthesis. This is the same functinon call with the starting brace for the closure
+// Note that the opening brace for the closure must be on the same line as the function calls
+// ending parenthesis. This is the same function call with the starting brace for the closure
 // moved to the next line. This will not compile:
 //
 // reversed = sort(names)
@@ -146,7 +146,7 @@ func returnValue(f: () -> Int) -> Int
 returnValue {return 6}
 
 // And if we apply the simplification described earlier that implies the return statement for
-// single-expresssion closures, it simplifies to this oddly-looking line of code:
+// single-expression closures, it simplifies to this oddly-looking line of code:
 returnValue {6}
 
 // ------------------------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ returnValue {6}
 // The idea of capturing is to allow a closure to access the variables and constants in their
 // surrounding context.
 //
-// For example, a nested function can access contstans and variables from the function in which
+// For example, a nested function can access constants and variables from the function in which
 // it is defined. If this nested function is returned, each time it is called, it will work within
 // that "captured" context.
 //
@@ -196,7 +196,7 @@ incrementBy10() // returns 30
 var copyIncrementBy10 = incrementBy10
 copyIncrementBy10() // returns 40
 
-// If we request a new incremntor that increments by 10, it will have a separate and unique captured
+// If we request a new incrementor that increments by 10, it will have a separate and unique captured
 // context:
 var anotherIncrementBy10 = makeIncrementor(forIncrement: 10)
 anotherIncrementBy10() // returns 10
