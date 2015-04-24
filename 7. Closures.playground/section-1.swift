@@ -120,7 +120,7 @@ reversed = names.sorted {
 		return s1 > s2
 	}
 
-// Note that the opening brace for the closure must be on the same line as the function calls
+// Note that the opening brace for the closure must be on the same line as the function call's
 // ending parenthesis. This is the same function call with the starting brace for the closure
 // moved to the next line. This will not compile:
 //
