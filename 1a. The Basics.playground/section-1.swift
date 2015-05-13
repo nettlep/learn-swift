@@ -34,6 +34,11 @@ currentLoginAttempt += 1
 let a = 10, b = 20, c = 30
 var x = 0.0, y = 0.0, z = 0.0
 
+
+let fk : Float =  30
+
+// what is float  ?
+
 // Specifying the type with type annotations
 //
 // The built-in types in Swift are: Int, Double, Float, Bool, String, Array, Dictionary
