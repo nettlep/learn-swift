@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>66D5A3CC-2722-4C96-A8DD-F30741AC94CD</string>
+	<key>IDESourceControlProjectName</key>
+	<string>1a. The Basics</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>72828FB837D2C9EB03A6AF7193C43D8AF14EE315</key>
+		<string>https://github.com/edenmanny/learn-swift.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>1a. The Basics.playground</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>72828FB837D2C9EB03A6AF7193C43D8AF14EE315</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/edenmanny/learn-swift.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>72828FB837D2C9EB03A6AF7193C43D8AF14EE315</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>72828FB837D2C9EB03A6AF7193C43D8AF14EE315</string>
+			<key>IDESourceControlWCCName</key>
+			<string>learn-swift</string>
+		</dict>
+	</array>
+</dict>
+</plist>

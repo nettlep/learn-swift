@@ -39,3 +39,4 @@ Learn Apple's Swift programming language interactively through these playgrounds
 
   Thanks to Rafał Wójcik for his quick work to update these playgrounds to
   incorporate the Swift language changes that came with XCode Beta 3.
+hwkwidlh
