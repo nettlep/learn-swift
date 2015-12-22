@@ -56,11 +56,11 @@ let π = 3.14159
 let 你好 = "你好世界"
 let 🐶🐮 = "dogcow"
 
-// You can print a value using println
+// You can print a value using print
 let fiveHundred = 500
-println("The current value of fiveHundred is: \(fiveHundred)")
+print("The current value of fiveHundred is: \(fiveHundred)")
 
-// Since we're using Playgrounds, we'll just put the raw string on the line which is an expression
+// Since we're using Playgrounds, we can also put the raw string on the line which is an expression
 // that evaluates to itself, printing the result in the right-hand pane in the playground, like so:
 "The current value of fiveHundred is: \(fiveHundred)"
 
@@ -140,11 +140,12 @@ foo1 = 1; foo2 = 2
 let meaningOfLife: UInt8 = 42 // Unsigned 8-bit integer
 let randomNumber: Int32 = -34 // Signed 32-bit integer
 
-// There is also Int and UInt, the defaults. These will default to the size of the current
+// There is also Int and UInt, which will default to the size of the current
 // platform's native word size. On 32-bit platforms, Int will be equivalent to Int32/UInt32. On
 // 64-bit platforms it is equivalent to Int64/UInt64.
 //
-// Similarly, there is
+// Note: for interoperability with Cocoa UInt is required. For example the AVFoundation framework
+// uses unsigned integers anywhere a "count" is required
 //
 // Tip: For code interoperability, prefer Int over its counterparts.
 let tirePressurePSI = 52
@@ -190,8 +191,9 @@ let someBool = true
 
 // ------------------------------------------------------------------------------------------------
 // Numeric literals
-//
 // You can specify numbers in a few interesting ways
+// nice overview: http://www.codingexplorer.com/integers-and-numeric-literals-in-swift/
+// deep explanation: http://nshipster.com/swift-literal-convertible/
 let decimalInteger = 17
 let binaryInteger = 0b10001 // 17 in binary notation
 let octalInteger = 0o21 // ...also 17 (Octal, baby!)
@@ -201,13 +203,23 @@ let hexInteger = 0x11 // ...and 17 in Hexidecimal
 // examples (not assigned to variables):
 1.25e2 // Scientific notation
 1.25e-2
-0xFp2 // Break this down into "0xF", "p", "2". Read as 15 (0xF) to the power of (p) 2, which is 60
-0xFp-2
-0xC.3p0
+15e2
+
+// special hexadecimal power
+0xF
+0xFp2    //  15 * 2^2
+0xFp-2   //  15 * 2^-2  or 15 * 1/4
+
+0xC.3p0 == 12.1875
+0xF == 15
+0xFp0 == 15   //  15 * 2^0
+0xFp-2   //  15 * 2^-2  or 15 * 1/4
 
 // We can pad our literals as well:
 000123.456 // Zero padding
 0__123.456 // Underscores are just ignored
+
+let bigNumber = 14_891_584   // useful for representing 14,891,584 in a more readable way
 
 // Numeric type conversion
 
