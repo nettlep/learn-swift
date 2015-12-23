@@ -210,10 +210,7 @@ let hexInteger = 0x11 // ...and 17 in Hexidecimal
 0xFp2    //  15 * 2^2
 0xFp-2   //  15 * 2^-2  or 15 * 1/4
 
-0xC.3p0 == 12.1875
-0xF == 15
-0xFp0 == 15   //  15 * 2^0
-0xFp-2   //  15 * 2^-2  or 15 * 1/4
+0xC.3p0  // (12 + 3/16) * 2^0 = 12.1875 * 1
 
 // We can pad our literals as well:
 000123.456 // Zero padding
