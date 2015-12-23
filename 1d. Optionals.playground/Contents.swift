@@ -9,32 +9,32 @@
 
 // An optional declaration adds a "?" immediately after the explicit type. The following line
 // defines a value 'someOptional' that can either hold an Int or no value at all. In this case
-// we set an optional Int value to .None (similar to nil)
-let someOptional: Int? = .None
+// we set an optional Int value to nil
+let someOptional: Int? = nil
 
 // Let's try to convert a String to an Int
 //
-// Using the String's toInt() method, we'll try to convert a string to a numeric value. Since not
-// all strings can be converted to an Integer, the toInt() returns an optional, "Int?". This way
+// Using the the Int() initializer method, we'll try to convert a string to a numeric value. Since
+// not every type can be converted to an Integer, the Int() returns an optional, "Int?". This way
 // we can recognize failed conversions without having to trap exceptions or use other arcane
 // methods to recognize the failure.
 //
 // Here's an optional in action
 let notNumber = "abc"
-let failedConversion = notNumber.toInt()
+let failedConversion = Int(notNumber)
 
-// Notice how failedConversion is 'nil', even though it's an Int
+// Notice how failedConversion is 'nil', even though we attempted to create an Int
 failedConversion
 
 // Let's carry on with a successful conversion
 let possibleNumber = "123"
-var optionalConvertedNumber = possibleNumber.toInt()
+var optionalConvertedNumber = Int(possibleNumber)
 
 // This one worked
 optionalConvertedNumber
 
 // If we assign it to a constant, the type of that constant will be an Optional Int (Int?)
-let unwrapped = optionalConvertedNumber // 'unwrapped' is another optional
+let unwrapped = optionalConvertedNumber    // 'unwrapped' is another optional
 
 // ------------------------------------------------------------------------------------------------
 // Alternate syntax for Optionals
@@ -44,8 +44,12 @@ let unwrapped = optionalConvertedNumber // 'unwrapped' is another optional
 // let's not let that stop us from learning this little detail.
 //
 // These two lines are of equivalent types:
-let optionalA: String? = .None
-let optionalB: Optional<String> = .None
+let optionalA: String? = nil
+let optionalB: Optional<String> = nil
+
+// we can inspect their types and see that they are identical
+optionalA.dynamicType
+optionalB.dynamicType
 
 // ------------------------------------------------------------------------------------------------
 // Unwrapping
@@ -65,7 +69,7 @@ let unwrappedInt = optionalConvertedNumber!
 // Implicit unwrapping isn't very safe because if the optional doesn't hold a value, it will
 // generate a runtime error. To verify that is's safe, you can check the optional with an if
 // statement.
-if optionalConvertedNumber != .None
+if optionalConvertedNumber != nil
 {
 	// It's now safe to force-unwrap because we KNOW it has a value
 	let anotherUnwrappedInt = optionalConvertedNumber!
@@ -86,7 +90,7 @@ if let intValue = optionalConvertedNumber
 {
 	// No need to use the "!" suffix as intValue is not optional
 	intValue
-	
+  intValue.dynamicType
 	// In fact, since 'intValue' is an Int (not an Int?) we can't use the force-unwrap. This line
 	// of code won't compile:
 	// intValue!
@@ -104,8 +108,8 @@ if let optionalIntValue:Int? = optionalConvertedNumber
 	// 'optionalIntValue' is still an optional, but it's known to be safe. We can still check
 	// it here, though, because it's still an optional. If it weren't optional, this if statement
 	// wouldn't compile:
-	if optionalIntValue != .None
-	{
+	if optionalIntValue != nil
+  {
 		// 'optionalIntValue' is optional, so we still use the force-unwrap here:
 		"intValue is optional, but has the value \(optionalIntValue!)"
 	}
@@ -115,7 +119,7 @@ if let optionalIntValue:Int? = optionalConvertedNumber
 optionalConvertedNumber = nil
 
 // Now if we check it, we see that it holds no value:
-if optionalConvertedNumber != .None
+if optionalConvertedNumber != nil
 {
 	"optionalConvertedNumber holds a value (\(optionalConvertedNumber))! (this should not happen)"
 }
