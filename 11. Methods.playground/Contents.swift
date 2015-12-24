@@ -28,14 +28,14 @@ class SomeClass
 //
 // For methods, the default behavior is that the caller must always specify all but the first
 // external parameter name when calling the method. Member authors need not specify the external
-// names for those parameters as the default is to treat all parameters as if they had the "#"
-// specifier, which creates an external parameter name that mirrors the local parameter name.
+// names for those parameters as the default with an external parameter name that mirrors 
+// the local parameter name.
 //
 // To override this default-external-names-for-second-and-beyond-parameters, specify an "_" as the
 // external parameter name for all but the first parameter.
 //
-// If you want the caller to also use external name for the first parameter, be sure to add your
-// own '#' symbol to the local name or specify the external name explicitly.
+// If you want the caller to also use external name for the first parameter, be sure to 'double up'
+// the local name specifying the external name explicitly.
 //
 // Here's a class that exercises the various combinations of internal and external name usages:
 class Counter
@@ -77,10 +77,10 @@ class Counter
 		count += second
 	}
 	
-	// Two parameters. Using the external parameter shorthand ("#") to force caller to use
-	// external parameter name on first parameter and defaulting to shared local/external names
+	// Two parameters. Require caller to use external parameter name on first parameter 
+  // and default to shared local/external names on the second.
 	// for the rest.
-	func addTwiceWithExternalSpecified2(#first: Int, second: Int)
+  func addTwiceWithExternalSpecified2(first first: Int, second: Int)
 	{
 		count += first
 		count += second
@@ -143,7 +143,7 @@ let fixedPoint = Point2(x: 3)
 //
 // fixedPoint.setX(4)
 
-// If you're working with a structure or enumeration (not a class), uou can assign to 'self'
+// If we're working with a structure or enumeration (not a class), we can assign to 'self'
 // directly
 struct Point3
 {
