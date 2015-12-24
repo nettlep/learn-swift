@@ -3,7 +3,7 @@
 //
 // * Closures are blocks of code.
 //
-// * The can be passed as parameters to functions much like Function Types. In fact, functions
+// * They can be passed as parameters to functions much like Function Types. In fact, functions
 //   are a special case of closures.
 //
 // * Closures of all types (including nested functions) employ a method of capturing the surrounding
@@ -26,7 +26,7 @@
 //   return s1 < s2
 // }
 //
-// Here's an example using Swift's 'sorted' member function. It's important to note that this
+// Here's an example using Swift's 'sort' member function. It's important to note that this
 // function receives a single closure.
 //
 // These can be a little tricky to read if you're not used to them. To understand the syntax, pay
@@ -34,7 +34,7 @@
 // outside of those curly braces:
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 var reversed = [String]()
-reversed = names.sorted({
+reversed = names.sort({
     (s1: String, s2: String) -> Bool in
         return s1 > s2
 })
@@ -49,7 +49,7 @@ reversed = names.sorted({
 // call to sort.
 //
 // The following call is identical to the one above with the exception that "-> Bool" was removed:
-reversed = names.sorted({
+reversed = names.sort({
     (s1: String, s2: String) in
 		return s1 > s2
 })
@@ -59,7 +59,7 @@ reversed = names.sorted({
 //
 // The following call is identical to the one above with the exception that the parameter type
 // annotations (": String") have been removed:
-reversed = names.sorted({
+reversed = names.sort({
     (s1, s2) in
 		return s1 > s2
 })
@@ -67,11 +67,11 @@ reversed = names.sorted({
 // Since all types can be inferred and we're not using any type annotation on the parameters,
 // we can simplify a bit further by removing the paranthesis around the parameters. We'll also put
 // it all on a single line, since it's a bit more clear now:
-reversed = names.sorted({ s1, s2 in return s1 > s2 })
+reversed = names.sort({ s1, s2 in return s1 > s2 })
 
 // If the closuere has only a single expression, then the return statement is also inferred. When
 // this is the case, the closure returns the value of the single expression:
-reversed = names.sorted({ s1, s2 in s1 > s2 })
+reversed = names.sort({ s1, s2 in s1 > s2 })
 
 // We're not done simplifying yet. It turns out we can get rid of the parameters as well. If we
 // remove the parameters, we can still access them because Swift provides shorthand names to
@@ -80,28 +80,28 @@ reversed = names.sorted({ s1, s2 in s1 > s2 })
 //
 // Here's what that would might like (this will not compile - yet):
 //
-//    reversed = names.sorted({ s1, s2 in $0 > $1 })
+//    reversed = names.sort({ s1, s2 in $0 > $1 })
 //
 // This won't compile because you're not allowed to use shorthand names if you specify the
 // parameter list. Therefore, we need to remove those in order to get it to compile. This makes
 // for a very short inline closure:
-reversed = names.sorted({ $0 > $1 })
+reversed = names.sort({ $0 > $1 })
 
 // Interestingly enough, the operator < for String types is defined as:
 //
 //     (String, String) -> Bool
 //
-// Notice how this is the same as the closure's type for the sorted() routine? Wouldn't it be
+// Notice how this is the same as the closure's type for the sort() routine? Wouldn't it be
 // nice if we could just pass in this operator? It turns out that for inline closures, Swift allows
 // exactly this.
 //
 // Here's what that looks like:
-reversed = names.sorted(>)
+reversed = names.sort(>)
 
-// If you want to just sort a mutable copy of an array (in place) you can use the sort() method
+// If you want to just sort a mutable copy of an array (in place) you can use the sortInPlace() method
 var mutableCopyOfNames = names
 
-mutableCopyOfNames.sort(>)
+mutableCopyOfNames.sortInPlace(>)
 
 mutableCopyOfNames
 
@@ -110,18 +110,18 @@ mutableCopyOfNames
 //
 // Trailing Closures refer to closures that are the last parameter to a function. This special-case
 // syntax allows a few other syntactic simplifications. In essence, you can move trailing closures
-// just outside of the parameter list. Swift's sorted() member function uses a trailing closure for
+// just outside of the parameter list. Swift's sort() member function uses a trailing closure for
 // just this reason.
 //
 // Let's go back to our original call to sort with a fully-formed closure and move the closure
 // outside of the parameter list. This resembles a function definition, but it's a function call.
-reversed = names.sorted {
+reversed = names.sort {
 		(s1: String, s2: String) -> Bool in
 		return s1 > s2
 	}
 
 // Note that the opening brace for the closure must be on the same line as the function call's
-// ending paranthesis. This is the same functinon call with the starting brace for the closure
+// ending paranthesis. This is the same function call with the starting brace for the closure
 // moved to the next line. This will not compile:
 //
 // reversed = sort(names)
@@ -131,7 +131,7 @@ reversed = names.sorted {
 // }
 
 // Let's jump back to our simplified closure ({$0 > $1}) and apply the trailing closure principle:
-reversed = names.sorted {$0 > $1}
+reversed = names.sort {$0 > $1}
 
 // Another simplification: if a function receives just one closure as the only parameter, you can
 // remove the () from the function call. First, we'll need a function that receives just one
@@ -155,7 +155,7 @@ returnValue {6}
 // The idea of capturing is to allow a closure to access the variables and constants in their
 // surrounding context.
 //
-// For example, a nested function can access contstans and variables from the function in which
+// For example, a nested function can access contstants and variables from the function in which
 // it is defined. If this nested function is returned, each time it is called, it will work within
 // that "captured" context.
 //
