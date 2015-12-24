@@ -64,7 +64,7 @@ var removedValue = airports.removeValueForKey("APL")
 // ------------------------------------------------------------------------------------------------
 // Iterating over a Dictionary
 //
-// We can iterating over key/value pairs with a for-in loop, which uses a Tuple to hold the
+// We can iterate over key/value pairs with a for-in loop, which uses a Tuple to hold the
 // key/value pair for each entry in the Dictionary:
 for (airportCode, airportName) in airports
 {
