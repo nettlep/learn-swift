@@ -4,7 +4,7 @@
 // * Properties store values in classes, structures and enumerations.
 // ------------------------------------------------------------------------------------------------
 
-// Here's a structure with a couple simple stored properties:
+// Here's a structure with a couple of simple stored properties:
 struct FixedLengthRange
 {
 	var firstValue: Int
@@ -33,39 +33,48 @@ rangeOfThreeItems.firstValue = 6
 // Global and local variables are all lazy, except that they don't need the lazy attribute.
 //
 // Here, we'll define a couple classes to showcase Lazy Stored Properties. In this example, let's
-// assume that DataImporter is a time-consuming process, and as such, we will want to use a lazy
+// assume that DataImporter has a time-consuming process to fetch text, so we will want to use a lazy
 // stored property whenever we use it. This way, if we end up never using it, we never pay the
-// penalty of instantiating it.
+// penalty of instantiating it and running the time-consuming import.
 class DataImporter
 {
-	var filename = "data.txt"
+  init() {
+    print("importing text")
+  }
+}
+
+class Something
+{
+  init() {
+    print("doing some thing")
+  }
 }
 
 class DataManager
 {
-	lazy var importer = DataImporter()
-	var data = [String]()
+  lazy var imported = DataImporter()
+  var data = [String]()
+  var thing = Something()
 }
 
 // Now let's instantiate the data manager and add some simple data to the class:
 let manager = DataManager()
 manager.data.append("Some data")
 manager.data.append("Some more data")
+print("manager loaded")
 
-// Notice how we haven't used the importer yet, so it is nil:
-manager
+// Notice before we used the importer, "doing some thing" was printed as soon as we created the DataManager()
+// illustrating that normal variables are instantiated running all associated code.  Then "manager loaded" is
+// printed before "importing text" which shows that we can use an instance of a class without causing the
+// lazy variables to evaluate
+manager.imported
 
-// So now let's access it:
-manager.importer.filename
-
-// And now we see the importer was created:
-manager
 
 // ------------------------------------------------------------------------------------------------
 // Computed Properties
 //
 // Computed properties don't store data, but rather use getters and setters for accessing values
-// that are computed up on request.
+// that are computed upon request.
 //
 // Computed Properties are available for global as well as local variables.
 //
@@ -74,6 +83,7 @@ struct Point
 {
 	var x = 0.0, y = 0.0
 }
+
 struct Size
 {
 	var width = 0.0, height = 0.0
@@ -81,23 +91,24 @@ struct Size
 
 // The following structure includes a computed property with a Point type named 'center'. Notice
 // that 'center' is variable (not constant) which is a requirement of computed properties.
-//
-// Every computed property must have a getter, but does not need a setter. If we provide a setter,
-// we need to know the new value being assigned to the computed property. We've called this
-// value 'newCenter'. Note that this value does not have a type annotation because the computed
-// property already knows that it is a Point type. Providing a type annotation would be an error.
 struct Rect
 {
 	var origin = Point()
 	var size = Size()
 	var center: Point
 	{
+    // Every computed property must have a getter
 		get
 		{
 			let centerX = origin.x + (size.width / 2)
 			let centerY = origin.y + (size.height / 2)
 			return Point(x: centerX, y: centerY)
 		}
+    // Setters are optional. In this case, we provide one.  
+    // It needs to accept the new value being assigned to the computed property. 
+    // We've called this value 'newCenter'.
+    // Note the missing type annotation. The computed property already knows that 
+    // it is a Point type. Providing a type annotation would be an error.
 		set(newCenter)
 		{
 			origin.x = newCenter.x - (size.width / 2)
@@ -113,12 +124,17 @@ var square = Rect(origin: Point(x: 0.0, y: 0.0), size: Size(width: 10.0, height:
 // property, we can treat it just like any other peroperty.
 let initialSquareCenter = square.center
 
+// We can see it has been comuputed as 5,5
+square.center.x
+square.center.y
+
 // Since we provided a setter, we can also set the center point as if it is a stored property.
 // This will effectively update the Rect's origin and size based on the specified center point.
 square.center = Point(x: 15, y: 15)
 
 // We can see that the origin has been updated from (0, 0) to (10, 10):
-square.origin
+square.origin.x
+square.origin.y
 
 // Shorthand Setter Declaration
 //
@@ -298,4 +314,6 @@ class SomeClass
 	// This is read-only, but you can also do read/write
 	class var computedTypeProperty: Int { return 4 }
 }
+
+
 
