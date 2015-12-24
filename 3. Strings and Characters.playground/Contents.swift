@@ -44,7 +44,7 @@ somefunc(originalString)
 originalString // not modified
 
 // You can iterate over a string like this:
-for character in originalString
+for character in originalString.characters
 {
 	character
 }
@@ -53,18 +53,10 @@ for character in originalString
 // instead of a String:
 var notAString: Character = "t"
 
-// There is no length or count member of string, you have to use the global function,
-// countElements()
-//
+// There is no length or count member of string, you have to count the characters
 // This is much like calling strlen in which it iterates over the Unicode string and counts
 // characters. Note that Unicode chars are different lenghts, so this is a non-trivial process.
-//
-// “Note also that the character count returned by countElements is not always the same as the
-// length property of an NSString that contains the same characters. The length of an NSString is
-// based on the number of 16-bit code units within the string’s UTF-16 representation and not the
-// number of Unicode characters within the string. To reflect this fact, the length property from
-// NSString is called utf16count when it is accessed on a Swift String value.”
-countElements(originalString)
+originalString.characters.count
 
 // Strings can be concatenated with strings and characters
 var helloworld = "hello, " + "world"
