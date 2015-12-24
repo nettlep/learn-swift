@@ -82,12 +82,12 @@ func addSeventeen(toNumber value: Int) -> Int
 }
 addSeventeen(toNumber: 42)
 
-// If your internal and external names are the same, you can use a shorthand #name syntax to create
-// both names at once.
+// If your internal and external names are the same, you need to 'double up' to 
+// specify both names.
 //
 // The following declaration creates an internal parameter named "action" as well as an external
 // parameter named "action":
-func kangaroosCan(#action: String) -> String
+func kangaroosCan(action action: String) -> String
 {
 	return "A Kangaroo can \(action)"
 }
@@ -96,13 +96,23 @@ func kangaroosCan(#action: String) -> String
 kangaroosCan(action: "jump")
 kangaroosCan(action: "carry children in their pouches")
 
+// If you want to omit an external name for the second or subsequent parameters of a function,
+// write an underscore (_) instead of an explicit external name for that parameter
+func addNums(first: Int, _ second: Int) -> Int
+{
+  return first + second
+}
+
+addNums(1,2)
+
+
 // We can also have default parameter values. Default parameter values must be placed at the end
 // of the parameter list.
 //
 // In the addMul routine, we'll add two numbers and multiply the result by an optional multiplier
 // value. We will default the multiplier to 1 so that if the parameter is not specified, the
 // multiplication won't affect the result.
-func addMul(firstAdder: Int, secondAdder: Int, multiplier: Int = 1) -> Int
+func addMul(firstAdder: Int, _ secondAdder: Int, multiplier: Int = 1) -> Int
 {
 	return (firstAdder + secondAdder) * multiplier
 }
@@ -113,9 +123,8 @@ addMul(1, 2)
 // Default parameter values and external names
 //
 // Swift automatically creates external parameter names for those parameters that have default
-// values. Since our declaration of addMul did not specify an external name (either explicitly or
-// using the shorthand method), Swift created one for us based on the name of the internal
-// parameter name. This acts as if we had defined the third parameter using the "#" shorthand.
+// values. Since our declaration of addMul did not specify an external name, Swift created one 
+// for us based on the name of the internal parameter name. 
 //
 // Therefore, when calling the function and specifying a value for the defaulted parameter, we
 // must provide the default parameter's external name:
@@ -123,7 +132,7 @@ addMul(1, 2, multiplier: 9)
 
 // We can opt out of the automatic external name for default parameter values by specify an
 // external name of "_" like so:
-func anotherAddMul(firstAdder: Int, secondAdder: Int, _ multiplier: Int = 1) -> Int
+func anotherAddMul(firstAdder: Int, _ secondAdder: Int, _ multiplier: Int = 1) -> Int
 {
 	return (firstAdder + secondAdder) * multiplier
 }
@@ -167,7 +176,7 @@ arithmeticMean(1, 2, 3, 4, 5, 6)
 
 // If we want to use variadic parameters and default parameter values, we can do so by making sure
 // that the default parameters come before the variadic, at the end of the parameter list:
-func anotherArithmeticMean(initialTotal: Double = 0, numbers: Double...) -> Double
+func anotherArithmeticMean(initialTotal initialTotal: Double = 0, _ numbers: Double...) -> Double
 {
 	var total = initialTotal
 	for number in numbers
@@ -193,7 +202,7 @@ anotherArithmeticMean(initialTotal: 1, 2, 3, 4, 5, 6)
 
 // Variadic parameters with external parameter names only apply their external name to the first
 // variadic parameter specified in the function call (if present.)
-func yetAnotherArithmeticMean(initialTotal: Double = 0, values numbers: Double...) -> Double
+func yetAnotherArithmeticMean(initialTotal initialTotal: Double = 0, values numbers: Double...) -> Double
 {
 	var total = initialTotal
 	for number in numbers
@@ -217,9 +226,9 @@ yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4, 5, 6)
 // Constant and variable parameters
 //
 // All function parameters are constant by default. To make them variable, add the var introducer:
-func padString(var str: String, pad: Character, count: Int) -> String
+func padString(var str: String, _ pad: Character, _ count: Int) -> String
 {
-	str = Array(count: count, repeatedValue: pad) + str
+  str = String(count:10, repeatedValue:("." as Character)) + str
 	return str
 }
 
@@ -314,7 +323,7 @@ func doDoMul(doMulFunc: (Int, Int) -> Int, a: Int, b: Int) -> Int
 
 // We can now pass the function (along with a couple parameters to call it with) to another
 // function:
-doDoMul(doMul, 5, 5)
+doDoMul(doMul, a: 5, b: 5)
 
 // We can also return function types.
 //
@@ -368,7 +377,7 @@ func getReturnFive() -> () -> Int
 	return returnFive
 }
 
-// Calling outerFunc2 will return a function capable of returning the Int value 5:
+// Calling getReturnFive will return a function capable of returning the Int value 5:
 let returnFive = getReturnFive()
 
 // Here we call the nested function:
