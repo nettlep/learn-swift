@@ -5,7 +5,7 @@
 //   Rather that containing "one of a set of integer values" like most C-like languages, Swift's
 //   enumerations can be thought of as holding one named type of a given set of named types.
 //
-//   To clarify: Rather than holding an integer value that has been pre-defined integer value
+//   To clarify: Rather than holding an integer value that has a pre-defined integer value
 //   (Error = -1, Success = 0) an enumeration in Swift only associates a name with a type (like
 //   Int, String, Tuple, etc.) These elements of the enumeration can then be assigned "Associated
 //   Values." For example, an enumeration can store an "Error" which is a Tuple with an Int value
@@ -67,7 +67,7 @@ switch directionToHead
 // ------------------------------------------------------------------------------------------------
 // Associated Values
 //
-// Associated values allows us to store information with each member of the switch using a Tuple.
+// Associated values allows us to store information with each member of the enumeration using a Tuple.
 //
 // The following enumeration will store not only the type of a barcode (UPCA, QR Code) but also
 // the data of the barcode (this is likely a foreign concept for most.)
