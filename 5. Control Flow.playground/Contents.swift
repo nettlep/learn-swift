@@ -34,32 +34,10 @@ for index in 1 ..< 5
 	"This will print 4 times"
 }
 
-// Apple's "Swift Programming Language" book states the following, which I find in practice to be
-// incorrect:
-//
-// “The index constant exists only within the scope of the loop. If you want to check the value of
-// index after the loop completes, or if you want to work with its value as a variable rather than
-// a constant, you must declare it yourself before its use in the loop.”
-//
-// In practice, I find that the loop constant overrides any local variable/constant and maintains
-// its scope to the loop and does not alter the locally defined value:
-var indx = 3999
-for indx in 1...5
-{
-	indx // This ranges from 1 to 5, inclusive
-
-	// 'indx' is still acting like a constant, so this line won't compile:
-	//
-	// indx++
-}
-
-// After the loop, we find that 'indx' still contains the original value of 3999
-indx
-
 // We can use an underscore if you don't need access to the loop constant:
 for _ in 1...10
 {
-	println("do something")
+	print("do something")
 }
 
 // We can iterate over arrays
@@ -78,7 +56,7 @@ for (animalName, legs) in numberOfLegs
 }
 
 // We can iterate over characters in a String
-for character in "Hello"
+for character in "Hello".characters
 {
 	character
 }
@@ -98,7 +76,8 @@ for var index = 0; index < 3; ++index
 	index
 }
 
-// Variables are scoped to the For-Condition-Increment construct. To alter this, pre-declare index
+// Variables are scoped to the For-Condition-Increment construct. 
+// But if pre-declare the loop variable, it is available after the loop completes.
 var index = 3000
 for index = 0; index < 3; ++index
 {
@@ -119,7 +98,7 @@ while index > 0
 // Do-While loops also resemble their C-like language counterparts. They perform the condition
 // after each iteration through the loop. As a result, they always execute the code inside the
 // loop at least once:
-do
+repeat
 {
 	++index
 } while (index < 3)
@@ -355,10 +334,11 @@ switch integerToDescribe
 // To enable this, labels are used, similar to labels used by C's goto statement.
 //
 // The following will print each name until it reaches the letter 'a' then skip to the next name
+names
 var result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
@@ -373,11 +353,11 @@ nameLoop: for name in names
 }
 result
 
-// Similarly, this prints all names without the letter 'a' in them:
+// Similarly, this prints all names skipping the letter 'a' :
 result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
@@ -397,7 +377,7 @@ result
 result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
