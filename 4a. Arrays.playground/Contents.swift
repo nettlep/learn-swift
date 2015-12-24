@@ -28,6 +28,9 @@ var shorter: [String]
 // would get a compiler error.
 ["Eggs", "Milk"]
 
+// This causes an error: Type of expression is ambiguous without more context
+// ["Eggs", 4]
+
 // Let's create an array with some stuff in it. We'll use an explicit String type:
 var commonPets: [String] = ["Cats", "Dogs"]
 
@@ -89,7 +92,7 @@ for item in shoppingList
 
 // We can also use the the enumerate() method to return a tuple containing the index and value
 // for each element:
-for (index, value) in enumerate(shoppingList)
+for (index, value) in shoppingList.enumerate()
 {
 	index
 	value
