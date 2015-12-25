@@ -141,14 +141,14 @@ automaticCar.speed = 35.0
 automaticCar.gear
 
 // ------------------------------------------------------------------------------------------------
-// Preenting Overrides
+// Preventing Overrides
 //
 // We can prevent a subclass from overriding a particular method or property using the 'final'
 // keyword.
 //
 // final can be applied to: class, var, func, class methods and subscripts
 //
-// Here, we'll prevent an entire class from being subclassed by applying the . Because of this,
+// Here, we'll prevent an entire class from being subclassed by applying final to the class. Therefore,
 // the finals inside the class are not needed, but are present for descriptive purposes. These
 // additional finals may not compile in the future, but they do today:
 final class AnotherAutomaticCar: Car
