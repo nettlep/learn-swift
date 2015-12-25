@@ -67,7 +67,7 @@ let freezingPointOfWater = Celsius(kelvin: 273.15)
 // name generation and one that opts out:
 struct Color
 {
-	let red = 0.0, green = 0.0, blue = 0.0
+	var red = 0.0, green = 0.0, blue = 0.0
 	
 	// This initializer will make use of automatically generated exernal names
 	init(red: Double, green: Double, blue: Double)
@@ -116,7 +116,7 @@ class SurveyQuestion
 class SurveyQuestion2
 {
 	// Default value of "No question"
-	let text: String = "No question"
+	var text: String = "No question"
 	
 	var response: String?
 	
@@ -148,14 +148,7 @@ let beetsQuestion = SurveyQuestion2(text: "Do you like beets?")
 // ------------------------------------------------------------------------------------------------
 // Default Initializer
 //
-// If all properties have default values (including optionals defaulting to nil) AND you do not
-// create your own initlializer AND there is no superclass, Swift will create a default
-// initializer (with no parameters) for you. This initializer sets all properties to their
-// default values.
-//
-// If you create your own initializer, Swift will not create the default initializer. If you want
-// your custom initializers as well as the default initializer, then put your initializers in an
-// extension.
+// Swift sets all properties to their default values even if you don't have an initializer.
 class ShoppingListItem
 {
 	var name: String?
@@ -164,6 +157,25 @@ class ShoppingListItem
 	
 	// No init(...) initializer
 }
+
+ShoppingListItem().quantity
+
+// If you have an initializer, default values are set before your initializer executes.
+
+class ShoppingListItem2
+{
+  var name: String?
+  var quantity = 1
+  var purchased = false
+
+  init()
+  {
+    print("ShoppingListItem2: by default quantity = \(quantity)")
+  }
+}
+
+ShoppingListItem2()
+
 
 // ------------------------------------------------------------------------------------------------
 // Memberwise Initializers for Structure Types
