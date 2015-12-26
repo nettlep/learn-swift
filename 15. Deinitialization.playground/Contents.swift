@@ -64,8 +64,5 @@ Bank.coinsInBank
 // When we cause playerOne to be deallocated, the deinitializer is called
 playerOne = nil
 
-// This should print 12000 coins, but the playgrounds don't appear to do
-// this correctly. If you put this code into a project and compile/run
-// it (with minor changes to print variables using println) then you
-// will see that the bank does indeed have 12000 coins.
+// and the 2000 coins are added to the bank
 Bank.coinsInBank
