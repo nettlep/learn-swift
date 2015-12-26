@@ -83,5 +83,9 @@ struct BlackjackCard
 let theAceOfSpades = BlackjackCard(rank: .Ace, suit: .Spades)
 theAceOfSpades.description
 
+let theQueenOfDiamonds = BlackjackCard(rank: .Queen, suit: .Diamonds)
+theQueenOfDiamonds.description
+
+
 // To access the nested type, we can drill down into the type using type names:
 let heartsSymbol = String( BlackjackCard.Suit.Hearts.rawValue )
