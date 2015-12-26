@@ -32,20 +32,28 @@ class Food
 	// There can be more than one of these, but the fewer the better, usually, design-wise.
 	init(name: String)
 	{
+    print("init Food")
 		self.name = name
 	}
 	
 	// Here, we'll use a convenience initializer to initialize 'name' to an unnamed Food
 	convenience init()
 	{
+    print("convenience Food")
 		// Must call the designated in same class
 		self.init(name: "[unnamed]")
 	}
 }
 
 // Here we make use of our two initializers
+// check out the console below to see how initializers are called
+print("-- namedMeat")
 let namedMeat = Food(name: "Bacon")
+namedMeat.name
+
+print("-- mysteryMeat")
 let mysteryMeat = Food()
+mysteryMeat.name
 
 // ------------------------------------------------------------------------------------------------
 // Two-Phase Initialization
@@ -81,6 +89,7 @@ class RecipeIngredient: Food
 	// This is a designated initializer (because it has no 'convenience' keyword)
 	init(name: String, quantity: Int)
 	{
+    print("init RecipeIngredient")
 		// We must initialize our new stored properties first (this is Phase 1)
 		self.quantity = quantity
 		
@@ -97,14 +106,30 @@ class RecipeIngredient: Food
 	// initializer.
 	convenience override init(name: String)
 	{
+    print("convenience RecipeIngredient")
 		self.init(name: name, quantity: 1)
+    print("\(name) \(quantity)")
 	}
+
 }
 
 // Now we can call our various initializers to see them in action:
+print("-- oneMysteryItem")
+// this will call the convenience initializer for Food since that is the only one with
+// the matching method signature
 let oneMysteryItem = RecipeIngredient()
+oneMysteryItem.name
+oneMysteryItem.quantity
+
+print("-- oneBacon")
 let oneBacon = RecipeIngredient(name: "Bacon")
+oneBacon.name
+oneBacon.quantity
+
+print("-- sixEggs")
 let sixEggs = RecipeIngredient(name: "Eggs", quantity: 6)
+sixEggs.name
+sixEggs.quantity
 
 // ------------------------------------------------------------------------------------------------
 // Inheriting a full set of the super's initializers
