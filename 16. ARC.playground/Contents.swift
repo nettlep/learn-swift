@@ -11,7 +11,7 @@
 //   for as long as the strong reference remains.
 // ------------------------------------------------------------------------------------------------
 
-// We can't really see ARC in actino within a Playground, but we can still follow along what
+// We can't really see ARC in action within a Playground, but we can still follow along what
 // would normally happen.
 //
 // We'll start by creating a class to work with
@@ -216,8 +216,8 @@ class CreditCard
 class Country
 {
 	let name: String
-	let capitalCity: City!
-	
+	var capitalCity: City!
+
 	init(name: String, capitalName: String)
 	{
 		self.name = name
@@ -255,12 +255,15 @@ var america = Country(name: "USA", capitalName: "Washington DC")
 // Customer uses an optional to store a CreditCard. If we look at Country's initializer, we see
 // that it initializes a capitalCity by passing 'self' to the City initializer. Normally, an
 // initializer cannot reference its own 'self' until it has fully initialized the object. In this
-// case, the Country can access its own 'self' because once 'name' has been initialized, the object
-// is considered fully initialized. This is the case because 'capitalCity' is an optional.
+// case, the Country can access its own 'self' because because once 'name' has been initialized, the object
+// is considered fully initialized. This is the case because 'capitalCity' is an optional, and is
+// implicitly initialized to nil.
 //
-// We take this just a step further by declaring 'capitalCity' to be an implicitly unwrapped
-// optinoal property so that we can avoid having to deal with unwrapping 'capitalCity' whenever we
-// want to access it.
+// By declaring 'capitalCity' to be an implicitly unwrapped optional property, we can avoid having 
+// to deal with unwrapping 'capitalCity' whenever we want to access it.
+//
+// see detailed discussion here:
+// http://stackoverflow.com/questions/34474545/self-used-before-all-stored-properties-are-initialized
 
 // ------------------------------------------------------------------------------------------------
 // Strong Reference Cycles for Closures
@@ -328,7 +331,7 @@ paragraph = nil
 //		// ... code here ...
 //	}
 //
-// Some closures can used simplified syntax if their parameters are inferred while other closures
+// Some closures can use simplified syntax if their parameters are inferred while other closures
 // may not have any parameters. In both cases the method for declaring the capture list doesn't
 // change much. Simply include the capture list followed by the 'in' keyword:
 //
