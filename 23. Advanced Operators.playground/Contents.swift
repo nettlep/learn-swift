@@ -12,7 +12,7 @@
 // ------------------------------------------------------------------------------------------------
 // Bitwise Operators
 //
-// The Bitwise operators (AND, OR, XOR, etc.) in Swift effeectively mirror the functionality that
+// The Bitwise operators (AND, OR, XOR, etc.) in Swift effectively mirror the functionality that
 // you're used to with C++ and Objective-C.
 //
 // We'll cover them briefly. The odd formatting is intended to help show the results:
@@ -65,9 +65,6 @@ var rightShiftSignedNegativeResult: Int8 = -32 >> 1
 //	var overflow: Int8 = positive + positive
 //	var underflow: Int8 = negative + negative
 //
-// This is also true for division by zero, which can be caused with the division (/) or remainder
-// (%) operators.
-//
 // Sometimes, however, overflow and underflow behavior is exactly what the programmer may intend,
 // so Swift provides specific overflow/underflow operators which will not trigger an error and
 // allow the overflow/underflow to perform as we see in C++/Objective-C.
@@ -81,8 +78,6 @@ var aZero: Int8 = someValue - someValue
 var overflowAdd: Int8 = someValue &+ someValue
 var underflowSub: Int8 = -someValue &- someValue
 var overflowMul: Int8 = someValue &* someValue
-var divByZero: Int8 = 100 &/ aZero
-var remainderDivByZero: Int8 = 100 &% aZero
 
 // ------------------------------------------------------------------------------------------------
 // Operator Functions (a.k.a., Operator Overloading)
@@ -193,7 +188,7 @@ func != (left: Vector2D, right: Vector2D) -> Bool
 //
 // So far, we've been defining operator functions for operators that Swift understands and
 // for which Swift provides defined behaviors. We can also define our own custom operators for
-// doing other interestig things.
+// doing other interesting things.
 //
 // For example, Swift doesn't support the concept of a "vector normalization" or "cross product"
 // because this functionality doesn't apply to any of the types Swift offers.
