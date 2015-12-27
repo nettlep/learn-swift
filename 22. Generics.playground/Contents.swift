@@ -21,7 +21,7 @@ func swapTwoInts(inout a: Int, inout b: Int)
 
 // What if we wanted to swap Strings? Or any other type? We would need to write a lot of different
 // swap functions. Instead, let's use Generics. Consider the following generic function:
-func swapTwoValues<T>(inout a: T, inout b: T)
+func swapTwoValues<T>(inout a: T, inout _ b: T)
 {
 	let tmp = a
 	a = b
@@ -105,6 +105,15 @@ stackOfStrings.pop()
 stackOfStrings.pop()
 stackOfStrings.pop()
 
+
+var intStack = Stack<Int>()
+intStack.push(3)
+intStack.push(2)
+intStack.push(1)
+intStack.pop()
+intStack.pop()
+intStack.pop()
+
 // ------------------------------------------------------------------------------------------------
 // Type constraints
 //
@@ -133,9 +142,9 @@ func doSomethingWithKeyValue<KeyType: Hashable, ValueType>(someKey: KeyType, som
 // element from the array with the value being searched for. By including the Equatable, we tell
 // the generic function that it is guaranteed to receive only values that meet that specific
 // criteria.
-func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int?
+func findIndex<T: Equatable>(array: [T], _ valueToFind: T) -> Int?
 {
-	for (index, value) in enumerate(array)
+	for (index, value) in array.enumerate()
 	{
 		if value == valueToFind
 		{
@@ -242,7 +251,7 @@ extension Array: Container {}
 // different containers that that must contain the same type of item.
 func allItemsMatch
 	<C1: Container, C2: Container where C1.ItemType == C2.ItemType, C1.ItemType: Equatable>
-	(someContainer: C1, anotherContainer: C2) -> Bool
+	(someContainer: C1, _ anotherContainer: C2) -> Bool
 {
 	// Check that both containers contain the same number of items
 	if someContainer.count != anotherContainer.count
