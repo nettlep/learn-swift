@@ -31,7 +31,7 @@ var pi = 3.14159
 assert(pi > 3.14, "Pi is too small")
 
 // Do you know why this compiles?
-func doSomeMagic(#a: Int)(b: Int) -> Int
+func doSomeMagic(a a: Int)(b: Int) -> Int
 {
 	return a + b
 }
