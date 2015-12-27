@@ -38,7 +38,7 @@
 // * The protocol can also specify if the property must be gettable or gettable and
 //   settable. If a protocol only requires a gettable property, the conforming class can use
 //   a stored property or a computed property. Also, the conforming class is allowed to add
-//   a setter if it needs.
+//   a setter if needed.
 //
 // * Property requirements are always declared as variable types with the 'var' introducer.
 //
@@ -52,9 +52,9 @@ protocol someProtocolForProperties
 	// A read-only property
 	var doesNotNeedToBeSettable: Int { get }
 	
-	// A type property always uses 'class'. This is the case even if adopted by a structure or
-	// enumeration which will use 'static' when conforming to the protocol's property.
-	class var someTypeProperty: Int { get set }
+	// A type property always uses 'static'. Even if adopted by a class which may use 'static' 
+  // or class when conforming to the protocol's property.
+	static var someTypeProperty: Int { get set }
 }
 
 // Let's create a more practical protocol that we can actually conform to:
@@ -235,10 +235,10 @@ extension Hamster: TextRepresentable
 // Hamsters and Dice don't have much in common, but in our sample code above, they both conform
 // to the TextRepresentable protocol. Because of this, we can create an array of things that are
 // TextRepresentable which includes each:
-let textRepresentableThigns: [TextRepresentable] = [d6, tedTheHamster]
+let textRepresentableThings: [TextRepresentable] = [d6, tedTheHamster]
 
 // We can now loop through each and produce its text representation:
-for thing in textRepresentableThigns
+for thing in textRepresentableThings
 {
 	thing.asText()
 }
@@ -247,7 +247,7 @@ for thing in textRepresentableThigns
 // Protocol Inheritance
 //
 // Protocols can inherit from other protocols in order to add further requirements. The syntax
-// for this is similar to a class ineriting from its superclass.
+// for this is similar to a class inheriting from its superclass.
 //
 // Let's create a new text representable type, inherited from TextRepresentable:
 protocol PrettyTextRepresentable: TextRepresentable
@@ -313,11 +313,10 @@ wishHappyBirthday(Individual(name: "Bill", age: 31))
 // We can use 'is' and 'as' for testing for protocol conformance, just as we've seen in the
 // section on Type Casting.
 //
-// In order for this to work with protocols, they must be marked with an "@objc" attribute. See
-// further down in this playground for a special note about the @objc attribute.
-//
 // Let's create a new protocol with the proper prefix so that we can investigate:
-@objc protocol HasArea
+import Foundation
+
+protocol HasArea
 {
 	var area: Double { get }
 }
@@ -329,11 +328,13 @@ class Circle: HasArea
 	var area: Double { return pi * radius * radius }
 	init(radius: Double) { self.radius = radius }
 }
+
 class Country: HasArea
 {
 	var area: Double
 	init(area: Double) { self.area = area }
 }
+
 class Animal
 {
 	var legs: Int
@@ -359,13 +360,12 @@ objects[2] is HasArea
 // Sometimes it's convenient to declare protocols that have one or more requirements that are
 // optional. This is done by prefixing those requirements with the 'optional' keyword.
 //
-// The term "optional protocol" refers to protocols that are optional in a very similar since to
+// The term "optional protocol" refers to protocols that are optional in a very similar sense to
 // optionals we've seen in the past. However, rather than stored values that can be nil, they
-// can still use optional chaining and optional binding for determining if an optional requirement
+// can use optional chaining and optional binding for determining if an optional requirement
 // has been satisfied and if so, using that requirement.
 //
-// As with Protocol Conformance, a protocol that uses optional requirements must also be prefixed
-// with the '@objc' attribute.
+// A protocol that uses optional requirements must be prefixed with the '@objc' attribute.
 //
 // A special note about @objc attribute:
 //
@@ -388,7 +388,7 @@ objects[2] is HasArea
 // In the class below, we'll see that checking to see if an instance conforms to a specific
 // requirement is similar to checking for (and accessing) optionals. We'll use optional chaining
 // for these optional reqirements:
-@objc class Counter
+class Counter
 {
 	var count = 0
 	var dataSource: CounterDataSource?
@@ -400,7 +400,7 @@ objects[2] is HasArea
 			count += amount
 		}
 		// If not, does it conform to the fixedIncrement variable requirement?
-		else if let amount = dataSource?.fixedIncrement?
+		else if let amount = dataSource?.fixedIncrement
 		{
 			count += amount
 		}
