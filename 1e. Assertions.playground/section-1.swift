@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked September 2016
 // Things to know:
 //
 // * Assertions only trigger in debug mode and not in published builds
