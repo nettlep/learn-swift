@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked and updated September 2016
 // Things to know:
 //
 // * Arrays are ordered lists of elements
@@ -72,7 +73,7 @@ shoppingList[4...6] = ["Banannas", "Apples"]
 shoppingList[4..<6] = ["Limes", "Mint leaves", "Sugar"]
 
 // We can insert an item at a given index
-shoppingList.insert("Maple Syrup", atIndex: 3)
+shoppingList.insert("Maple Syrup", at: 3)
 
 // We can remove the last element. During this, we can preserve the value of what was removed
 // into a stored value
@@ -87,9 +88,9 @@ for item in shoppingList
 	item
 }
 
-// We can also use the the enumerate() method to return a tuple containing the index and value
+// We can also use the the enumerated() method to return a tuple containing the index and value
 // for each element:
-for (index, value) in enumerate(shoppingList)
+for (index, value) in shoppingList.enumerated()
 {
 	index
 	value
@@ -111,11 +112,11 @@ someInts
 someInts = []
 
 // We can initialize an array and and fill it with default values
-var threeDoubles = [Double](count: 3, repeatedValue: 3.3)
+var threeDoubles = [Double](repeating: 3.3, count: 3)
 
 // We can also use the Array initializer to fill it with default values. Note that we don't need to
 // specify type since it is inferred:
-var anotherThreeDoubles = Array(count: 3, repeatedValue: 2.5)
+var anotherThreeDoubles = Array(repeating: 2.5, count: 3)
 
 // If you store an array in a constant, it is considered "Immutable"
 let immutableArray = ["a", "b"]
