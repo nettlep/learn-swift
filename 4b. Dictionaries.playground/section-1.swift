@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked and updated September 2016
 // Things to know:
 //
 // * Dictionaries store multiple values of the same type, each associated with a key which acts as
@@ -59,7 +60,7 @@ airports["APL"] = nil
 // Here's another way to remove a value. The returned value is set to the value that was removed.
 // Again, this is optional in case there was no value to remove. In this case, the APL airport
 // was already removed, so the return value will be a nil optional:
-var removedValue = airports.removeValueForKey("APL")
+var removedValue = airports.removeValue(forKey: "APL")
 
 // ------------------------------------------------------------------------------------------------
 // Iterating over a Dictionary
