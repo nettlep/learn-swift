@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked September 2016
 // Things to know:
 //
 // * Tuples are groups of values combined into a single, compound value
