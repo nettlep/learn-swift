@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked and updated September 2016
 // Things to know:
 //
 // * Much of the control flow in Swift is similar to C-like languages, but there are some key
@@ -59,7 +60,7 @@ indx
 // We can use an underscore if you don't need access to the loop constant:
 for _ in 1...10
 {
-	println("do something")
+	print("do something")
 }
 
 // We can iterate over arrays
@@ -78,7 +79,7 @@ for (animalName, legs) in numberOfLegs
 }
 
 // We can iterate over characters in a String
-for character in "Hello"
+for character in "Hello".characters
 {
 	character
 }
@@ -87,20 +88,20 @@ for character in "Hello"
 //
 // Note that the loop value is a variable, not a constant. In fact, they cannot be constant
 // because of the increment statement (++index)
-for (var index = 0; index < 3; ++index)
+for index in 0 ..< 3
 {
 	index
 }
 
 // The parenthesis are optional for the For-Condition-Increment loop:
-for var index = 0; index < 3; ++index
+for index in 0 ..< 3
 {
 	index
 }
 
 // Variables are scoped to the For-Condition-Increment construct. To alter this, pre-declare index
 var index = 3000
-for index = 0; index < 3; ++index
+for index in 0 ..< 3
 {
 	index
 }
@@ -113,15 +114,15 @@ index // Index holds 3 after running through the loop
 // through the loop:
 while index > 0
 {
-	--index
+	index -= 1
 }
 
 // Do-While loops also resemble their C-like language counterparts. They perform the condition
 // after each iteration through the loop. As a result, they always execute the code inside the
 // loop at least once:
-do
+repeat
 {
-	++index
+	index += 1
 } while (index < 3)
 
 // ------------------------------------------------------------------------------------------------
@@ -267,7 +268,7 @@ switch anotherPoint
 		"On the y axis with an y value of \(y)"
 	
 	case (var x, let y):
-		++x // We can modify the variable 'x', but not the constant 'y'
+		x += 1 // We can modify the variable 'x', but not the constant 'y'
 		"Somewhere else on \(x), \(y)"
 }
 
@@ -358,7 +359,7 @@ switch integerToDescribe
 var result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
@@ -377,7 +378,7 @@ result
 result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
@@ -397,7 +398,7 @@ result
 result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
