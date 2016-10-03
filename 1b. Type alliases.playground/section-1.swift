@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Last checked September 2016
 // Things to know:
 //
 // * Type Aliases allow you to provide a different name for types,

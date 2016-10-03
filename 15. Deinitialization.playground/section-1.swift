@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked and updated September 2016
 // Things to know:
 //
 // * Deinitializers are called automatically before a class instance is
@@ -17,9 +18,10 @@
 struct Bank
 {
 	static var coinsInBank = 10_000
-	static func vendCoins(var numberOfCoinsToVend: Int) -> Int
-	{
-		numberOfCoinsToVend = min(numberOfCoinsToVend, coinsInBank)
+  static func vendCoins(numberOfCoinsToVend: Int) -> Int
+  {
+    var numberOfCoinsToVend = numberOfCoinsToVend
+    numberOfCoinsToVend = min(numberOfCoinsToVend, coinsInBank)
 		coinsInBank -= numberOfCoinsToVend
 		return numberOfCoinsToVend
 	}
@@ -36,7 +38,7 @@ class Player
 	
 	init(coins: Int)
 	{
-		coinsInPurse = Bank.vendCoins(coins)
+		coinsInPurse = Bank.vendCoins(numberOfCoinsToVend: coins)
 	}
 	
 	func winCoins(coins: Int)
@@ -46,7 +48,7 @@ class Player
 	
 	deinit
 	{
-		Bank.receiveCoins(coinsInPurse)
+		Bank.receiveCoins(coins: coinsInPurse)
 	}
 }
 
@@ -57,7 +59,7 @@ playerOne!.coinsInPurse
 Bank.coinsInBank
 
 // The Player now wins 2000 coins!
-playerOne!.winCoins(2_000)
+playerOne!.winCoins(coins: 2_000)
 playerOne!.coinsInPurse
 Bank.coinsInBank
 

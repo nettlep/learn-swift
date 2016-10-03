@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked September 2016
 // Things to know:
 //
 // * There is no default base class for Swift objects. Any class that doesn't derive from

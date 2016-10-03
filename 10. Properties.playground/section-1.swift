@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked September 2016
 // Things to know:
 //
 // * Properties store values in classes, structures and enumerations.

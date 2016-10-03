@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Updated September 2016
 // Things to know:
 //
 // * Similar to Objective-C categories, extensions allow you to add functionality to an existing
@@ -108,7 +109,7 @@ extension Int
 {
 	func repititions(task: () -> ())
 	{
-		for i in 0..<self
+		for _ in 0..<self
 		{
 			task()
 		}
@@ -116,7 +117,7 @@ extension Int
 }
 
 // Let's call our new member using the shorthand syntax for trailing closures:
-3.repititions { println("hello") }
+3.repititions { print("hello") }
 
 // Instance methods can mutate the instance itself.
 //
@@ -166,24 +167,24 @@ extension Character
 {
 	enum Kind
 	{
-		case Vowel, Consonant, Other
+		case vowel, consonant, other
 	}
 	var kind: Kind
 	{
 		switch String(self)
 		{
 			case "a", "e", "i", "o", "u":
-				return .Vowel
+				return .vowel
 			case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
 			     "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z":
-				return .Consonant
+				return .consonant
 			default:
-				return .Other
+				return .other
 		}
 	}
 }
 
 // Let's test out our new extension with nested types:
-Character("a").kind == .Vowel
-Character("h").kind == .Consonant
-Character("+").kind == .Other
+Character("a").kind == .vowel
+Character("h").kind == .consonant
+Character("+").kind == .other

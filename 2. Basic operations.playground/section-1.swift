@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked and updated September 2016
 // Things to know:
 //
 // * Assuming knowledge of C here, so a lot will be left out that is the the same, such as
@@ -28,7 +29,8 @@ y
 // (%) which is not to be confused with modulo. They work differently because of the way remainders
 // are calculated for negative numbers and can be used with floating point values.
 var c = a / b // Floatng point result
-var d = a % b // Floating point remainder
+//var d = a % b // Floating point remainder *** % is no longer supported for modulus in Swift 3 -> use truncatingRemainder ***
+var d = a.truncatingRemainder(dividingBy: b)
 
 // ------------------------------------------------------------------------------------------------
 // Range operators
@@ -53,7 +55,7 @@ for i in 1...10
 // Unary, Binary and Ternary operators
 //
 // Unary prefix operators appear before their taget. Here we increment a then negate it:
-++a
+a += 1
 a = -a
 
 // You can also use the uniary + operator, though it doesn't do anything
@@ -67,7 +69,7 @@ var truefalse = true
 truefalse = !truefalse
 
 // Unary postfix operators appear after their target: i++
-a--
+a -= 1
 a
 
 // Binary operators are infix because they appear between to targets

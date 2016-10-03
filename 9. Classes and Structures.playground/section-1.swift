@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Checked September 2016
 // Things to know:
 //
 // Classes and structures can both:

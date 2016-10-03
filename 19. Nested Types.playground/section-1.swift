@@ -1,4 +1,5 @@
 // ------------------------------------------------------------------------------------------------
+// Updated September 2016
 // Things to know:
 //
 // * Nested types are utility classes and structures that are declared within other classes,
@@ -21,14 +22,14 @@ struct BlackjackCard
 	// Nested Suit enumeration
 	enum Suit: Character
 	{
-		case Spades = "♠", Hearts = "♡", Diamonds = "♢", Clubs = "♣"
+		case spades = "♠", hearts = "♡", diamonds = "♢", clubs = "♣"
 	}
 	
 	// Nested Rank enumeration
 	enum Rank: Int
 	{
-		case Two = 2, Three, Four, Five, Six, Seven, Eight, Nine, Ten
-		case Jack, Queen, King, Ace
+		case two = 2, three, four, five, six, seven, eight, nine, ten
+		case jack, queen, king, ace
 		
 		// A rank can possibly have two values (for the Ace), so we'll use this structure
 		// to contain those two values. We could just as well use a Tuple, but we're showcasing
@@ -49,9 +50,9 @@ struct BlackjackCard
 		{
 			switch self
 			{
-				case .Ace:
+				case .ace:
 					return Values(first: 1, second: 11)
-				case .Jack, .Queen, .King:
+				case .jack, .queen, .king:
 					return Values(first: 10, second: nil)
 				default:
 					return Values(first: self.rawValue, second: nil)
@@ -80,8 +81,8 @@ struct BlackjackCard
 // Also note that since the initializer knows thet type of each member being initialized (both of
 // which are enumerations) we can use the shorthand method (.Something) for each member's initial
 // value.
-let theAceOfSpades = BlackjackCard(rank: .Ace, suit: .Spades)
+let theAceOfSpades = BlackjackCard(rank: .ace, suit: .spades)
 theAceOfSpades.description
 
 // To access the nested type, we can drill down into the type using type names:
-let heartsSymbol = String( BlackjackCard.Suit.Hearts.rawValue )
+let heartsSymbol = String( BlackjackCard.Suit.hearts.rawValue )
