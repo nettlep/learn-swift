@@ -34,7 +34,7 @@
 // outside of those curly braces:
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 var reversed = [String]()
-reversed = names.sorted({
+reversed = names.sorted(by: {
     (s1: String, s2: String) -> Bool in
         return s1 > s2
 })
@@ -49,7 +49,7 @@ reversed = names.sorted({
 // call to sort.
 //
 // The following call is identical to the one above with the exception that "-> Bool" was removed:
-reversed = names.sorted({
+reversed = names.sorted(by: {
     (s1: String, s2: String) in
 		return s1 > s2
 })
@@ -59,7 +59,7 @@ reversed = names.sorted({
 //
 // The following call is identical to the one above with the exception that the parameter type
 // annotations (": String") have been removed:
-reversed = names.sorted({
+reversed = names.sorted(by: {
     (s1, s2) in
 		return s1 > s2
 })
@@ -67,11 +67,11 @@ reversed = names.sorted({
 // Since all types can be inferred and we're not using any type annotation on the parameters,
 // we can simplify a bit further by removing the paranthesis around the parameters. We'll also put
 // it all on a single line, since it's a bit more clear now:
-reversed = names.sorted({ s1, s2 in return s1 > s2 })
+reversed = names.sorted(by: { s1, s2 in return s1 > s2 })
 
 // If the closuere has only a single expression, then the return statement is also inferred. When
 // this is the case, the closure returns the value of the single expression:
-reversed = names.sorted({ s1, s2 in s1 > s2 })
+reversed = names.sorted(by: { s1, s2 in s1 > s2 })
 
 // We're not done simplifying yet. It turns out we can get rid of the parameters as well. If we
 // remove the parameters, we can still access them because Swift provides shorthand names to
@@ -85,7 +85,7 @@ reversed = names.sorted({ s1, s2 in s1 > s2 })
 // This won't compile because you're not allowed to use shorthand names if you specify the
 // parameter list. Therefore, we need to remove those in order to get it to compile. This makes
 // for a very short inline closure:
-reversed = names.sorted({ $0 > $1 })
+reversed = names.sorted(by: { $0 > $1 })
 
 // Interestingly enough, the operator < for String types is defined as:
 //
@@ -96,12 +96,12 @@ reversed = names.sorted({ $0 > $1 })
 // exactly this.
 //
 // Here's what that looks like:
-reversed = names.sorted(>)
+reversed = names.sorted(by: >)
 
 // If you want to just sort a mutable copy of an array (in place) you can use the sort() method
 var mutableCopyOfNames = names
 
-mutableCopyOfNames.sort(>)
+mutableCopyOfNames.sort(by: >)
 
 mutableCopyOfNames
 
@@ -115,10 +115,9 @@ mutableCopyOfNames
 //
 // Let's go back to our original call to sort with a fully-formed closure and move the closure
 // outside of the parameter list. This resembles a function definition, but it's a function call.
-reversed = names.sorted {
-		(s1: String, s2: String) -> Bool in
+reversed = names.sorted { (s1: String, s2: String) -> Bool in
 		return s1 > s2
-	}
+}
 
 // Note that the opening brace for the closure must be on the same line as the function call's
 // ending paranthesis. This is the same functinon call with the starting brace for the closure

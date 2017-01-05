@@ -190,5 +190,5 @@ struct CheckerBoard
 
 // We can now check our work
 var board = CheckerBoard()
-board.squareIsBlackAtRow(1, column: 1) // Should be false
-board.squareIsBlackAtRow(1, column: 2) // Should be true
+board.squareIsBlackAtRow(row: 1, column: 1) // Should be false
+board.squareIsBlackAtRow(row: 1, column: 2) // Should be true

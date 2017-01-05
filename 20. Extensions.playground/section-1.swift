@@ -108,7 +108,7 @@ extension Int
 {
 	func repititions(task: () -> ())
 	{
-		for i in 0..<self
+		for _ in 0..<self
 		{
 			task()
 		}
@@ -116,7 +116,7 @@ extension Int
 }
 
 // Let's call our new member using the shorthand syntax for trailing closures:
-3.repititions { println("hello") }
+3.repititions { print("hello") }
 
 // Instance methods can mutate the instance itself.
 //

@@ -150,11 +150,11 @@ FamilyPet.Ferret.rawValue
 var pet = FamilyPet(rawValue: "Ferret")
 
 // Let's verify this:
-if pet != .None { "We have a pet!" }
+if pet != .none { "We have a pet!" }
 else { "No pet :(" }
 
 // An example of when a raw doesn't translate to an enum, leaving us with a nil optional:
 pet = FamilyPet(rawValue: "Snake")
-if pet != .None { "We have a pet" }
+if pet != .none { "We have a pet" }
 else { "No pet :(" }
 
