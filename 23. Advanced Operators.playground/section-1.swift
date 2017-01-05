@@ -73,9 +73,6 @@ var rightShiftSignedNegativeResult: Int8 = -32 >> 1
 // so Swift provides specific overflow/underflow operators which will not trigger an error and
 // allow the overflow/underflow to perform as we see in C++/Objective-C.
 //
-// Special operators for division by zero are also provided, which return 0 in the case of a
-// division by zero.
-//
 // Here they are, in all their glory:
 var someValue: Int8 = 120
 var aZero: Int8 = someValue - someValue
