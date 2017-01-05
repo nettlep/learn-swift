@@ -216,7 +216,7 @@ class CreditCard
 class Country
 {
 	let name: String
-	let capitalCity: City!
+	var capitalCity: City!
 	
 	init(name: String, capitalName: String)
 	{

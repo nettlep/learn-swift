@@ -30,14 +30,6 @@
 var pi = 3.14159
 assert(pi > 3.14, "Pi is too small")
 
-// Do you know why this compiles?
-func doSomeMagic(#a: Int)(b: Int) -> Int
-{
-	return a + b
-}
-
-// ...or why it can be executed like this?
-doSomeMagic(a: 10)(b: 10)
 
 // You'll also learn about Metatypes and did you know that Swift's operator precedence is slightly
 // different than C?
@@ -45,11 +37,11 @@ doSomeMagic(a: 10)(b: 10)
 // This is clearly stuff you should know before submitting your forehead to the wall.
 //
 // You'll learn about these constants:
-__FILE__ + "(" + String(__LINE__) + "): " + __FUNCTION__ + ":" + String(__COLUMN__)
+#file + "(" + String(#line) + "): " + #function + ":" + String(#column)
 
 // Furthermore, don't let somebody else's code confuse you when you see something like this in
 // their code and realize that it actually compiles!
-var ohrly = pi.dynamicType.infinity
+var ohrly = type(of: pi).infinity
 
 // Most importantly, you'll solidify your understanding of the concepts that were presented in
 // these playgrounds.

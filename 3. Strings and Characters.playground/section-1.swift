@@ -37,6 +37,7 @@ if emptyString.isEmpty
 func somefunc(a: String)
 {
 	var b = a
+    b
 	b = "Changed!"
 }
 

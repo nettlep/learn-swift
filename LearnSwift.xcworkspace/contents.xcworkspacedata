@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
+      location = "group:1a. The Basics.playground">
+   </FileRef>
+   <FileRef
+      location = "group:1b. Type alliases.playground">
+   </FileRef>
+   <FileRef
+      location = "group:1c. Tuples.playground">
+   </FileRef>
+   <FileRef
+      location = "group:1d. Optionals.playground">
+   </FileRef>
+   <FileRef
+      location = "group:1e. Assertions.playground">
+   </FileRef>
+   <FileRef
+      location = "group:2. Basic operations.playground">
+   </FileRef>
+   <FileRef
+      location = "group:3. Strings and Characters.playground">
+   </FileRef>
+   <FileRef
+      location = "group:4a. Arrays.playground">
+   </FileRef>
+   <FileRef
+      location = "group:4b. Dictionaries.playground">
+   </FileRef>
+   <FileRef
+      location = "group:5. Control Flow.playground">
+   </FileRef>
+   <FileRef
+      location = "group:6. Functions.playground">
+   </FileRef>
+   <FileRef
+      location = "group:7. Closures.playground">
+   </FileRef>
+   <FileRef
+      location = "group:8. Enumerations.playground">
+   </FileRef>
+   <FileRef
+      location = "group:9. Classes and Structures.playground">
+   </FileRef>
+   <FileRef
+      location = "group:10. Properties.playground">
+   </FileRef>
+   <FileRef
+      location = "group:11. Methods.playground">
+   </FileRef>
+   <FileRef
+      location = "group:12. Subscripts.playground">
+   </FileRef>
+   <FileRef
+      location = "group:13. Inheritance.playground">
+   </FileRef>
+   <FileRef
+      location = "group:14a. Initialization.playground">
+   </FileRef>
+   <FileRef
+      location = "group:14b. Initializer Chaining.playground">
+   </FileRef>
+   <FileRef
+      location = "group:15. Deinitialization.playground">
+   </FileRef>
+   <FileRef
+      location = "group:16. ARC.playground">
+   </FileRef>
+   <FileRef
+      location = "group:17. Optional Chaining.playground">
+   </FileRef>
+   <FileRef
+      location = "group:18. Type Casting.playground">
+   </FileRef>
+   <FileRef
+      location = "group:19. Nested Types.playground">
+   </FileRef>
+   <FileRef
+      location = "group:20. Extensions.playground">
+   </FileRef>
+   <FileRef
+      location = "group:21. Protocols.playground">
+   </FileRef>
+   <FileRef
+      location = "group:22. Generics.playground">
+   </FileRef>
+   <FileRef
+      location = "group:23. Advanced Operators.playground">
+   </FileRef>
+   <FileRef
+      location = "group:99. Not The End.playground">
+   </FileRef>
+</Workspace>
