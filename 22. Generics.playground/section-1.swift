@@ -1,3 +1,4 @@
+
 // ------------------------------------------------------------------------------------------------
 // Things to know:
 //
@@ -12,16 +13,17 @@
 // The problem that Generics solve
 //
 // Consider the following function which can swap two Ints.
-func swapTwoInts(inout a: Int, inout b: Int)
+func swapTwoInts( a: inout Int, b: inout Int)
 {
 	let tmp = a
 	a = b
 	b = tmp
+    
 }
 
 // What if we wanted to swap Strings? Or any other type? We would need to write a lot of different
 // swap functions. Instead, let's use Generics. Consider the following generic function:
-func swapTwoValues<T>(inout a: T, inout b: T)
+func swapTwoValues<T>( a: inout T, b: inout T)
 {
 	let tmp = a
 	a = b
@@ -53,19 +55,19 @@ func swapTwoValues<T>(inout a: T, inout b: T)
 // Let's call it a few times to see it in action:
 var aInt = 3
 var bInt = 4
-swapTwoValues(&aInt, &bInt)
+swapTwoValues(a: &aInt, b: &bInt)
 aInt
 bInt
 
 var aDouble = 3.3
 var bDouble = 4.4
-swapTwoValues(&aDouble, &bDouble)
+swapTwoValues(a: &aDouble, b: &bDouble)
 aDouble
 bDouble
 
 var aString = "three"
 var bString = "four"
-swapTwoValues(&aString, &bString)
+swapTwoValues(a: &aString, b: &bString)
 aString
 bString
 
@@ -95,10 +97,10 @@ struct Stack<T>
 // Let's use our new Stack:
 var stackOfStrings = Stack<String>()
 
-stackOfStrings.push("uno")
-stackOfStrings.push("dos")
-stackOfStrings.push("tres")
-stackOfStrings.push("cuatro")
+stackOfStrings.push(item: "uno")
+stackOfStrings.push(item: "dos")
+stackOfStrings.push(item: "tres")
+stackOfStrings.push(item: "cuatro")
 
 stackOfStrings.pop()
 stackOfStrings.pop()
@@ -135,7 +137,9 @@ func doSomethingWithKeyValue<KeyType: Hashable, ValueType>(someKey: KeyType, som
 // criteria.
 func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int?
 {
-	for (index, value) in enumerate(array)
+	for (index, value) in array.enumerated()
+        
+        
 	{
 		if value == valueToFind
 		{
@@ -146,8 +150,8 @@ func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int?
 }
 
 // Let's try a few different inputs
-let doubleIndex = findIndex([3.14159, 0.1, 0.25], 9.3)
-let stringIndex = findIndex(["Mike", "Malcolm", "Andrea"], "Andrea")
+let doubleIndex = findIndex(array: [3.14159, 0.1, 0.25], valueToFind: 9.3)
+let stringIndex = findIndex(array: ["Mike", "Malcolm", "Andrea"], valueToFind: "Andrea")
 
 // ------------------------------------------------------------------------------------------------
 // Associated types
@@ -158,7 +162,7 @@ let stringIndex = findIndex(["Mike", "Malcolm", "Andrea"], "Andrea")
 // Let's jump right into some code:
 protocol Container
 {
-	typealias ItemType
+	associatedtype ItemType
 	mutating func append(item: ItemType)
 	var count: Int { get }
 	subscript(i: Int) -> ItemType { get }
@@ -191,7 +195,7 @@ struct StackContainer<T> : Container
 	
 	mutating func append(item: T)
 	{
-		self.push(item)
+		self.push(item: item)
 	}
 	var count: Int
 	{
@@ -210,17 +214,17 @@ struct StackContainer<T> : Container
 //
 // Let's verify our work:
 var stringStack = StackContainer<String>()
-stringStack.push("Albert")
-stringStack.push("Andrew")
-stringStack.push("Betty")
-stringStack.push("Jacob")
+stringStack.push(item: "Albert")
+stringStack.push(item: "Andrew")
+stringStack.push(item: "Betty")
+stringStack.push(item: "Jacob")
 stringStack.pop()
 stringStack.count
 
 var doubleStack = StackContainer<Double>()
-doubleStack.push(3.14159)
-doubleStack.push(42.0)
-doubleStack.push(1_000_000)
+doubleStack.push(item: 3.14159)
+doubleStack.push(item: 42.0)
+doubleStack.push(item: 1_000_000)
 doubleStack.pop()
 doubleStack.count
 
@@ -241,8 +245,8 @@ extension Array: Container {}
 // Let's take a look at a where clause in action. We'll define a function that works on two
 // different containers that that must contain the same type of item.
 func allItemsMatch
-	<C1: Container, C2: Container where C1.ItemType == C2.ItemType, C1.ItemType: Equatable>
-	(someContainer: C1, anotherContainer: C2) -> Bool
+    <C1: Container, C2: Container>
+    (someContainer: C1, anotherContainer: C2) -> Bool where C1.ItemType == C2.ItemType, C1.ItemType: Equatable
 {
 	// Check that both containers contain the same number of items
 	if someContainer.count != anotherContainer.count
@@ -276,11 +280,11 @@ func allItemsMatch
 //
 // Let's test this out by passing the same value for each parameter which should definitely
 // return true:
-allItemsMatch(doubleStack, doubleStack)
+allItemsMatch(someContainer: doubleStack, anotherContainer: doubleStack)
 
 // We can compare stringStack against an array of type String[] because we've extended Swift's
 // Array type to conform to our Container protocol:
-allItemsMatch(stringStack, ["Alpha", "Beta", "Theta"])
+allItemsMatch(someContainer: stringStack, anotherContainer: ["Alpha", "Beta", "Theta"])
 
 // Finally, if we attempt to call allItemsMatch with a stringStack and a doubleStack, we would get
 // a compiler error because they do not store the same ItemType as defined in the function's

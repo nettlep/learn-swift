@@ -28,6 +28,7 @@
 //			// class definition goes here
 //		}
 // ------------------------------------------------------------------------------------------------
+import Foundation
 
 // ------------------------------------------------------------------------------------------------
 // Property requirements
@@ -54,7 +55,7 @@ protocol someProtocolForProperties
 	
 	// A type property always uses 'class'. This is the case even if adopted by a structure or
 	// enumeration which will use 'static' when conforming to the protocol's property.
-	class var someTypeProperty: Int { get set }
+	static var someTypeProperty: Int { get set }
 }
 
 // Let's create a more practical protocol that we can actually conform to:
@@ -85,7 +86,7 @@ class Starship: FullyNamed
 	
 	var fullName: String
 	{
-		return (prefix != .None ? prefix! + " " : "") + name
+		return (prefix != .none ? prefix! + " " : "") + name
 	}
 }
 
@@ -126,7 +127,7 @@ class LinearCongruentialGenerator: RandomNumberGenerator
 	var c = 29573.0
 	func random() -> Double
 	{
-		lastRandom = ((lastRandom * a + c) % m)
+		lastRandom = ((lastRandom * a + c).truncatingRemainder(dividingBy: m))
 		return lastRandom / m
 	}
 }
@@ -299,13 +300,13 @@ struct Individual: Named, Aged
 
 // Here, we can see the protocol composition at work as the parameter into the wishHappyBirthday()
 // function:
-func wishHappyBirthday(celebrator: protocol<Named, Aged>) -> String
+func wishHappyBirthday(celebrator: Named & Aged) -> String
 {
 	return "Happy Birthday \(celebrator.name) - you're \(celebrator.age)!"
 }
 
 // If we call the member, we can see the celebratory wish for this individual:
-wishHappyBirthday(Individual(name: "Bill", age: 31))
+wishHappyBirthday(celebrator: Individual(name: "Bill", age: 31))
 
 // ------------------------------------------------------------------------------------------------
 // Checking for Protocol Conformance
@@ -317,7 +318,7 @@ wishHappyBirthday(Individual(name: "Bill", age: 31))
 // further down in this playground for a special note about the @objc attribute.
 //
 // Let's create a new protocol with the proper prefix so that we can investigate:
-@objc protocol HasArea
+dynamic protocol HasArea
 {
 	var area: Double { get }
 }

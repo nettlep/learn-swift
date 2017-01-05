@@ -59,7 +59,8 @@ indx
 // We can use an underscore if you don't need access to the loop constant:
 for _ in 1...10
 {
-	println("do something")
+	print
+    ("do something")
 }
 
 // We can iterate over arrays
@@ -78,62 +79,40 @@ for (animalName, legs) in numberOfLegs
 }
 
 // We can iterate over characters in a String
-for character in "Hello"
+for character in "Hello".characters
 {
 	character
 }
 
-// We can use the For-Condition-Increment loop construct, which resembles the C-like variant
-//
-// Note that the loop value is a variable, not a constant. In fact, they cannot be constant
-// because of the increment statement (++index)
-for (var index = 0; index < 3; ++index)
-{
-	index
-}
-
-// The parenthesis are optional for the For-Condition-Increment loop:
-for var index = 0; index < 3; ++index
-{
-	index
-}
-
-// Variables are scoped to the For-Condition-Increment construct. To alter this, pre-declare index
-var index = 3000
-for index = 0; index < 3; ++index
-{
-	index
-}
-index // Index holds 3 after running through the loop
 
 // ------------------------------------------------------------------------------------------------
 // While loops
 //
 // While loops resemble other C-like languages. They perform the condition before each iteration
 // through the loop:
-while index > 0
+while indx > 0
 {
-	--index
+	indx -= 1
 }
 
 // Do-While loops also resemble their C-like language counterparts. They perform the condition
 // after each iteration through the loop. As a result, they always execute the code inside the
 // loop at least once:
-do
+repeat
 {
-	++index
-} while (index < 3)
+	indx += 1
+} while (indx < 3)
 
 // ------------------------------------------------------------------------------------------------
 // Conditional Statements
 //
 // The if statement is very similar to C-like languages, except that the parenthesis are optional.
 // You can also chain multiple conditions with 'else' and 'else if' statements:
-if (index > 0)
+if (indx > 0)
 {
 	"Index is positive"
 }
-else if index == 0
+else if indx == 0
 {
 	"index is zero"
 }
@@ -267,7 +246,7 @@ switch anotherPoint
 		"On the y axis with an y value of \(y)"
 	
 	case (var x, let y):
-		++x // We can modify the variable 'x', but not the constant 'y'
+		x += 1 // We can modify the variable 'x', but not the constant 'y'
 		"Somewhere else on \(x), \(y)"
 }
 
@@ -358,7 +337,7 @@ switch integerToDescribe
 var result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
@@ -377,7 +356,7 @@ result
 result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{
@@ -397,7 +376,7 @@ result
 result = ""
 nameLoop: for name in names
 {
-	characterLoop: for character in name
+	characterLoop: for character in name.characters
 	{
 		theSwitch: switch character
 		{

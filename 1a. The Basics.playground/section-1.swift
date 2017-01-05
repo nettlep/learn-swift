@@ -58,7 +58,7 @@ let 🐶🐮 = "dogcow"
 
 // You can print a value using println
 let fiveHundred = 500
-println("The current value of fiveHundred is: \(fiveHundred)")
+print("The current value of fiveHundred is: \(fiveHundred)")
 
 // Since we're using Playgrounds, we'll just put the raw string on the line which is an expression
 // that evaluates to itself, printing the result in the right-hand pane in the playground, like so:
