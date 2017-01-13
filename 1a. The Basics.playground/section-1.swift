@@ -56,7 +56,7 @@ let π = 3.14159
 let 你好 = "你好世界"
 let 🐶🐮 = "dogcow"
 
-// You can print a value using println
+// You can print a value using print
 let fiveHundred = 500
 print("The current value of fiveHundred is: \(fiveHundred)")
 
@@ -201,9 +201,10 @@ let hexInteger = 0x11 // ...and 17 in Hexidecimal
 // examples (not assigned to variables):
 1.25e2 // Scientific notation
 1.25e-2
-0xFp2 // Break this down into "0xF", "p", "2". Read as 15 (0xF) to the power of (p) 2, which is 60
-0xFp-2
-0xC.3p0
+0xF
+0xFp2 // Break this down into "0xF", "p", "2". Read as 15 (0xF) times 2 to the power (p) of 2, which is 60
+0xFp-2 // 15 times 2 raised to the -2
+0xC.3p0 // 12+3/16 times 2 raise to the zero
 
 // We can pad our literals as well:
 000123.456 // Zero padding

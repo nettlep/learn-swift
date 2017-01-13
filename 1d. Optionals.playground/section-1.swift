@@ -1,17 +1,27 @@
 // ------------------------------------------------------------------------------------------------
-// Checked September 2016
 // Things to know:
 //
 // * An optional value is a stored value that can either hold a value or "no value at all"
 //
 // * This is similar to assigning a stored value to "nil" but Optionals work with any type of
 //   stored value, including Int, Bool, etc.
+//
+// IMPORTANT: Int? is simply syntactic sugar for Optional<Int> where Optional is an "enum" type
+// (see section 8) parameterized by Int.  A parameterized type is called a generic type (see
+// section 22).
+//
+// The important thing to note that Int? is NOT some kind of Int.  More precisely, it is 
+// an "Int kind of ?".  I.e. it does not respond to the methods of Int, it responds to the 
+// the methods of Optional.
 // ------------------------------------------------------------------------------------------------
 
 // An optional declaration adds a "?" immediately after the explicit type. The following line
 // defines a value 'someOptional' that can either hold an Int or no value at all. In this case
 // we set an optional Int value to .None (similar to nil)
-let someOptional: Int? = .none
+var someOptional: Int? = .none
+
+// We can also set it equal to nil, the compiler will assign the value correctly
+someOptional = nil
 
 // Let's try to convert a String to an Int
 //
@@ -24,7 +34,7 @@ let someOptional: Int? = .none
 let notNumber = "abc"
 let failedConversion = Int(notNumber)
 
-// Notice how failedConversion is 'nil', even though it's an Int
+// Notice how failedConversion is 'nil', even though intuitively you might think that it's an Int
 failedConversion
 
 // Let's carry on with a successful conversion
@@ -44,7 +54,7 @@ let unwrapped = optionalConvertedNumber // 'unwrapped' is another optional
 // Optional type defined in Swift's standard library. We haven't gotten into Generics yet, but
 // let's not let that stop us from learning this little detail.
 //
-// These two lines are of equivalent types:
+// These two lines are of COMPLETELY equivalent types:
 let optionalA: String? = .none
 let optionalB: Optional<String> = .none
 
@@ -66,13 +76,11 @@ let unwrappedInt = optionalConvertedNumber!
 // Implicit unwrapping isn't very safe because if the optional doesn't hold a value, it will
 // generate a runtime error. To verify that is's safe, you can check the optional with an if
 // statement.
-if optionalConvertedNumber != .none
-{
+if optionalConvertedNumber != .none {
 	// It's now safe to force-unwrap because we KNOW it has a value
 	let anotherUnwrappedInt = optionalConvertedNumber!
 }
-else
-{
+else {
 	// The optional holds "no value"
 	"Nothing to see here, go away"
 }
@@ -83,8 +91,7 @@ else
 // We can conditionally store the unwrapped value to a stored value if the optional holds a value.
 //
 // In the following block, we'll optionally bind the Int value to a constant named 'intValue'
-if let intValue = optionalConvertedNumber
-{
+if let intValue = optionalConvertedNumber {
 	// No need to use the "!" suffix as intValue is not optional
 	intValue
 	
@@ -92,8 +99,7 @@ if let intValue = optionalConvertedNumber
 	// of code won't compile:
 	// intValue!
 }
-else
-{
+else {
 	// Note that 'intValue' doesn't exist in this "else" scope
 	"No value"
 }
