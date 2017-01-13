@@ -379,8 +379,7 @@ let returnFive = getReturnFive()
 // Here we call the nested function:
 returnFive()
 
-
-// One every important pattern for functions is the "guard" construct
+// One very important pattern for functions is the "guard" construct
 // guard is like an if statement turned inside out
 // guard works as follows: if the the accompanying expression evaluates as true
 // continue to the next statement.  If not, perform the else statement

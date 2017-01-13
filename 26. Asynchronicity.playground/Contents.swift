@@ -34,6 +34,8 @@ enum Result<T> {
 
 func start() -> Result<Void> { return .success {} }
 
+// Keep trying the condition for a certain amount of time, sampling at a given interval
+// When the condition succeeds return with Result.success, otherwise Result.failure
 func wait(for interval: TimeInterval, samplingAt: TimeInterval, forCondition condition: () -> Bool) -> Result<Void> {
     let end = Date(timeIntervalSinceNow: interval)
     var retVal = Result<Void>(errorCode: 2, message: "Timed out")
@@ -46,17 +48,20 @@ func wait(for interval: TimeInterval, samplingAt: TimeInterval, forCondition con
     return retVal
 }
 
-func flipCoin() -> Result<Void> {
-   return wait(for: 8, samplingAt: 0.2) { return arc4random_uniform(50) == 1 }
+
+// wait for one sample in 50 to = 1
+func patientlySampleDistribution(_ numberOfTimes: Int) -> Result<Void> {
+   return wait(for: Double(numberOfTimes) * 0.2, samplingAt: 0.2) { return arc4random_uniform(50) == 1 }
 }
 
+// Chain a set of asynchronous steps.  Drop out of the chain at the first failure
 let result = start()
-    .then { return flipCoin() }
-    .then { return flipCoin() }
-    .then { return flipCoin() }
-    .then { return flipCoin() }
-    .then { return flipCoin() }
-    .then { return flipCoin() }
-    .then { return flipCoin() }
-    .then { return flipCoin() }
+    .then { return patientlySampleDistribution(50)  }
+    .then { return patientlySampleDistribution(100) }
+    .then { return patientlySampleDistribution(20)  }
+    .then { return patientlySampleDistribution(30)  }
+    .then { return patientlySampleDistribution(40)  }
+    .then { return patientlySampleDistribution(50)  }
+    .then { return patientlySampleDistribution(60)  }
+    .then { return patientlySampleDistribution(70)  }
     .unbox()
