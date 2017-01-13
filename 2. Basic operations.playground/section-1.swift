@@ -38,7 +38,7 @@ var d = a.truncatingRemainder(dividingBy: b)
 // The range operator with two dots means up to but NOT including the final value.
 //
 // This is called the "Half-Closed Range Operator"
-for i in 1..<10
+for i in 1 ..< 10
 {
 	i // prints 1 through 9
 }
@@ -46,7 +46,7 @@ for i in 1..<10
 // The range operator with three dots is inclusive with last value like
 //
 // This is called the "Closed Range Operator"
-for i in 1...10
+for i in 1 ... 10
 {
 	i // prints 1 through 10
 }

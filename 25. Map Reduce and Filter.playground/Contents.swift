@@ -106,5 +106,5 @@ type(of: m10)
 var m11 = Set<IntegerClass>(m6)
     .map { return $0.integerValue }
     .sorted { $0 < $1 }
-    .reduce(0) { return $0 * $1 }
+    .reduce(1) { return $0 * $1 }
 type(of: m11)

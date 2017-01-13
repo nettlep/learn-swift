@@ -59,3 +59,4 @@ let result = start()
     .then { return flipCoin() }
     .then { return flipCoin() }
     .then { return flipCoin() }
+    .unbox()

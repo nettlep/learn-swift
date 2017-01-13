@@ -1,7 +1,6 @@
 
 import Foundation
 
-
 func aFunc(shouldThrow: Bool) throws -> String {
     guard !shouldThrow else {
         throw NSError(
@@ -33,19 +32,32 @@ func throwSpecificError(shouldThrow e: OurError?) throws -> String {
     return "Hey it worked"
 }
 
+var so: String?
 do {
+    defer {
+        so = "we exited the scope "
+    }
+    so
     let result4 = try throwSpecificError(shouldThrow: .firstError("this is an error of type 1"))
+    defer {
+        so = so! + "cleanly"
+    }
 }
 catch OurError.firstError(let message) {
-    print("rethrow got: \(message)")
+    "rethrow got: \(message)"
+    so = so! + "with firstError"
 }
 catch OurError.secondError(let message) {
-    print("rethrow got: \(message)")
+    "rethrow got: \(message)"
+    so = so! + "with secondError"
 }
 catch OurError.thirdError(let message) {
-    print("rethrow got: \(message)")
+    "rethrow got: \(message)"
+    so = so! + "with thirdError"
 }
 catch {
-    print("last chance: \(error)")
+    "last chance: \(error)"
 }
+
+so
 
