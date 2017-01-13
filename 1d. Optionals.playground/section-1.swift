@@ -97,6 +97,7 @@ else
 	// Note that 'intValue' doesn't exist in this "else" scope
 	"No value"
 }
+// See the functions playground for an example of the related "guard let" construct
 
 // We can still use optional binding to bind to another optional value, if we do so explicitly
 // by specifying the type of the stored value that we're binding to.

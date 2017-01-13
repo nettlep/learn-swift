@@ -16,6 +16,8 @@
 //   is returned by the parent function.
 // ------------------------------------------------------------------------------------------------
 
+import Foundation
+
 // Here's a simple function that receives a Single string and returns a String
 //
 // Note that each parameter has a local name (for use within the function) and a standard type
@@ -376,3 +378,50 @@ let returnFive = getReturnFive()
 
 // Here we call the nested function:
 returnFive()
+
+
+// One every important pattern for functions is the "guard" construct
+// guard is like an if statement turned inside out
+// guard works as follows: if the the accompanying expression evaluates as true
+// continue to the next statement.  If not, perform the else statement
+// variables defined in a guard-let, unlike with if-let are available to the rest
+// of the scope, but NOT in the else branch.
+// else statements associated with a guard MUST return from the current function
+// guard statements typically occur at the top of a function and remove optionality
+// from passed in arguments
+func hasValue(_ string: String?) -> Bool {
+    // note that we use guard to redefine "string" to be non-optional
+    guard let string = string else { return false }
+    return string.characters.count > 0
+}
+
+hasValue(nil)
+hasValue("")
+hasValue("some string")
+
+
+// A defer statement defers execution until the 
+// current scope is exited. This statement consists 
+// of the defer keyword and the statements to be 
+// executed later. The deferred statements may not 
+// contain any code that would transfer control 
+// out of the statements, such as a break or a return 
+// statement, or by throwing an error. Deferred 
+// actions are executed in reverse order of how they 
+// are specified—that is, the code in the first defer 
+// statement executes after code in the second, and 
+// so on.
+
+func processFile(filename: String) throws {
+    let fm = FileManager.default
+    if fm.fileExists(atPath: filename) {
+        guard let file = FileHandle(forReadingAtPath: filename) else { return }
+        defer {
+            file.closeFile()
+        }
+        while file.readData(ofLength: 1).count != 0 {
+            // Work with the file.
+        }
+        // close(file) is called here, at the end of the scope.
+    }
+}
