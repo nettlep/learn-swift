@@ -9,8 +9,8 @@
 
 // An optional declaration adds a "?" immediately after the explicit type. The following line
 // defines a value 'someOptional' that can either hold an Int or no value at all. In this case
-// we set an optional Int value to .None (similar to nil)
-let someOptional: Int? = .None
+// we set an optional Int value to .None(similar to nil)
+let someOptional: Int? = .none
 
 // Let's try to convert a String to an Int
 //
@@ -44,8 +44,8 @@ let unwrapped = optionalConvertedNumber // 'unwrapped' is another optional
 // let's not let that stop us from learning this little detail.
 //
 // These two lines are of equivalent types:
-let optionalA: String? = .None
-let optionalB: Optional<String> = .None
+let optionalA: String? = .none
+let optionalB: Optional<String> = .none
 
 // ------------------------------------------------------------------------------------------------
 // Unwrapping
@@ -65,7 +65,7 @@ let unwrappedInt = optionalConvertedNumber!
 // Implicit unwrapping isn't very safe because if the optional doesn't hold a value, it will
 // generate a runtime error. To verify that is's safe, you can check the optional with an if
 // statement.
-if optionalConvertedNumber != .None
+if optionalConvertedNumber != .none
 {
 	// It's now safe to force-unwrap because we KNOW it has a value
 	let anotherUnwrappedInt = optionalConvertedNumber!
@@ -104,7 +104,7 @@ if let optionalIntValue:Int? = optionalConvertedNumber
 	// 'optionalIntValue' is still an optional, but it's known to be safe. We can still check
 	// it here, though, because it's still an optional. If it weren't optional, this if statement
 	// wouldn't compile:
-	if optionalIntValue != .None
+	if optionalIntValue != .none
 	{
 		// 'optionalIntValue' is optional, so we still use the force-unwrap here:
 		"intValue is optional, but has the value \(optionalIntValue!)"
@@ -115,7 +115,7 @@ if let optionalIntValue:Int? = optionalConvertedNumber
 optionalConvertedNumber = nil
 
 // Now if we check it, we see that it holds no value:
-if optionalConvertedNumber != .None
+if optionalConvertedNumber != .none
 {
 	"optionalConvertedNumber holds a value (\(optionalConvertedNumber))! (this should not happen)"
 }
