@@ -4,9 +4,6 @@
 // * Assuming knowledge of C here, so a lot will be left out that is the the same, such as
 //   "let i = 1 + 2"
 //
-// * Unary operators work on a single target. Of them, you have prefix operators such as !b or
-//   postfix operators such as i++.
-//
 // * Binary operators work on two targets and are infix operators because they go between two
 //   values, such as a + b
 //
@@ -28,7 +25,7 @@ y
 // (%) which is not to be confused with modulo. They work differently because of the way remainders
 // are calculated for negative numbers and can be used with floating point values.
 var c = a / b // Floatng point result
-var d = a % b // Floating point remainder
+var d = a.truncatingRemainder(dividingBy: b) // Floating point remainder
 
 // ------------------------------------------------------------------------------------------------
 // Range operators
@@ -50,14 +47,10 @@ for i in 1...10
 }
 
 // ------------------------------------------------------------------------------------------------
-// Unary, Binary and Ternary operators
+// Binary and Ternary operators
 //
-// Unary prefix operators appear before their taget. Here we increment a then negate it:
-++a
+// Negation:
 a = -a
-
-// You can also use the uniary + operator, though it doesn't do anything
-a = +a
 
 // We have the compound assigment operator
 a += 10
@@ -65,10 +58,6 @@ a += 10
 // The logical NOT
 var truefalse = true
 truefalse = !truefalse
-
-// Unary postfix operators appear after their target: i++
-a--
-a
 
 // Binary operators are infix because they appear between to targets
 a + b

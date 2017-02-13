@@ -50,7 +50,7 @@ struct Matrix
 	{
 		self.rows = rows
 		self.columns = columns
-		grid = Array(count: rows * columns, repeatedValue: 0.0)
+		grid = Array(repeating: 0.0, count: rows * columns)
 	}
 	
 	func indexIsValidForRow(row: Int, column: Int) -> Bool
@@ -63,12 +63,12 @@ struct Matrix
 	{
 		get
 		{
-			assert(indexIsValidForRow(row, column: column), "Index out of range")
+			assert(indexIsValidForRow(row: row, column: column), "Index out of range")
 			return grid[row * columns + column]
 		}
 		set
 		{
-			assert(indexIsValidForRow(row, column: column), "Index out of range")
+			assert(indexIsValidForRow(row: row, column: column), "Index out of range")
 			grid[row * columns + column] = newValue
 		}
 	}
