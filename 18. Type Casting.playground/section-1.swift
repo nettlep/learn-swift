@@ -60,8 +60,8 @@ var movieCount = 0
 var songCount = 0
 for item in library
 {
-	if item is Movie { ++movieCount }
-	else if item is Song { ++songCount }
+	if item is Movie { movieCount += 1 }
+	else if item is Song { songCount += 1 }
 }
 
 // Our final Movie and Song counts:
@@ -122,12 +122,12 @@ let someObjects: [AnyObject] =
 // Let's see how we would use the someObjects array:
 for object: AnyObject in someObjects
 {
-	let movie = object as Movie
+	let movie = object as! Movie
 	"Movie: '\(movie.name)' was directed by \(movie.director)"
 }
 
 // Alternatively, we can downcast the array itself rather than each item:
-var someMovies = someObjects as [Movie]
+var someMovies = someObjects as! [Movie]
 for movie in someMovies
 {
 	"Movie: '\(movie.name)' was directed by \(movie.director)"
@@ -135,7 +135,7 @@ for movie in someMovies
 
 // Finally, we can avoid the additional local variable and performt he downcast right inside
 // the loop structure:
-for movie in someObjects as [Movie]
+for movie in someObjects as! [Movie]
 {
 	"Movie: '\(movie.name)' was directed by \(movie.director)"
 }

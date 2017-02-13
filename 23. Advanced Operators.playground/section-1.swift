@@ -81,8 +81,6 @@ var aZero: Int8 = someValue - someValue
 var overflowAdd: Int8 = someValue &+ someValue
 var underflowSub: Int8 = -someValue &- someValue
 var overflowMul: Int8 = someValue &* someValue
-var divByZero: Int8 = 100 &/ aZero
-var remainderDivByZero: Int8 = 100 &% aZero
 
 // ------------------------------------------------------------------------------------------------
 // Operator Functions (a.k.a., Operator Overloading)
@@ -144,15 +142,15 @@ c = -a
 // they are also @assigmnent operators (and make use of inout for the parameter.)
 //
 // Let's take a look:
-prefix func ++ (inout vector: Vector2D) -> Vector2D
+prefix func ++ ( vector: inout Vector2D) -> Vector2D
 {
 	vector = vector + Vector2D(x: 1.0, y: 1.0)
 	return vector
 }
 
-postfix func ++ (inout vector: Vector2D) -> Vector2D
+postfix func ++ ( vector: inout Vector2D) -> Vector2D
 {
-	var previous = vector;
+	let previous = vector;
 	vector = vector + Vector2D(x: 1.0, y: 1.0)
 	return previous
 }
@@ -205,10 +203,10 @@ func != (left: Vector2D, right: Vector2D) -> Bool
 // 'operator' keyword, folowed by either 'prefix', 'postfix' or 'infix':
 //
 // Swift meet operator, operator meet swift:
-prefix operator +++ {}
+prefix operator +++
 
 // Now we can declare our new operator:
-prefix func +++ (inout vector: Vector2D) -> Vector2D
+prefix func +++ ( vector: inout Vector2D) -> Vector2D
 {
 	vector = vector + vector
 	return vector
@@ -247,7 +245,12 @@ var someVector = Vector2D(x: 5.0, y: 9.0)
 //
 // We'll define a function that adds the 'x' components of two vectors, but subtracts the 'y'
 // components. We'll call this the "+-" operator:
-infix operator +- { associativity left precedence 140 }
+precedencegroup AddSubPrecedence {
+	associativity: left
+	higherThan: AdditionPrecedence
+}
+infix operator +- : AddSubPrecedence
+
 func +- (left: Vector2D, right: Vector2D) -> Vector2D
 {
 	return Vector2D(x: left.x + right.x, y: left.y - right.y)

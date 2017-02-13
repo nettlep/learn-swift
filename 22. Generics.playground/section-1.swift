@@ -12,7 +12,7 @@
 // The problem that Generics solve
 //
 // Consider the following function which can swap two Ints.
-func swapTwoInts(inout a: Int, inout b: Int)
+func swapTwoInts( a: inout Int, b: inout Int)
 {
 	let tmp = a
 	a = b
@@ -21,7 +21,7 @@ func swapTwoInts(inout a: Int, inout b: Int)
 
 // What if we wanted to swap Strings? Or any other type? We would need to write a lot of different
 // swap functions. Instead, let's use Generics. Consider the following generic function:
-func swapTwoValues<T>(inout a: T, inout b: T)
+func swapTwoValues<T>(_ a: inout T, _ b: inout T)
 {
 	let tmp = a
 	a = b
@@ -82,7 +82,7 @@ bString
 struct Stack<T>
 {
 	var items = [T]()
-	mutating func push(item: T)
+	mutating func push(_ item: T)
 	{
 		items.append(item)
 	}
@@ -135,7 +135,7 @@ func doSomethingWithKeyValue<KeyType: Hashable, ValueType>(someKey: KeyType, som
 // criteria.
 func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int?
 {
-	for (index, value) in enumerate(array)
+	for (index, value) in array.enumerated()
 	{
 		if value == valueToFind
 		{
@@ -146,8 +146,8 @@ func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int?
 }
 
 // Let's try a few different inputs
-let doubleIndex = findIndex([3.14159, 0.1, 0.25], 9.3)
-let stringIndex = findIndex(["Mike", "Malcolm", "Andrea"], "Andrea")
+let doubleIndex = findIndex(array: [3.14159, 0.1, 0.25], valueToFind: 9.3)
+let stringIndex = findIndex(array: ["Mike", "Malcolm", "Andrea"], valueToFind: "Andrea")
 
 // ------------------------------------------------------------------------------------------------
 // Associated types
@@ -158,7 +158,7 @@ let stringIndex = findIndex(["Mike", "Malcolm", "Andrea"], "Andrea")
 // Let's jump right into some code:
 protocol Container
 {
-	typealias ItemType
+	associatedtype ItemType
 	mutating func append(item: ItemType)
 	var count: Int { get }
 	subscript(i: Int) -> ItemType { get }
@@ -178,7 +178,7 @@ struct StackContainer<T> : Container
 	// Here we find our original stack implementation, unmodified
 	
 	var items = [T]()
-	mutating func push(item: T)
+	mutating func push(_ item: T)
 	{
 		items.append(item)
 	}
@@ -241,8 +241,8 @@ extension Array: Container {}
 // Let's take a look at a where clause in action. We'll define a function that works on two
 // different containers that that must contain the same type of item.
 func allItemsMatch
-	<C1: Container, C2: Container where C1.ItemType == C2.ItemType, C1.ItemType: Equatable>
-	(someContainer: C1, anotherContainer: C2) -> Bool
+	<C1: Container, C2: Container>
+	(_ someContainer: C1, _ anotherContainer: C2) -> Bool where C1.ItemType == C2.ItemType, C1.ItemType: Equatable
 {
 	// Check that both containers contain the same number of items
 	if someContainer.count != anotherContainer.count

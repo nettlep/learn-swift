@@ -59,7 +59,7 @@ indx
 // We can use an underscore if you don't need access to the loop constant:
 for _ in 1...10
 {
-	println("do something")
+	print("do something")
 }
 
 // We can iterate over arrays
@@ -78,29 +78,20 @@ for (animalName, legs) in numberOfLegs
 }
 
 // We can iterate over characters in a String
-for character in "Hello"
+for character in "Hello".characters
 {
 	character
 }
 
-// We can use the For-Condition-Increment loop construct, which resembles the C-like variant
-//
-// Note that the loop value is a variable, not a constant. In fact, they cannot be constant
-// because of the increment statement (++index)
-for (var index = 0; index < 3; ++index)
-{
-	index
-}
-
-// The parenthesis are optional for the For-Condition-Increment loop:
-for var index = 0; index < 3; ++index
+// For-Loops by range
+for index in 0 ..< 3
 {
 	index
 }
 
 // Variables are scoped to the For-Condition-Increment construct. To alter this, pre-declare index
 var index = 3000
-for index = 0; index < 3; ++index
+for index in 0 ..< 3
 {
 	index
 }
@@ -113,15 +104,15 @@ index // Index holds 3 after running through the loop
 // through the loop:
 while index > 0
 {
-	--index
+	index -= 1
 }
 
 // Do-While loops also resemble their C-like language counterparts. They perform the condition
 // after each iteration through the loop. As a result, they always execute the code inside the
 // loop at least once:
-do
+repeat
 {
-	++index
+	index += 1
 } while (index < 3)
 
 // ------------------------------------------------------------------------------------------------
@@ -267,7 +258,7 @@ switch anotherPoint
 		"On the y axis with an y value of \(y)"
 	
 	case (var x, let y):
-		++x // We can modify the variable 'x', but not the constant 'y'
+		x += 1 // We can modify the variable 'x', but not the constant 'y'
 		"Somewhere else on \(x), \(y)"
 }
 
@@ -356,15 +347,15 @@ switch integerToDescribe
 //
 // The following will print each name until it reaches the letter 'a' then skip to the next name
 var result = ""
-nameLoop: for name in names
+for name in names.enumerated()
 {
-	characterLoop: for character in name
+	for character in name.element.characters
 	{
 		theSwitch: switch character
 		{
 			case "a":
 				// Break out of the theSwitch and characterLoop
-				break characterLoop
+				break
 			
 			default:
 				result += String(character)
@@ -375,15 +366,15 @@ result
 
 // Similarly, this prints all names without the letter 'a' in them:
 result = ""
-nameLoop: for name in names
+for name in names.enumerated()
 {
-	characterLoop: for character in name
+	for character in name.element.characters
 	{
-		theSwitch: switch character
+		switch character
 		{
 			case "a":
 				// Continue directly to the character loop, bypassing this character in this name
-				continue characterLoop
+				continue
 			
 			default:
 				result += String(character)
@@ -395,15 +386,15 @@ result
 // Similarly, this prints all names until the letter 'x' is found, then aborts all processing by
 // breaking out of the outer loop:
 result = ""
-nameLoop: for name in names
+for name in names.enumerated()
 {
-	characterLoop: for character in name
+	for character in name.element.characters
 	{
 		theSwitch: switch character
 		{
 			case "x":
 				// Break completely out of the outer name loop
-				break nameLoop
+				break
 			
 			default:
 				result += String(character)

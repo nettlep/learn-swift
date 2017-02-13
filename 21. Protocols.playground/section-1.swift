@@ -54,7 +54,7 @@ protocol someProtocolForProperties
 	
 	// A type property always uses 'class'. This is the case even if adopted by a structure or
 	// enumeration which will use 'static' when conforming to the protocol's property.
-	class var someTypeProperty: Int { get set }
+	static var someTypeProperty: Int { get set }
 }
 
 // Let's create a more practical protocol that we can actually conform to:
@@ -85,7 +85,7 @@ class Starship: FullyNamed
 	
 	var fullName: String
 	{
-		return (prefix != .None ? prefix! + " " : "") + name
+		return (prefix != .none ? prefix! + " " : "") + name
 	}
 }
 
@@ -126,7 +126,7 @@ class LinearCongruentialGenerator: RandomNumberGenerator
 	var c = 29573.0
 	func random() -> Double
 	{
-		lastRandom = ((lastRandom * a + c) % m)
+		lastRandom = ((lastRandom * a + c).truncatingRemainder(dividingBy: m))
 		return lastRandom / m
 	}
 }
@@ -299,13 +299,13 @@ struct Individual: Named, Aged
 
 // Here, we can see the protocol composition at work as the parameter into the wishHappyBirthday()
 // function:
-func wishHappyBirthday(celebrator: protocol<Named, Aged>) -> String
+func wishHappyBirthday(celebrator: Named & Aged) -> String
 {
 	return "Happy Birthday \(celebrator.name) - you're \(celebrator.age)!"
 }
 
 // If we call the member, we can see the celebratory wish for this individual:
-wishHappyBirthday(Individual(name: "Bill", age: 31))
+wishHappyBirthday(celebrator: Individual(name: "Bill", age: 31))
 
 // ------------------------------------------------------------------------------------------------
 // Checking for Protocol Conformance
@@ -317,7 +317,7 @@ wishHappyBirthday(Individual(name: "Bill", age: 31))
 // further down in this playground for a special note about the @objc attribute.
 //
 // Let's create a new protocol with the proper prefix so that we can investigate:
-@objc protocol HasArea
+protocol HasArea
 {
 	var area: Double { get }
 }
@@ -354,53 +354,28 @@ objects[1] is HasArea
 objects[2] is HasArea
 
 // ------------------------------------------------------------------------------------------------
-// Optional Protocol Requirements
-//
-// Sometimes it's convenient to declare protocols that have one or more requirements that are
-// optional. This is done by prefixing those requirements with the 'optional' keyword.
-//
-// The term "optional protocol" refers to protocols that are optional in a very similar since to
-// optionals we've seen in the past. However, rather than stored values that can be nil, they
-// can still use optional chaining and optional binding for determining if an optional requirement
-// has been satisfied and if so, using that requirement.
-//
-// As with Protocol Conformance, a protocol that uses optional requirements must also be prefixed
-// with the '@objc' attribute.
-//
-// A special note about @objc attribute:
-//
-// * In order to check if an instance of a class conforms to a given protocol, that protocol must
-//   be declared with the @objc attribute.
-//
-// * This is also the case with optional requirements in protocols. In order to use the optional
-//   declaration modifier, the protocol must be declared with the @objc attribute.
-//
-// * Additionally, any class, structure or enumeration that owns an instance that conforms to a
-//   protocol declared with the @objc attribute must also be declared with the @objc attribute.
-//
-// Here's another simple protocol that uses optional requrements:
-@objc protocol CounterDataSource
+protocol CounterDataSource
 {
-	optional func incrementForCount(count: Int) -> Int
-	optional var fixedIncrement: Int { get }
+	func incrementForCount(count: Int) -> Int
+	var fixedIncrement: Int { get }
 }
 
 // In the class below, we'll see that checking to see if an instance conforms to a specific
 // requirement is similar to checking for (and accessing) optionals. We'll use optional chaining
 // for these optional reqirements:
-@objc class Counter
+class Counter
 {
 	var count = 0
 	var dataSource: CounterDataSource?
 	func increment()
 	{
 		// Does the dataSource conform to the incrementForCount method?
-		if let amount = dataSource?.incrementForCount?(count)
+		if let amount = dataSource?.incrementForCount(count: count)
 		{
 			count += amount
 		}
 		// If not, does it conform to the fixedIncrement variable requirement?
-		else if let amount = dataSource?.fixedIncrement?
+		else if let amount = dataSource?.fixedIncrement
 		{
 			count += amount
 		}

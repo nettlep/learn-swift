@@ -45,7 +45,7 @@ class Counter
 	// No parameters
 	func increment()
 	{
-		count++
+		count += 1
 	}
 	
 	// One parameter, no external parameter name needed by caller
@@ -80,7 +80,7 @@ class Counter
 	// Two parameters. Using the external parameter shorthand ("#") to force caller to use
 	// external parameter name on first parameter and defaulting to shared local/external names
 	// for the rest.
-	func addTwiceWithExternalSpecified2(#first: Int, second: Int)
+	func addTwiceWithExternalSpecified2(first: Int, second: Int)
 	{
 		count += first
 		count += second
@@ -97,12 +97,12 @@ class Counter
 // Now let's see how we call each of those functions
 var counter = Counter()
 counter.increment()
-counter.incrementBy(4)
+counter.incrementBy(amount: 4)
 counter.addValueTo(value: 4)
-counter.addTwiceWithExternalImplied(50, second: 4)
+counter.addTwiceWithExternalImplied(first: 50, second: 4)
 counter.addTwiceWithExternalSpecified(a: 50, b: 4)
 counter.addTwiceWithExternalSpecified2(first: 10, second: 10)
-counter.addTwiceWithExternalSpecified3(10, 10)
+counter.addTwiceWithExternalSpecified(a: 10, b: 10)
 counter.count
 
 // The 'self' property refers to the current instance of a class, structure or enumeration. For
@@ -160,17 +160,17 @@ struct Point3
 // enumeration:
 enum TriStateSwitch
 {
-	case Off, Low, High
+	case off, low, high
 	mutating func next()
 	{
 		switch self
 		{
-		case Off:
-			self = Low
-		case Low:
-			self = High
-		case High:
-			self = Off
+		case .off:
+			self = .low
+		case .low:
+			self = .high
+		case .high:
+			self = .off
 		}
 	}
 }
@@ -193,7 +193,7 @@ struct LevelTracker
 			highestUnlockedLevel = level
 		}
 	}
-	static func levelIsUnlocked(level: Int) -> Bool
+	static func levelIsUnlocked(_ level: Int) -> Bool
 	{
 		return level <= highestUnlockedLevel
 	}
@@ -231,4 +231,4 @@ class SomeOtherClass
 }
 
 // We call class type methods with the type name just as we do for structures and enumerations:
-SomeOtherClass.isGreaterThan100(105)
+SomeOtherClass.isGreaterThan100(value: 105)

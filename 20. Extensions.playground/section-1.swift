@@ -116,7 +116,7 @@ extension Int
 }
 
 // Let's call our new member using the shorthand syntax for trailing closures:
-3.repititions { println("hello") }
+3.repititions { print("hello") }
 
 // Instance methods can mutate the instance itself.
 //

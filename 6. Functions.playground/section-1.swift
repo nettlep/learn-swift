@@ -25,7 +25,7 @@ func sayHello(personName: String) -> String
 }
 
 // If we call the function, we'll receive the greeting
-sayHello("Peter Parker")
+sayHello(personName: "Peter Parker")
 
 // Multiple input parameters are separated by a comma
 func halfOpenRangeLength(start: Int, end: Int) -> Int
@@ -87,7 +87,7 @@ addSeventeen(toNumber: 42)
 //
 // The following declaration creates an internal parameter named "action" as well as an external
 // parameter named "action":
-func kangaroosCan(#action: String) -> String
+func kangaroosCan(action: String) -> String
 {
 	return "A Kangaroo can \(action)"
 }
@@ -108,7 +108,7 @@ func addMul(firstAdder: Int, secondAdder: Int, multiplier: Int = 1) -> Int
 }
 
 // We can call with just two parameters to add them together
-addMul(1, 2)
+addMul(firstAdder: 1, secondAdder: 2)
 
 // Default parameter values and external names
 //
@@ -119,7 +119,7 @@ addMul(1, 2)
 //
 // Therefore, when calling the function and specifying a value for the defaulted parameter, we
 // must provide the default parameter's external name:
-addMul(1, 2, multiplier: 9)
+addMul(firstAdder: 1, secondAdder: 2, multiplier: 9)
 
 // We can opt out of the automatic external name for default parameter values by specify an
 // external name of "_" like so:
@@ -129,10 +129,10 @@ func anotherAddMul(firstAdder: Int, secondAdder: Int, _ multiplier: Int = 1) -> 
 }
 
 // Here, we call without the third parameter as before:
-anotherAddMul(1, 2)
+anotherAddMul(firstAdder: 1, secondAdder: 2)
 
 // And now we can call with an un-named third parameter:
-anotherAddMul(1, 2, 9)
+anotherAddMul(firstAdder: 1, secondAdder:  2, 9)
 
 // ------------------------------------------------------------------------------------------------
 // Variadic Parameters
@@ -158,12 +158,12 @@ func arithmeticMean(numbers: Double...) -> Double
 // Let's call it with a few parameter lengths. Note that we can call with no parameters, since that
 // meets the criteria of a variadic parameter (zero or more).
 arithmeticMean()
-arithmeticMean(1)
-arithmeticMean(1, 2)
-arithmeticMean(1, 2, 3)
-arithmeticMean(1, 2, 3, 4)
-arithmeticMean(1, 2, 3, 4, 5)
-arithmeticMean(1, 2, 3, 4, 5, 6)
+arithmeticMean(numbers: 1)
+arithmeticMean(numbers: 1, 2)
+arithmeticMean(numbers: 1, 2, 3)
+arithmeticMean(numbers: 1, 2, 3, 4)
+arithmeticMean(numbers: 1, 2, 3, 4, 5)
+arithmeticMean(numbers: 1, 2, 3, 4, 5, 6)
 
 // If we want to use variadic parameters and default parameter values, we can do so by making sure
 // that the default parameters come before the variadic, at the end of the parameter list:
@@ -185,11 +185,11 @@ anotherArithmeticMean()
 // default parameter values. In this case, it helps us recognize where the defalt parameters leave
 // off and the variadic parameters begin:
 anotherArithmeticMean(initialTotal: 1)
-anotherArithmeticMean(initialTotal: 1, 2)
-anotherArithmeticMean(initialTotal: 1, 2, 3)
-anotherArithmeticMean(initialTotal: 1, 2, 3, 4)
-anotherArithmeticMean(initialTotal: 1, 2, 3, 4, 5)
-anotherArithmeticMean(initialTotal: 1, 2, 3, 4, 5, 6)
+anotherArithmeticMean(initialTotal: 1, numbers: 2)
+anotherArithmeticMean(initialTotal: 1, numbers: 2, 3)
+anotherArithmeticMean(initialTotal: 1, numbers: 2, 3, 4)
+anotherArithmeticMean(initialTotal: 1, numbers: 2, 3, 4, 5)
+anotherArithmeticMean(initialTotal: 1, numbers: 2, 3, 4, 5, 6)
 
 // Variadic parameters with external parameter names only apply their external name to the first
 // variadic parameter specified in the function call (if present.)
@@ -213,22 +213,6 @@ yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4)
 yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4, 5)
 yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4, 5, 6)
 
-// ------------------------------------------------------------------------------------------------
-// Constant and variable parameters
-//
-// All function parameters are constant by default. To make them variable, add the var introducer:
-func padString(var str: String, pad: Character, count: Int) -> String
-{
-	str = Array(count: count, repeatedValue: pad) + str
-	return str
-}
-
-var paddedString = "padded with dots"
-padString(paddedString, ".", 10)
-
-// Note that the function does not modify the caller's copy of the string that was passed in
-// because the value is still passed by value:
-paddedString
 
 // ------------------------------------------------------------------------------------------------
 // In-Out Parameters
@@ -239,7 +223,7 @@ paddedString
 // Note that inout parameters cannot be variadic or have default parameter values.
 //
 // We'll write a standard swap function to exercise this:
-func swap(inout a: Int, inout b: Int)
+func swap( a: inout Int, b: inout Int)
 {
 	let tmp = a
 	a = b
@@ -298,10 +282,10 @@ doMul(4, 5)
 //
 // This additional syntactic decoration has a purpose, but it doesn't affect the underlying
 // function type, which remains: (Int, Int) -> Int
-let doAddMul: (a: Int, b: Int, Int) -> Int = addMul
+let doAddMul: (_ a: Int, _ b: Int, Int) -> Int = addMul
 
 // Calling the function now requires external names for the first two parameters
-doAddMul(a: 4, b: 2, 55)
+doAddMul(4, 2, 55)
 
 // We can pass function types as parameters to funcions, too.
 //
@@ -314,7 +298,7 @@ func doDoMul(doMulFunc: (Int, Int) -> Int, a: Int, b: Int) -> Int
 
 // We can now pass the function (along with a couple parameters to call it with) to another
 // function:
-doDoMul(doMul, 5, 5)
+doDoMul(doMulFunc: doMul, a: 5, b: 5)
 
 // We can also return function types.
 //

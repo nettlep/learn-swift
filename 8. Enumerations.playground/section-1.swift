@@ -23,30 +23,30 @@
 // 1, 2, etc.) Instead, each member is a fully-fledged value in its own right.
 enum Planet
 {
-	case Mercury
-	case Venus
-	case Earth
-	case Mars
-	case Jupiter
-	case Saturn
-	case Uranus
-	case Neptune
+	case mercury
+	case venus
+	case earth
+	case mars
+	case jupiter
+	case saturn
+	case uranus
+	case neptune
 }
 
 // You can also combine members onto a single line if you prefer, or mix them up. This has no
 // effect on the enumeration itself.
 enum CompassPoint
 {
-	case North, South
-	case East, West
+	case north, south
+	case east, west
 }
 
 // Let's store an enumeration value into a variable. We'll let the compiler infer the type:
-var directionToHead = CompassPoint.West
+var directionToHead = CompassPoint.west
 
 // Now that directionToHead has a CompassPoint type (which was inferred) we can set it to a
 // different CompassPoint value using a shorter syntax:
-directionToHead = .East
+directionToHead = .east
 
 // We can use a switch to match values from an enumeration.
 //
@@ -54,13 +54,13 @@ directionToHead = .East
 // enumeration only has 4 values, so as long as we cover all 4, we don't need the default case.
 switch directionToHead
 {
-	case .North:
+	case .north:
 		"North"
-	case .South:
+	case .south:
 		"South"
-	case .East:
+	case .east:
 		"East"
-	case .West:
+	case .west:
 		"West"
 }
 
@@ -150,11 +150,11 @@ FamilyPet.Ferret.rawValue
 var pet = FamilyPet(rawValue: "Ferret")
 
 // Let's verify this:
-if pet != .None { "We have a pet!" }
+if pet != .none { "We have a pet!" }
 else { "No pet :(" }
 
 // An example of when a raw doesn't translate to an enum, leaving us with a nil optional:
 pet = FamilyPet(rawValue: "Snake")
-if pet != .None { "We have a pet" }
+if pet != .none { "We have a pet" }
 else { "No pet :(" }
 
