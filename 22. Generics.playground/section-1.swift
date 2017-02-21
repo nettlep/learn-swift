@@ -1,5 +1,4 @@
 // ------------------------------------------------------------------------------------------------
-// Updated September 2016
 // Things to know:
 //
 // * Generics allow flexible, reusable functions and types that can work with any type, subject
@@ -22,8 +21,7 @@ func swapTwoInts( a: inout Int, b: inout Int)
 
 // What if we wanted to swap Strings? Or any other type? We would need to write a lot of different
 // swap functions. Instead, let's use Generics. Consider the following generic function:
-func swapTwoValues<T>( a: inout T, b: inout T)
-{
+func swapTwoValues<T>( a: inout T, b: inout T) {
 	let tmp = a
 	a = b
 	b = tmp
@@ -134,12 +132,9 @@ func doSomethingWithKeyValue<KeyType: Hashable, ValueType>(someKey: KeyType, som
 // element from the array with the value being searched for. By including the Equatable, we tell
 // the generic function that it is guaranteed to receive only values that meet that specific
 // criteria.
-func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int?
-{
-	for (index, value) in array.enumerated()
-	{
-		if value == valueToFind
-		{
+func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int? {
+	for (index, value) in array.enumerated() {
+		if value == valueToFind {
 			return index
 		}
 	}
@@ -157,8 +152,7 @@ let stringIndex = findIndex(array: ["Mike", "Malcolm", "Andrea"], valueToFind: "
 // type inference combined with Type Aliases.
 //
 // Let's jump right into some code:
-protocol Container
-{
+protocol Container {
 	associatedtype ItemType
 	mutating func append(item: ItemType)
 	var count: Int { get }
@@ -174,32 +168,26 @@ protocol Container
 //
 // Let's see this in action as we turn our Stack into a container:
 
-struct StackContainer<T> : Container
-{
+struct StackContainer<T> : Container {
 	// Here we find our original stack implementation, unmodified
 	
 	var items = [T]()
-	mutating func push(item: T)
-	{
+	mutating func push(item: T) {
 		items.append(item)
 	}
-	mutating func pop() -> T
-	{
+	mutating func pop() -> T {
 		return items.removeLast()
 	}
 	
 	// Below, we conform to the protocol
 	
-  mutating func append(item: T)
-  {
-		self.push(item: item)
-	}
-	var count: Int
-	{
+    mutating func append(item: T) {
+        self.push(item: item)
+    }
+	var count: Int {
 		return items.count
 	}
-	subscript(i: Int) -> T
-	{
+	subscript(i: Int) -> T {
 		return items[i]
 	}
 }

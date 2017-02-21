@@ -1,5 +1,4 @@
 // ------------------------------------------------------------------------------------------------
-// Checked and updated September 2016
 // Things to know:
 //
 // * Deinitializers are called automatically before a class instance is
@@ -17,11 +16,11 @@
 // Let's create a couple classes to work with...
 struct Bank
 {
-	static var coinsInBank = 10_000
-  static func vendCoins(numberOfCoinsToVend: Int) -> Int
-  {
-    var numberOfCoinsToVend = numberOfCoinsToVend
-    numberOfCoinsToVend = min(numberOfCoinsToVend, coinsInBank)
+    static var coinsInBank = 10_000
+    static func vendCoins(numberOfCoinsToVend: Int) -> Int
+    {
+        var numberOfCoinsToVend = numberOfCoinsToVend
+        numberOfCoinsToVend = min(numberOfCoinsToVend, coinsInBank)
 		coinsInBank -= numberOfCoinsToVend
 		return numberOfCoinsToVend
 	}

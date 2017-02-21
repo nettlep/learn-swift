@@ -15,3 +15,4 @@ assert(age >= 0, "A person's age cannot be negative")
 // You can assert without the message
 assert(age >= 0)
 
+// fatalError("we died")

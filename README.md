@@ -9,7 +9,7 @@ Learn Apple's Swift programming language interactively through these playgrounds
 
 ###What you'll need
 
-  You will need XCode 8.2 GM (or later) and a Mac to run it on.
+  You will need XCode 8.2 (or later) and a Mac to run it on.
 
 ###Purpose & Goal
 
@@ -36,9 +36,8 @@ Learn Apple's Swift programming language interactively through these playgrounds
 
 ###Contributors
 
-  Thanks to Rafał Wójcik for his quick work to update these playgrounds to
-  incorporate the Swift language changes that came with XCode 7.
+  Thanks to Rafał Wójcik for his quick work to update these playgrounds to Swift 2 and to incorporate the Swift language changes that came with XCode 7.
   
   Most  playgrounds updated to Swift 3 by Christopher Bell.
 
-  Sections 24 and 25 by Van Simmons
+  Revised formatting and Sections 24,  25, and 26 by Van Simmons
