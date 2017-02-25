@@ -5,9 +5,7 @@
  * These playgrounds are modified versions of Paul Nettle's original which can be found
  at: [GitHub](https://github.com/nettlep/learn-swift)
  
- * Swift is Apple's preferred programming language for iOS and OSX.
- 
- * Swift has been open sourced and is available on Linux as well.  All code in these 
+ * Swift has been open sourced and is available on Linux as well.  All code in these
  Playgrounds should compile just fine on Linux though there is no Playground support
  there.
 
@@ -57,12 +55,11 @@ var x = 0.0, y = 0.0, z = 0.0
 /*:
  ### Type Annotations
 
- The built-in types in Swift are: Int, Double, Float, Bool, String, Array, Dictionary
- There are variations of these (like UInt16), but those are the basic types. Note that all of
- these types are capitalized.
+The Swift standard library provides a large collection of basic types.  The ones you may already be familiar with include: Int, Double, Float, Bool, String, Array, Dictionary.  There are variations of these (like UInt16), but those are the basic types. Note that all of these types are capitalized.  In Swift it is standard for Types to start with a capital letter, while stored values (variables) start with a lower case letter and use camelCase.
+ 
+ There are 6 "types of types": `tuple`, `enum`, `struct`, `class`, `func` and `protocol`.  We will explain their differences in subsequent playgrounds.  For now you should note that all of the types listed immediately above are `struct`'s
 
- Because of inference (assuming 42 is an Int an "some text" is a String), type annotations are
- usually pretty rare in Swift
+Where possible, Swift will infer the types of things without you having to specify the type explicitly. Because of inference, type annotations are usually left out when writing Swift.  Occasionally, you will need to specify them when the compiler can't infer the type.
 
  Here's how you specify the type:
  */
@@ -86,14 +83,11 @@ let 🐶🐮 = "dogcow"
 /*:
  ### The print(_,separator:, terminator:) function
  
- You can print a value using the print function.  (We will study functions later).  
- Print takes a number of useful forms.  You can specify a list of Stored Values to 
- print, just separate them all with a comma:
+ You can print a value using the print function.  (We will study functions later).  Print takes a number of useful forms.  You can specify a list of Stored Values to print, just separate them all with a comma:
 */
 print(π, x, y, z)
 /*:
- Note that that prints the four variables values as Strings, 
- separated by space and terminated with a line feed.
+ Note that that prints the four variables values as Strings, separated by space and terminated with a line feed.
 
  You can also print just a single variable:
  */

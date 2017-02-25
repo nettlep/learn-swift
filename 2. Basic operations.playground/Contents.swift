@@ -1,26 +1,29 @@
-// ------------------------------------------------------------------------------------------------
-// Checked and updated September 2016
-// Things to know:
-//
-// * Assuming knowledge of C here, so a lot will be left out that is the the same, such as
-//   "let i = 1 + 2"
-//
-// * Unary operators work on a single target. Of them, you have prefix operators such as !b or
-//   postfix operators such as i++.
-//
-// * Binary operators work on two targets and are infix operators because they go between two
-//   values, such as a + b
-//
-// * Ternary operators work on three targets. There is only one ternary: a ? b : c.
-// ------------------------------------------------------------------------------------------------
+/*: 
+ ## Basic Operations
 
-// We have our standard assignment operator (=). Note that the assignment operator in Swift does
-// not actually return a value, so the statment "if (x = y) {}" will not work. This helps prevent
-// accidental assignments during conditionals.
+ Things to know:
+
+ * Assuming knowledge of C here, so a lot will be left out that is the the same, such as
+   `let i = 1 + 2`
+
+ * Unary operators such as `!` work on a single target. Note that prefixed `!` is NOT the same
+ as postfixed `!`
+ 
+ * Binary operators work on two targets and are infix operators because they go between two
+   values, such as a + b
+
+ * Ternary operators work on three targets. There is only one ternary: a ? b : c.
+ 
+ We have our standard assignment operator (=). Note that the assignment operator in Swift does
+ not actually return a value, so the statment "if (x = y) {}" will not work. This helps prevent
+ accidental assignments during conditionals.
+*/
 var a = 10.0
 var b = 3.0
 
-// Assignment can also take multiple values (for Tuples):
+/*:
+ Assignment can also take multiple values (for Tuples):
+*/
 let (x, y) = (5, 6)
 x
 y
