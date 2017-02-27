@@ -1,6 +1,12 @@
 /*:
  ## Sequences and Iterators
- */
-import UIKit
 
-var str = "Hello, playground"
+ 
+ ### Sequence
+ 
+ 
+ ### Iterator
+ 
+ 
+ ### `stride(from:to:by:)`
+ */
