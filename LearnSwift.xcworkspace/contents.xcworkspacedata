@@ -95,10 +95,16 @@
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/24. Try, Catch, Defer, Throws.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/26. Map Reduce and Filter.playground">
+      location = "group:25. Equatable and Hashable.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/27. Asynchronicity.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/26. Sequences and Iterators.playground">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/27. Map Reduce and Filter.playground">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/28. Asynchronicity.playground">
    </FileRef>
    <FileRef
       location = "group:99. Not The End.playground">
