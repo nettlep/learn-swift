@@ -1,26 +1,24 @@
-// ------------------------------------------------------------------------------------------------
-// Checked and updated September 2016
-// Things to know:
-//
-// * Arrays are ordered lists of elements
-//
-// * The types of values that can be stored in an array must always be made clear either through
-//   explicit type annotation or through type inference and does not have to be a base class type.
-//
-// * Arrays are type-safe and always clear about what they contain.
-//
-// * Arrays are value types, but Swift is smart about only copying when necessary to improve
-//   performance.
-//
-// * Immutable arrays are immutable in terms of the array itself and the contents of the array.
-//   This means you can't add/remove an element nor can you modify an element of an immutable
-//   array.
-// ------------------------------------------------------------------------------------------------
+/*:
+  * Arrays are ordered lists of elements
 
-// Create an array of Strings
+ * The types of values that can be stored in an array must always be made clear either through
+   explicit type annotation or through type inference and does not have to be a base class type.
+
+ * Arrays are type-safe and always clear about what they contain.
+
+ * Arrays are value types, but Swift is smart about only copying when necessary to improve
+   performance.
+
+ * Immutable arrays are immutable in terms of the array itself and the contents of the array.
+   This means you can't add/remove an element nor can you modify an element of an immutable
+   array.
+ 
+ Create an array of Strings:
+*/
 var someArray = Array<String>()
-
-// Shorter, more common way to define an array of Strings
+/*:
+ Shorter, more common way to define an array of Strings
+*/
 var shorter: [String]
 
 // This is an array literal. Since all members are of type String, this will create a String array.

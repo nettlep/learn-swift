@@ -112,8 +112,7 @@ switch productBarcode
 //
 // We can assign a type to an enumeration. If we use Int as the type, then we are effectively
 // making an enumeration that functions like its C counterpart:
-enum StatusCode: Int
-{
+enum StatusCode: Int {
 	case Error = -1
 	case Success = 9
 	case OtherResult = 1

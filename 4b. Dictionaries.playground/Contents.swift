@@ -1,27 +1,26 @@
-// ------------------------------------------------------------------------------------------------
-// Checked and updated September 2016
-// Things to know:
-//
-// * Dictionaries store multiple values of the same type, each associated with a key which acts as
-//   an identifier for that value within the dictionary.
-//
-// * Dictionaries are type-safe and always clear about what they contain.
-//
-// * The types of values that can be stored in a dictionary must always be made clear either
-//   through explicit type annotation or through type inference.
-// ------------------------------------------------------------------------------------------------
+/*:
+ ## Dictionaries
 
-// ------------------------------------------------------------------------------------------------
-// Creating a dictionary
-//
-// This is a Dictionary literal. They contain a comma-separated list of key:value pairs:
+ * Dictionaries store multiple values of the same type, each associated with a key which acts as
+   an identifier for that value within the dictionary.
+
+ * Dictionaries are type-safe and always clear about what they contain.
+
+ * The types of values that can be stored in a dictionary must always be made clear either
+   through explicit type annotation or through type inference.
+
+ ### Creating a dictionary
+
+ This is a Dictionary literal. They contain a comma-separated list of key:value pairs:
+*/
 ["TYO": "Tokyo", "DUB": "Dublin"]
+/*:
+ Let's use that literal to define and initialize a Dictionary.
 
-// Let's use that literal to define and initialize a Dictionary.
-//
-// In this case, we use type annotation to explicitly declare a Dictionary containing String keys
-// and String values. This uses the syntactic sugar "[ KeyType: ValueType ]" to declare the
-// dictionary.
+ In this case, we use type annotation to explicitly declare a Dictionary containing String keys
+ and String values. This uses the syntactic sugar "[ KeyType: ValueType ]" to declare the
+ dictionary.
+*/
 var airports: [String : String] = ["TYO": "Tokyo", "DUB": "Dublin", "APL": "Apple Intl"]
 
 // The declaration for airports above could also have been declared in this way:

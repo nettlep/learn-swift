@@ -83,6 +83,8 @@ class Starship: FullyNamed {
 		return (prefix != .none ? prefix! + " " : "") + name
 	}
 }
+
+var myArray:[FullyNamed]
 /*:
  In the class above, we use a 'name' and an optional 'prefix' to represent the full name, then
  provide a computed value to fulfill our 'fullName' requirement.

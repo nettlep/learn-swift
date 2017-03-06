@@ -194,6 +194,8 @@ struct StackContainer<T> : Container {
 		return items[i]
 	}
 }
+var myStack = StackContainer<Int>()
+
 /*:
  The new `StackContainer` is now ready to go. You may notice that it does not include the
  typealias that was required as part of the `Container` protocol. This is because the all of the

@@ -16,12 +16,10 @@
 //
 // Without the initializer, we would get an error whenever we tried to instantiate the Fahrenheit
 // class.
-struct Fahrenheit
-{
+struct Fahrenheit {
 	var temperature: Double
 
-	init()
-	{
+	init() {
 		temperature = 32.0
 	}
 }
@@ -31,8 +29,7 @@ var f = Fahrenheit()
 
 // Since the temperature is always defined as "32.0", it is cleaner and preferred to use a default
 // value instead of setting it inside the initializer:
-struct AnotherFahrenheit
-{
+struct AnotherFahrenheit {
 	var temperature: Double = 32.0
 }
 
@@ -40,19 +37,16 @@ struct AnotherFahrenheit
 // the class's temperature to a given value.
 //
 // The following class contains two initializers:
-struct Celsius
-{
+struct Celsius {
 	var temperatureInCelsius: Double = 0.0
 	
 	// Initialize our temperature from Fahrenheit
-	init(fromFahrenheit fahrenheit: Double)
-	{
+	init(fromFahrenheit fahrenheit: Double) {
 		temperatureInCelsius = (fahrenheit - 32.0) / 1.8
 	}
 	
 	// Initialize our temperature from Kelvin
-	init(kelvin: Double)
-	{
+	init(kelvin: Double) {
 		temperatureInCelsius = kelvin - 273.15
 	}
 }
@@ -66,21 +60,18 @@ let freezingPointOfWater = Celsius(kelvin: 273.15)
 //
 // Here's a class that defines two initializers - one that makes use of the automatic external
 // name generation and one that opts out:
-struct Color
-{
+struct Color {
 	var red = 0.0, green = 0.0, blue = 0.0
 	
 	// This initializer will make use of automatically generated exernal names
-	init(red: Double, green: Double, blue: Double)
-	{
+	init(red: Double, green: Double, blue: Double) {
 		self.red = red
 		self.green = green
 		self.blue = blue
 	}
 	
 	// This initializer opts out by explicitly declaring external names with "_"
-	init(_ red: Double, _ blue: Double)
-	{
+	init(_ red: Double, _ blue: Double) {
 		self.red = red
 		self.green = 0
 		self.blue = blue
@@ -92,21 +83,18 @@ let magenta = Color(red: 1.0, green: 0.0, blue: 1.0)
 let purple = Color(1.0, 0.5)
 
 // Optional properties do not need to be initialized:
-class SurveyQuestion
-{
+class SurveyQuestion {
 	var text: String
 	
 	// Response is optional, and is automatically initialized to nil
 	var response: String?
 
-	init(text: String)
-	{
+	init(text: String) {
 		// We only need to initialize 'text'
 		self.text = text
 	}
 	
-	func ask() -> String
-	{
+	func ask() -> String {
 		return text
 	}
 }
@@ -114,27 +102,23 @@ class SurveyQuestion
 // Constants need initialization as well. In the following example, our constant has a default
 // value. However, if we initialize the class with the init(text: String) initializer, we can
 // modify the default value to use the one passed in:
-class SurveyQuestion2
-{
+class SurveyQuestion2 {
 	// Default value of "No question"
 	var text: String = "No question"
 	
 	var response: String?
 	
-	init(text: String)
-	{
+	init(text: String) {
 		// Initializing the constant, 'text', even though it has a default value, we can modify
 		// that default value here
 		self.text = text
 	}
 	
-	init()
-	{
+	init() {
 		// We do nothing here and let the default value for 'text' define its value
 	}
 	
-	func ask() -> String
-	{
+	func ask() -> String {
 		return text
 	}
 }
@@ -157,8 +141,7 @@ let beetsQuestion = SurveyQuestion2(text: "Do you like beets?")
 // If you create your own initializer, Swift will not create the default initializer. If you want
 // your custom initializers as well as the default initializer, then put your initializers in an
 // extension.
-class ShoppingListItem
-{
+class ShoppingListItem {
 	var name: String?
 	var quantity = 1
 	var purchased = false
@@ -194,14 +177,12 @@ let twoByTwo = Size(width: 2.0, height: 2.0)
 // initializer from calculations based on the a center point.
 //
 // This concept is further extended in "Initializer Chaining", covered later.
-struct Point
-{
+struct Point {
 	var x = 0.0
 	var y = 0.0
 }
 
-struct Rect
-{
+struct Rect {
 	var origin = Point()
 	var size = Size()
 	
@@ -211,16 +192,14 @@ struct Rect
 	init() {}
 	
 	// Init from origin/size
-	init(origin: Point, size: Size)
-	{
+	init(origin: Point, size: Size) {
 		self.origin = origin
 		self.size = size
 	}
 	
 	// Init from center/size - note how we use the init(origin:size) to  perform actual
 	// initialization
-	init(center: Point, size: Size)
-	{
+	init(center: Point, size: Size) {
 		let originX = center.x - size.width / 2
 		let originY = center.y - size.height / 2
 		self.init(origin: Point(x: originX, y: originY), size: size)

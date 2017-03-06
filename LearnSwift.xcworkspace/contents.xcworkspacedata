@@ -5,9 +5,6 @@
       location = "group:README.md">
    </FileRef>
    <FileRef
-      location = "group:28. Value and Reference Types.playground">
-   </FileRef>
-   <FileRef
       location = "group:1a. The Basics.playground">
    </FileRef>
    <FileRef
@@ -98,13 +95,16 @@
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/24. Try, Catch, Defer, Throws.playground">
    </FileRef>
    <FileRef
-      location = "group:25. Equatable and Hashable.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/25. Equatable Hashable and Comparable.playground">
    </FileRef>
    <FileRef
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/26. Sequences and Iterators.playground">
    </FileRef>
    <FileRef
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/27. Map Reduce and Filter.playground">
+   </FileRef>
+   <FileRef
+      location = "group:28. Value and Reference Types.playground">
    </FileRef>
    <FileRef
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/29. Asynchronicity.playground">
