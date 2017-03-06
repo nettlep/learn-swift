@@ -1,5 +1,6 @@
 /*:
  ## Arrays
+ 
   * Arrays are ordered lists of elements
 
  * The types of values that can be stored in an array must always be made clear either through
@@ -11,8 +12,8 @@
    performance.
 
  * Immutable arrays are immutable in terms of the array itself and the contents of the array.
-   This means you can't add/remove an element nor can you modify an element of an immutable
-   array.
+   This means you can't add/remove an element nor can you modify an element *that is of a value type*
+   of an immutable array.
  
  Create an array of Strings:
 */
@@ -142,13 +143,13 @@ let immutableArray = ["a", "b"]
  the array itself.
 
  We can't change the contents of an immutable array:
-
+```
  immutableArray[0] = "b"
-
+```
  Nor can we change the size or add an element, you will get a compiler error:
-
+```
  immutableArray += "c"
- 
+ ```
  ### Arrays are Value Types
 
  Arrays are value types that only copy when necessary, which is only when the array itself
