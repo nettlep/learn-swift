@@ -77,80 +77,75 @@ struct Rect {
 */
 var memberwiseRect = Rect(origin: Point(x: 2.0, y: 2.0), size: Size(width: 5.0, height: 5.0))
 /*:
-// Let's extend Rect to add a new convenience initializer. Note that we're still responsible for
-// ensuring that the instance is fully initialized.
+ Let's extend Rect to add a new convenience initializer. Note that we're still responsible for
+ ensuring that the instance is fully initialized.
 */
-extension Rect
-{
-	init (center: Point, size: Size)
-	{
+extension Rect {
+	init (center: Point, size: Size) {
 		let originX = center.x - (size.width / 2)
 		let originY = center.y - (size.height / 2)
 		self.init(origin: Point(x: originX, y: originY), size: size)
 	}
 }
-
-// Let's try out our new initializer:
+/*:
+ Let's try out our new initializer:
+*/
 let centerRect = Rect(center: Point(x: 4.0, y: 4.0), size: Size(width: 3.0, height: 3.0))
-
-// Remember that if a class has an initializer, Swift will not provide the default memberwise
-// initializer. However, since we added an initializer via an Extension, we still have access
-// to Swift's memberwise initializer:
+/*:
+ Remember that if a class has an initializer, Swift will not provide the default memberwise
+ initializer. However, since we added an initializer via an Extension, we still have access
+ to Swift's memberwise initializer:
+*/
 var anotherRect = Rect(origin: Point(x: 1.0, y: 1.0), size: Size(width: 3.0, height: 2.0))
+/*:
+ ### Methods
 
-// ------------------------------------------------------------------------------------------------
-// Methods
-//
-// As you might expect, we can add methods to an existing type as well. Here's a clever little
-// extention to perform a task (a closure) multiple times, equal to the value stored in the Int.
-//
-// Note that the integer value is stored in 'self'.
-extension Int
-{
-	func repititions(task: () -> ())
-	{
-		for _ in 0..<self
-		{
+ As you might expect, we can add methods to an existing type as well. Here's a clever little
+ extention to perform a task (a closure) multiple times, equal to the value stored in the Int.
+
+ Note that the integer value is stored in 'self'.
+*/
+extension Int {
+	func repititions(task: () -> ()) {
+		for _ in 0..<self {
 			task()
 		}
 	}
 }
-
-// Let's call our new member using the shorthand syntax for trailing closures:
+/*:
+ Let's call our new member using the shorthand syntax for trailing closures:
+*/
 3.repititions { print("hello") }
+/*:
+ Instance methods can mutate the instance itself.
 
-// Instance methods can mutate the instance itself.
-//
-// Note the use of the 'mutating' keyword.
-extension Int
-{
-	mutating func square()
-	{
+ Note the use of the 'mutating' keyword.
+*/
+extension Int {
+	mutating func square() {
 		self = self * self
 	}
 }
 
 var someInt = 3
 someInt.square() // someInt is now 9
+/*:
+ ### Subscripts
 
-// ------------------------------------------------------------------------------------------------
-// Subscripts
-//
-// Let's add a subscript to Int:
-extension Int
-{
-	subscript(digitIndex: Int) -> Int
-	{
+ Let's add a subscript to Int:
+*/
+extension Int {
+	subscript(digitIndex: Int) -> Int {
 		var decimalBase = 1
-		for _ in 0 ..< digitIndex
-		{
+		for _ in 0 ..< digitIndex {
 			decimalBase *= 10
 		}
 		return self / decimalBase % 10
 	}
 }
-
-// And we can call our subscript directly on an Int, including a literal Int type:
+/*:
+ And we can call our subscript directly on an Int, including a literal Int type:
+*/
 123456789[0]
 123456789[1]
 123456789[2]
@@ -158,21 +153,17 @@ extension Int
 123456789[4]
 123456789[5]
 123456789[6]
+/*:
+ ### Nested types
 
-// ------------------------------------------------------------------------------------------------
-// Nested types
-//
-// We can also add nested types to an existing type:
-extension Character
-{
-	enum Kind
-	{
+ We can also add nested types to an existing type:
+*/
+extension Character {
+	enum Kind {
 		case vowel, consonant, other
 	}
-	var kind: Kind
-	{
-		switch String(self)
-		{
+	var kind: Kind {
+		switch String(self) {
 			case "a", "e", "i", "o", "u":
 				return .vowel
 			case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
@@ -183,8 +174,9 @@ extension Character
 		}
 	}
 }
-
-// Let's test out our new extension with nested types:
+/*:
+ Let's test out our new extension with nested types:
+*/
 Character("a").kind == .vowel
 Character("h").kind == .consonant
 Character("+").kind == .other
