@@ -1,51 +1,46 @@
-// ------------------------------------------------------------------------------------------------
-// Things to know:
-//
-// * Optional Chaining is the process of safely referencing a series of optionals (which contain
-//   optionals, which contain optionals, etc.) without having to perform the optional unwrapping
-//   checks at each step along the way.
-// ------------------------------------------------------------------------------------------------
+/*:
+ ## Optional Chaining
+ 
+ * Optional Chaining is the process of safely referencing a series of optionals (which contain
+   optionals, which contain optionals, etc.) without having to perform the optional unwrapping
+   checks at each step along the way.
 
-// Consider a case of forced unwrapping like "someOptional!.someProperty". We already know that
-// this is only safe if we know that the optional will never be nil. For times that we don't know
-// this, we must check the optional before we can reference it. This can become cumbersome for
-// situations where many optionals are chained together as properties of properties. Let's create
-// a series of optionals to show this:
-class Artist
-{
+ Consider a case of forced unwrapping like "someOptional!.someProperty". We already know that
+ this is only safe if we know that the optional will never be nil. For times that we don't know
+ this, we must check the optional before we can reference it. This can become cumbersome for
+ situations where many optionals are chained together as properties of properties. Let's create
+ a series of optionals to show this:
+*/
+class Artist {
 	let name: String
 	init(name: String) { self.name = name }
 }
 
-class Song
-{
+class Song {
 	let name: String
 	var artist: Artist?
-	init(name: String, artist: Artist?)
-	{
+	init(name: String, artist: Artist?) {
 		self.name = name
 		self.artist = artist
 	}
 }
 
-class MusicPreferences
-{
+class MusicPreferences {
 	var favoriteSong: Song?
 	init(favoriteSong: Song?) { self.favoriteSong = favoriteSong }
 }
 
-class Person
-{
+class Person {
 	let name: String
 	var musicPreferences: MusicPreferences?
-	init (name: String, musicPreferences: MusicPreferences?)
-	{
+	init (name: String, musicPreferences: MusicPreferences?) {
 		self.name = name
 		self.musicPreferences = musicPreferences
 	}
 }
-
-// Here, we'll create a working chain:
+/*:
+ Here, we'll create a working chain:
+*/
 var someArtist: Artist? = Artist(name: "Somebody with talent")
 var favSong: Song? = Song(name: "Something with a beat", artist: someArtist)
 var musicPrefs: MusicPreferences? = MusicPreferences(favoriteSong: favSong)
