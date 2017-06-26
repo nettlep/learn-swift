@@ -20,7 +20,7 @@
       location = "group:1e. Assertions.playground">
    </FileRef>
    <FileRef
-      location = "group:2. Basic operations.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/2. Basic Operators.playground">
    </FileRef>
    <FileRef
       location = "group:3. Strings and Characters.playground">
@@ -108,6 +108,9 @@
    </FileRef>
    <FileRef
       location = "group:29. Top Level Functions.playground">
+   </FileRef>
+   <FileRef
+      location = "group:30. Other Points.playground">
    </FileRef>
    <FileRef
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/98. Asynchronicity.playground">

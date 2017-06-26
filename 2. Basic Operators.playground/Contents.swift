@@ -1,5 +1,5 @@
 /*: 
- ## Basic Operations
+ ## Basic Operators
 
  * Assuming knowledge of C here, so a lot will be left out that is the the same, such as
    `let i = 1 + 2`

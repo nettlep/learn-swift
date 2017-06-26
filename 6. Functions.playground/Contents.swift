@@ -20,8 +20,15 @@ import Foundation
  
  Here's a simple function that receives a Single string and returns a String
 
- Note that each parameter has a local name (for use within the function) and a standard type
- annotation. The return value's type is at the end of the function, following the ->.
+ Note that in this case each parameter has 
+ 
+ * a name and 
+ * a standard type annotation
+ 
+ The return value's type is at the end of the function, following the -> .
+ 
+ Part of the declaration of every function is how it's parameters are named.  We will explore this in detail
+ below.
 */
 func sayHello(personName: String) -> String {
 	return "Hello, \(personName)"
@@ -30,6 +37,12 @@ func sayHello(personName: String) -> String {
  If we call the function, we'll receive the greeting
 */
 sayHello(personName: "Peter Parker")
+/*:
+ We can pass function invocations where before we have simply passed variables.  In this case the 
+ `print` function which we hvae seen before is passed the result of calling the 
+ `sayHello(personName:)`
+ */
+print(sayHello(personName: "John Doe"))
 /*:
  Multiple input parameters are separated by a comma
 */
@@ -47,23 +60,17 @@ func sayHelloWorld() -> String {
  A funciton with no return value can be expressed in two different ways. The first is to replace
  the return type with a set of empty parenthesis, which can be thought of as an empty Tuple.
 */
-func sayGoodbye(name: String) -> () {
-	"Goodbye, \(name)"
-}
+func sayGoodbye(name: String) -> () { "Goodbye, \(name)" }
 /*:
  We can also remove the return type (and the -> delimiter) alltogether:
 */
-func sayGoodbyeToMyLittleFriend(name: String) {
-	"Goodbye, \(name)"
-}
+func sayGoodbyeToMyLittleFriend(name: String) { "Goodbye, \(name)" }
 /*:
  Functions can return Tuples, which enable them to return multiple values.
 
  The following function simply returns two hard-coded strings.
 */
-func getApplicationNameAndVersion() -> (String, String) {
-	return ("Modaferator", "v1.0")
-}
+func getApplicationNameAndVersion() -> (String, String) { return ("Modaferator", "v1.0") }
 /*:
  Since the return value is a Tuple, we can use the Tuple's naming feature to name the values
  being returned:
@@ -75,7 +82,7 @@ var appInfo = getApplicationInfo()
 appInfo.name
 appInfo.version
 /*:
- ### External Parameter Names
+ ### External and Internal Parameter Names
 
  We can use Objective-C-like external parameter names so the caller must name the external
  parameters when they call the function. The extenal name appears before the local name.
@@ -85,6 +92,19 @@ func addSeventeen(toNumber value: Int) -> Int {
 }
 addSeventeen(toNumber: 42)
 /*:
+ Note that the explicitly specified external parameter names are part of the function name.  The following
+ function called `addSeventeen(to:)` is _a different_ function than `addSeventeen(toNumber:`
+ */
+func addSeventeen(to value: Int) -> Int { return value + 17 }
+/*:
+ However the following will not compile because the _internal_ name is not part of the function name
+```
+ func addSeventeen(to input: Int) -> Int { return input + 17 }
+``` 
+ So, when specifying Swift function names, you always include the external parameter names as part
+ of the function name.  Typically, when speaking we will say "paren" and "colon" to delineate these
+ parts of the name as necessary by context.
+ 
  If your internal and external names are the same, you can use a shorthand syntax to create
  both names at once.
 
@@ -115,19 +135,13 @@ func addMul(firstAdder: Int, secondAdder: Int, multiplier: Int = 1) -> Int {
 */
 addMul(firstAdder: 1, secondAdder: 2)
 /*:
- ### Default parameter values and external names
-
- Swift automatically creates external parameter names for those parameters that have default
- values. Since our declaration of addMul did not specify an external name (either explicitly or
- using the shorthand method), Swift created one for us based on the name of the internal
- parameter name. This acts as if we had defined the third parameter using the "#" shorthand.
-
- Therefore, when calling the function and specifying a value for the defaulted parameter, we
- must provide the default parameter's external name:
-*/
+ We can also override the default value by passing in the value.
+ */
 addMul(firstAdder: 1, secondAdder: 2, multiplier: 9)
 /*:
- We can opt out of the automatic external name for default parameter values by specify an
+ ### Unspecified Parameter Names
+ 
+ We can opt out of naming parameter values by specifying an
  external name of "_" like so:
 */
 func anotherAddMul(firstAdder: Int, secondAdder: Int, _ multiplier: Int = 1) -> Int {
@@ -142,6 +156,9 @@ anotherAddMul(firstAdder: 1, secondAdder: 2)
 */
 anotherAddMul(firstAdder: 1, secondAdder: 2, 9)
 /*:
+ Frequently unnamed parameters will be used where the context is obvious.  `print` works 
+ exactly this way.
+ 
  ### Variadic Parameters
 
  Variadic parameters allow you to call functions with zero or more values of a specified type.
@@ -222,7 +239,9 @@ yetAnotherArithmeticMean(initialTotal: 1, values: 2, 3, 4, 5, 6)
 /*:
  ### Constant and variable parameters
 
- All function parameters are constant by default. To make them variable, add the var introducer:
+ All function parameters are constant by default. A common pattern is to create variable of the
+ same name as the passed in parameter which much be treated as a let.  This makes a variable copy
+ of the parameter which will be used throughout the rest of the function scope.
 */
 func padString(str: String, pad: Character, count: Int) -> String {
     var str = str
@@ -233,7 +252,7 @@ func padString(str: String, pad: Character, count: Int) -> String {
 var paddedString = "padded with dots"
 padString(str: paddedString, pad: ".", count: 10)
 /*:
- Note that the function does not modify the caller's copy of the string that was passed in
+ Note that this function does not modify the caller's copy of the string that was passed in
  because the value is still passed by value:
 */
 paddedString
@@ -278,23 +297,19 @@ two
 
  It's important to note that their type is described as: (Int, Int) -> Int
 */
-func add(a: Int, b: Int) -> Int {return a+b}
-func mul(a: Int, b: Int) -> Int {return a*b}
+func add(a: Int, b: Int) -> Int { return a + b }
+func mul(a: Int, b: Int) -> Int { return a * b }
 /*:
  A function that has no parameters or return value would have the type: () -> ()
 */
-func nop() -> () {
-	return
-}
+func nop() -> () { return }
 /*:
  The type of the function below is the same as the one above: () -> ()
 
  It is written in a shorter form, eliminating the return type entirely, but this syntactic
  simplification doesn't alter the way that the function's type is notated:
 */
-func doNothing() {
-	return
-}
+func doNothing() { return }
 /*:
  Using what we know about funciton types, we can define variables that are the type of a function
 */
@@ -369,6 +384,9 @@ func getFive() -> Int {
 	return returnFive()
 }
 /*:
+ Note that there is no way to access the `returnFive()` function from outside of `getFive()`.  
+ `returnFive()` is available _ONLY_ within the scope of `getFive()`
+ 
  Calling getFive will return the Int value 5:
 */
 getFive()
@@ -400,11 +418,18 @@ returnFive()
  
  * If not, perform the else statement
  
+ * Guard statements _ALWAYS_ have an else statement associated with them.
+ 
  Like if-let, you can have guard-let, but there are subtle differences.
  Variables defined in a guard-let, unlike with if-let are available to the rest
  of the scope, but are NOT available in the else branch.
  
- Else statements associated with a guard MUST return from the current function.
+ Else statements associated with a guard _MUST_ exit the code block in which
+ the guard statement occurs. They can do this with by invoking `return` (in 
+ a function), `break` or `continue` (in an appropriate control-flow 
+ statement, or `throw` (in a scope declaring throws), or they can call 
+ a function or method that doesn’t return, such as fatalError(_:file:line:).
+ 
  Guard statements typically:
  
  * occur at the top of a function 

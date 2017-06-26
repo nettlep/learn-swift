@@ -1,5 +1,11 @@
 import Foundation
 
+/*:
+ ## Map/Reduce and Friends
+ 
+ 
+ 
+ */
 
 protocol Describable {
     var description: String { get }
@@ -17,8 +23,6 @@ protocol IntegerValuable {
 extension String: IntegerValuable {
     var integerValue: Int { return (self as NSString).integerValue  }
 }
-
-extension NSString: IntegerValuable { }
 
 extension Int: IntegerValuable {
     var integerValue: Int { return self }
@@ -52,18 +56,27 @@ type(of: d)
 var m1 = d
 type(of: m1)
 m1
-    
+
+/*:
+ Filter
+ */
 var m2 = d
     .filter { (k,v) in return v is [IntDescribable] }
 type(of: m2)
 m2
     
+/*:
+ Map
+ */
 var m3 = d
     .filter { (k,v) in return v is [IntDescribable] }
     .map { (k,v) in return v as! [IntDescribable] }
 type(of: m3)
 m3
     
+/*:
+ FlatMap
+ */
 var m4 = d
     .filter { (k,v) in return v is [IntDescribable] }
     .map { (k,v) in return v as! [IntDescribable] }

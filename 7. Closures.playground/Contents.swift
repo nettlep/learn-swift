@@ -56,7 +56,7 @@ reversed = names.sorted(by: {
     return s1 > s2
 })
 /*:
- The "inline" nature of the closure is very important.
+ The "in-line" nature of the closure is very important.
  
  ### Inferring Type from Context
 
@@ -79,8 +79,7 @@ reversed = names.sorted(by: { (s1: String, s2: String) in return s1 > s2 })
 reversed = names.sorted(by: { (s1, s2) in return s1 > s2 })
 /*:
  Since all types can be inferred and we're not using any type annotation on the parameters,
- we can simplify a bit further by removing the paranthesis around the parameters. We'll also put
- it all on a single line, since it's a bit more clear now:
+ we can simplify a bit further by removing the paranthesis around the parameters.
 */
 reversed = names.sorted(by: { s1, s2 in return s1 > s2 })
 /*:
@@ -91,7 +90,7 @@ reversed = names.sorted(by: { s1, s2 in s1 > s2 })
 /*:
  We're not done simplifying yet. It turns out we can get rid of the parameters as well. If we
  remove the parameters, we can still access them because Swift provides shorthand names to
- parameters passed to inline closures. To access the first parameter, use $0. The second
+ parameters passed to closures. To access the first parameter, use $0. The second
  parameter would be $1 and so on.
 
  Here's what that would might like (this will not compile - yet):
@@ -178,6 +177,11 @@ returnValue { return 6 }
 */
 returnValue { 6 }
 /*:
+ The very important point about trailing closure syntax is that you must learn to recognize it
+ if you want to read and write colloquial Swift.  Basically any time you see a `{ ... }` usage that
+ don't recognize you are very likely looking at trailing closure syntax and you need to be 
+ thinking of a function being passed as an argument to another function
+ 
  ### Capturing Values
 
  The idea of capture is to allow a closure to access the variables and constants in their
@@ -245,3 +249,18 @@ anotherIncrementBy10() // returns 10
  Our first incrementor is still using its own context:
 */
 incrementBy10() // returns 50
+/*:
+ ### Closures are Reference Types
+ 
+ “Whenever you assign a function or a closure to a constant or a variable, you are actually setting that constant or variable to be a reference to the function or closure. In the example above, it is the choice of closure that incrementByTen refers to that is constant, and not the contents of the closure itself.
+ 
+ This also means that if you assign a closure to two different constants or variables, both of those constants or variables will refer to the same closure”
+ 
+ _Excerpt From: Apple Inc. “The Swift Programming Language (Swift 3.0.1).”_
+
+ ### Escaping Closures
+ 
+ 
+ 
+ */
+

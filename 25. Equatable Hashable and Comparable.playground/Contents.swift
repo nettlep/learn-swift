@@ -1,5 +1,4 @@
 /*:
- ## Equatable and Hashable
+ ## Equatable Hashable and Comparable
  */
-import UIKit
 

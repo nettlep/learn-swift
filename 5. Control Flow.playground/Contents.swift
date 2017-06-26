@@ -8,23 +8,29 @@
  ### Looping Constructs
  Swifts loops consist of `for`, `repeat` and `while`
  
- ### For loops
+ ### For-in loops
 
- We can loop through ranges using the closed-range operator ("`...`").
-
- In the loop below, `index` is a constant that is automatically declared.
+ For loops loop over all elements of type Sequence.  We'll study sequences later, but for now
+ lets just say that there are many types, one of which is a Range.  Range has special syntax
+ support in Swift in form of `...` and `..<`.
+ 
+ In the loop below, `index` is a sequence value and is automatically declared as part of the for-in
+ construct.
 */
 for index in 1...5 {
 	"This will print 5 times"
-    
     // Being a constant, the following line won't compile:
-    /*:
-     
-````
-	 index = 99
-````
-     */
+    // index = 99
 }
+
+/*:
+ If you don't need the value from the sequnce inside the loop you can ignore it
+ by using `_` as the loop variable.
+*/
+var mantissa = 2, exponent = 8, product = 1
+for _ in 1...exponent { product *= mantissa }
+product
+
 /*:
  The constant `index` from the previous loop is scoped only to the loop. As a result, you cannot
  access it beyond the loop. The following line will not compile:
@@ -36,9 +42,7 @@ for index in 1...5 {
 
  We can also reuse the name 'index' because of the scoping noted previously.
 */
-for index in 1 ..< 5 {
-	"This will print 4 times"
-}
+for index in 1 ..< 5 { "This will print 4 times" }
 /*:
  Apple's "Swift Programming Language" book states the following, which I find in practice to be
  incorrect:
@@ -47,53 +51,47 @@ for index in 1 ..< 5 {
  index after the loop completes, or if you want to work with its value as a variable rather than
  a constant, you must declare it yourself before its use in the loop.”
 ```
- In practice, I find that the loop constant overrides any local variable/constant and maintains
- its scope to the loop and does not alter the locally defined value:
+ *Important Note* Unlike in C, Swift
+ for-in loops _ALWAYS_ define their own loop index
+ which does not effect anything outside the loop. So, in the code
+ below, indx inside the loop is actually a different variable than 
+ indx outside the loop.
 */
 var indx = 3999
 for indx in 1...5 {
 	indx //: This ranges from 1 to 5, inclusive
-
     //	 `indx` is still acting like a constant, so this line won't compile:
-     /*:
-```
-	 indx++
-```
-     */
+    // indx += 1
 }
-//: After the loop, we find that 'indx' still contains the original value of 3999
+/*: 
+ After the loop, we find that 'indx' still contains the original value 
+ of 3999. indx could have been of a completely different type, say String
+ and the loop would have been unaffected.
+*/
 indx
-//: We can use an underscore if you don't need access to the loop constant:
-for _ in 1...10 {
-	print("do something")
-}
-//: We can iterate over arrays
+/*: 
+ You can use an underscore if you don't need access to the loop constant:
+*/
+for _ in 1...10 { print("do something") }
+/*: 
+ We can iterate over arrays, which are also a type of Sequence
+*/
 let names = ["Anna", "Alex", "Brian", "Jack"]
-for name in names {
-	name
-}
-//: We can iterate over a Dictionary's key/value pairs
+for name in names { name }
+/*: 
+ We can iterate over a Dictionary's key/value pairs because Dictionaries are also a Sequence
+ of tuples, i.e. in the key/value pairs.
+ */
 let numberOfLegs = ["Spider":8, "Ant":6, "Cat":4]
-for (animalName, legs) in numberOfLegs {
-	animalName
-	legs
-}
-//: We can iterate over characters in a String
+for (animalName, legs) in numberOfLegs { animalName; legs }
+/*: 
+ We can iterate over characters in a String because, you guessed it, String is also a Sequence.
+ *Important Note*, there is nothing special about the Sequences we are using here, you can write
+ your own and if you do, you can use it in a for-in loop just like all the ones we've used so far.
+*/
 for character in "Hello".characters {
 	character
-}
-/*:
- We can use the For-Condition-Increment loop construct, which resembles the C-like variant
-
- Note that the loop value is a variable, not a constant. In fact, they cannot be constant
- because of the increment statement (++index)
-*/
-for index in 0 ..< 3 {
-	index
-}
-//: The parenthesis are optional for the For-Condition-Increment loop:
-for index in 0 ..< 3 {
-	index
+    print(type(of:character))
 }
 /*:
  Variables are scoped to the For-Condition-Increment construct. To alter this, pre-declare index
@@ -113,7 +111,7 @@ while index > 0 {
 	index -= 1
 }
 /*:
- Do-While loops also resemble their C-like language counterparts. They perform the condition
+ Repeat-While loops also resemble their C-like language counterparts. They perform the condition
  after each iteration through the loop. As a result, they always execute the code inside the
  loop at least once:
 */
@@ -139,11 +137,11 @@ else {
 }
 /*:
  ### Switch
- Switch statements are more powerful than their C-like counterparts. Here are a few of those
- differences to get us started:
+ Switch statements in Swift are far more powerful than their 
+ C-like counterparts. Here are a few of those differences to get us started:
 
- Unlike C-like languages, switch statements do not require a "break" statement to prevent falling
- through to the next case.
+ *Important Point* Unlike C-like languages, switch statements do not require a 
+ "break" statement to prevent falling  through to the next case.
 
  Additionally, multiple conditions can be separated by a comma for a single case to match
  multiple conditions.
@@ -173,14 +171,13 @@ switch someCharacter {
  empty case statement:
 ```
  let anotherCharacter: Character = "a"
- switch anotherCharacter
- {
+ switch anotherCharacterb{
 		case "a":
 		case "A":
 			"the letter a"
 		default:
 			"not the letter a"
-	}
+ }
 ```
  We can perform range matching for cases:
 */
@@ -396,3 +393,55 @@ nameLoop: for name in names {
 	}
 }
 result
+
+/*:
+ ### Other Control Transfer Statements
+ 
+ In addition to `continue`, `break`, and `fallthrough`, Swift has two other control transfer statements:
+ `return` and `throw`.  Use of `return` is shown in the Functions playground, `throw` is detailed in Try, Catch, Defer, Throws
+ */
+
+/*:
+ ### Labelled Statements
+ 
+ Suppose we have a nested control structure and under some condition inside
+ the inner structure, we want to continue to the outer structure.  
+ Here's an example of that
+ */
+let finalSquare = 25
+var board = [Int](repeating: 0, count: finalSquare + 1)
+board[03] = +08; board[06] = +11; board[09] = +09; board[10] = +02
+board[14] = -10; board[19] = -11; board[22] = -02; board[24] = -08
+var square = 0
+var diceRoll = 0
+
+gameLoop: while square != finalSquare {
+    diceRoll += 1
+    if diceRoll == 7 { diceRoll = 1 }
+    switch square + diceRoll {
+    case finalSquare:
+        // diceRoll will move us to the final square, so the game is over
+        break gameLoop
+    case let newSquare where newSquare > finalSquare:
+        // diceRoll will move us beyond the final square, so roll again
+        continue gameLoop
+    default:
+        // this is a valid move, so find out its effect
+        square += diceRoll
+        square += board[square]
+    }
+}
+print("Game over!")
+/*:
+ _(Excerpt From: Apple Inc. “The Swift Programming Language (Swift 3.0.1).” iBooks.)_
+
+ Note that in this case the `break` and `continue` statements, do not apply
+ just to the `switch` statement they are embedded in, the apply to the outer
+ while loop.
+ 
+ ### Early Exit and the `guard` statement
+ 
+ One very important construct in Swift is the `guard` statement.  
+ It's use is covered in the Functions playground.
+ */
+
