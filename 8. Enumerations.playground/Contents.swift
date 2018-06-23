@@ -106,7 +106,7 @@ switch productBarcode {
 		"UPCA: \(numberSystem), \(identifier), \(check)"
 	
 	// All variables
-	case var .QRCode(productCode):
+	case let .QRCode(productCode):
 		"QR: \(productCode)"
 }
 /*:

@@ -16,6 +16,8 @@ do {
     let result = try aFunc(shouldThrow: false)
     let result2 = try? aFunc(shouldThrow: true)
     let result3 = try aFunc(shouldThrow: true)
+    
+    print("\(result) \(result2 ?? "was nil") \(result3)")
 }
 catch {
     print("saw the error on the third try: \(error)")

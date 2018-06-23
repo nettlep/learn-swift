@@ -46,7 +46,7 @@ originalString // not modified
 /*:
  You can iterate over a string like this:
 */
-for character in originalString.characters {
+for character in originalString {
 	character
 }
 /*:
@@ -55,9 +55,9 @@ for character in originalString.characters {
 */
 var notAString: Character = "t"
 /*:
- Use String.characters.count to get number of characters in a string
+ Use String.count to get number of characters in a string
 */
-originalString.characters.count
+originalString.count
 /*:
  Strings can be concatenated with strings and characters
 */

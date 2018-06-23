@@ -10,7 +10,7 @@
    "strong reference" is made. A strong reference ensures that the reference is not deallocated
    for as long as the strong reference remains.
 
- We can't really see ARC in actino within a Playground, but we can still follow along what
+ We can't really see ARC in action within a Playground, but we can still follow along what
  would normally happen.
 
  We'll start by creating a class to work with

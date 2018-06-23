@@ -94,6 +94,7 @@ let unwrappedInt = optionalConvertedNumber!
 if optionalConvertedNumber != .none {
 	// It's now safe to force-unwrap because we KNOW it has a value
 	let anotherUnwrappedInt = optionalConvertedNumber!
+    anotherUnwrappedInt
 }
 else {
 	// The optional holds "no value"
@@ -130,7 +131,7 @@ optionalConvertedNumber = nil
  Now if we check it, we see that it holds no value:
 */
 if optionalConvertedNumber != .none {
-	"optionalConvertedNumber holds a value (\(optionalConvertedNumber))! (this should not happen)"
+	"optionalConvertedNumber holds a value (\(optionalConvertedNumber ?? -1))! (this should not happen)"
 }
 else {
 	"optionalConvertedNumber holds no value"

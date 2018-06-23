@@ -441,7 +441,7 @@ returnFive()
 func hasValue(_ string: String?) -> Bool {
     // note that we use guard to redefine "string" to be non-optional
     guard let string = string else { return false }
-    return string.characters.count > 0
+    return string.count > 0
 }
 
 hasValue(nil)

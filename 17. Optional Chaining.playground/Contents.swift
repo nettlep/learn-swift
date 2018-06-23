@@ -54,7 +54,7 @@ person!.musicPreferences!.favoriteSong!.artist!
 /*:
 // Let's break the chain, removing the user's music preferences:
 */
-if var p = person {
+if let p = person {
 	p.musicPreferences = nil
 }
 /*:

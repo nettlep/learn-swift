@@ -89,7 +89,7 @@ for (animalName, legs) in numberOfLegs { animalName; legs }
  *Important Note*, there is nothing special about the Sequences we are using here, you can write
  your own and if you do, you can use it in a for-in loop just like all the ones we've used so far.
 */
-for character in "Hello".characters {
+for character in "Hello" {
 	character
     print(type(of:character))
 }
@@ -157,7 +157,7 @@ switch someCharacter {
 	case "a", "e", "i", "o", "u":
 		"a vowel"
 	
-	case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "u", "z":
+	case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z":
 		"a consonant"
 
 	// Necessary because switch statements must be exhaustive in order to capture all Characters
@@ -269,14 +269,14 @@ switch anotherPoint {
 */
 let yetAnotherPoint = (1, -1)
 switch yetAnotherPoint {
-	case let (x, y) where x == y:
-		"On the line of x == y"
-	
-	case let (x, y) where x == -y:
-		"On the line of x == -y"
-	
-	case let (x, y):
-		"Just some arbitrary point"
+case let (x, y) where x == y:
+    "On the line of x == y"
+    
+case let (x, y) where x == -y:
+    "On the line of x == -y"
+    
+case (_, _):
+    "Just some arbitrary point"
 }
 /*:
  ### Control transfer statements
@@ -348,7 +348,7 @@ switch integerToDescribe {
 */
 var result = ""
 nameLoop: for name in names {
-	characterLoop: for character in name.characters {
+	characterLoop: for character in name {
 		theSwitch: switch character {
 			case "a":
 				// Break out of the theSwitch and characterLoop
@@ -363,7 +363,7 @@ result
 //: Similarly, this prints all names without the letter 'a' in them:
 result = ""
 nameLoop: for name in names {
-	characterLoop: for character in name.characters {
+	characterLoop: for character in name {
 		theSwitch: switch character {
 			case "a":
                 // Continue directly to the character loop, bypassing this character in this name
