@@ -115,7 +115,4 @@
    <FileRef
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/98. Asynchronicity.playground">
    </FileRef>
-   <FileRef
-      location = "group:99. Not The End.playground">
-   </FileRef>
 </Workspace>
