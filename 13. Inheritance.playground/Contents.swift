@@ -76,6 +76,14 @@ class Car: Vehicle {
 let car = Car()
 car.speed = 55
 car.description()
+
+
+var something: Vehicle = Bicycle()
+something.description()
+
+something = Car()
+something.description()
+
 /*:
  ### Overriding Properties
 

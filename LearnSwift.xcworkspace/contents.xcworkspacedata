@@ -20,7 +20,7 @@
       location = "group:1e. Assertions.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/2. Basic Operators.playground">
+      location = "group:2. Basic Operators.playground">
    </FileRef>
    <FileRef
       location = "group:3. Strings and Characters.playground">
@@ -92,16 +92,16 @@
       location = "group:23. Advanced Operators.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/24. Try, Catch, Defer, Throws.playground">
+      location = "group:24. Try, Catch, Defer, Throws.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/25. Equatable Hashable and Comparable.playground">
+      location = "group:25. Equatable Hashable and Comparable.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/26. Sequences and Iterators.playground">
+      location = "group:26. Sequences and Iterators.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/27. Map Reduce and Filter.playground">
+      location = "group:27. Map Reduce and Filter.playground">
    </FileRef>
    <FileRef
       location = "group:28. Value and Reference Types.playground">

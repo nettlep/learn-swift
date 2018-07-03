@@ -46,6 +46,7 @@ enum CompassPoint {
  Let's store an enumeration value into a variable. We'll let the compiler infer the type:
 */
 var directionToHead = CompassPoint.west
+var otherDirection: CompassPoint = .east
 /*:
  Now that directionToHead has a CompassPoint type (which was inferred) we can set it to a
  different CompassPoint value using a shorter syntax:
@@ -121,6 +122,8 @@ enum StatusCode: Int {
 	case OtherResult = 1
 	case YetAnotherResult // Unspecified values are auto-incremented from the previous value
 }
+
+StatusCode.Error.rawValue
 /*:
  We can get the raw value of an enumeration value with the rawValue member:
 */
@@ -168,4 +171,25 @@ else { "No pet :(" }
 pet = FamilyPet(rawValue: "Snake")
 if pet != .none { "We have a pet" }
 else { "No pet :(" }
+
+
+enum Maybe {
+    case some(Double)
+    case none
+}
+
+func logarithm(_ value: Double) -> Maybe {
+    guard value > 0 else { return .none }
+    return .some(14.0)
+}
+
+let x = logarithm(-2.0)
+
+switch x {
+case let .some(value):
+    print(value)
+case .none:
+    print("we got nuthin'")
+}
+
 
