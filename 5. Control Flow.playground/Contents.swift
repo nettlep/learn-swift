@@ -42,7 +42,7 @@ product
 
  We can also reuse the name 'index' because of the scoping noted previously.
 */
-for index in 1 ..< 5 { "This will print 4 times" }
+for _ in 1 ..< 5 { "This will print 4 times" }
 /*:
  Apple's "Swift Programming Language" book states the following, which I find in practice to be
  incorrect:
@@ -381,7 +381,7 @@ result
 */
 result = ""
 nameLoop: for name in names {
-	characterLoop: for character in name.characters {
+	characterLoop: for character in name {
 		theSwitch: switch character {
 			case "x":
                 // Break completely out of the outer name loop
