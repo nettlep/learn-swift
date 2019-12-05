@@ -422,7 +422,7 @@ gameLoop: while square != finalSquare {
     case finalSquare:
         // diceRoll will move us to the final square, so the game is over
         break gameLoop
-    case let newSquare where newSquare > finalSquare:
+    case square + diceRoll where (square + diceRoll) > finalSquare:
         // diceRoll will move us beyond the final square, so roll again
         continue gameLoop
     default:

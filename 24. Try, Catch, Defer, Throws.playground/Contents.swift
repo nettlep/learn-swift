@@ -41,9 +41,6 @@ do {
     }
     so
     let result4 = try throwSpecificError(shouldThrow: .firstError("this is an error of type 1"))
-    defer {
-        so = so! + "cleanly"
-    }
 }
 catch OurError.firstError(let message) {
     "rethrow got: \(message)"

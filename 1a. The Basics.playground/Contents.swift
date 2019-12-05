@@ -290,7 +290,7 @@ let hexInteger = 0x11 // ...and 17 in Hexidecimal
  Break the following down into "0xF", "p", "2". 
  Read as 15 (0xF) times 2 to the power (p) of 2, which is 60 decimal
  */
-0xFp2
+0xFp2 // 15 times 2 raised to the 2
 0xFp-2 // 15 times 2 raised to the -2
 0xC.3p0 // 12+3/16 times 2 raise to the zero
 /*:
