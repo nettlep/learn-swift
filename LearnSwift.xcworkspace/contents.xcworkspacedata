@@ -5,6 +5,9 @@
       location = "group:README.md">
    </FileRef>
    <FileRef
+      location = "group:Advanced Swift Notes.rtfd">
+   </FileRef>
+   <FileRef
       location = "group:1a. The Basics.playground">
    </FileRef>
    <FileRef
@@ -98,21 +101,15 @@
       location = "group:25. Equatable Hashable and Comparable.playground">
    </FileRef>
    <FileRef
-      location = "group:26. Sequences and Iterators.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/26. Value and Reference Types.playground">
    </FileRef>
    <FileRef
-      location = "group:27. Map Reduce and Filter.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/27. Higher Order Functions I.playground">
    </FileRef>
    <FileRef
-      location = "group:28. Value and Reference Types.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/28. Higher Order Functions 2.playground">
    </FileRef>
    <FileRef
-      location = "group:29. Top Level Functions.playground">
-   </FileRef>
-   <FileRef
-      location = "group:30. Other Points.playground">
-   </FileRef>
-   <FileRef
-      location = "group:98. Asynchronicity.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/29. Combine.playground">
    </FileRef>
 </Workspace>
