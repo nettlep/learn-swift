@@ -153,8 +153,10 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
  yourself with the use of ALL of the following and you should do it in the order
  we show here. (Don't worry we're going to drill you on several of them below):
  
- These are easily the most important ones. They apply to almost ALL generic types
- in addition to Sequence.  We'll talk about these in much more detail below:
+ The following 3 functions are easily the most important ones.
+ They apply to almost ALL generic types in addition to Sequence.
+ We'll talk about these in much more detail below, but you should
+ pay a LOT of attention to these:
  
     map
     zip
@@ -201,14 +203,17 @@ let x1 = x0.map(g)
 x1
 type(of: x1)
 /*:
- The important point to note here is that map takes an array of one type, in this case [Int]
- and changes it to an array of the same length of another type, in this case [Double].
+ The important point to note here is that map takes an array of one type, in this case `[Int]`
+ and changes it to an array of the same length of another type, in this case `[Double]`.
  
- It does this by applying a function (A) -> B to every element of an [A] to generate an [B]
+ It does this by applying a function `(A) -> B` to every element of an `[A]`
+ to generate an `[B]`.
  
  If you think about it for a bit, you can see that this is a _very_ general pattern.
- Essentially every generic type G<A> an be converted to a G<B> in this manner.  In fact
- we will do exactly this with Optional below.
+ Essentially every generic type `G<A>` can be converted to a `G<B>` in this manner,
+ to the point that it is difficult to imagine a generic which would _not_ have a map
+ function.  In fact, we will verify this below by demonstrating exactly how this
+ works with the Optional type. (Recall that Optional is a generic enum of two cases).
 
  Here's another example this time turning [Int] to [String].
  */
@@ -216,14 +221,14 @@ let x2 = [1, 2, 3].map { "\($0)" }
 x2
 type(of: x2)
 /*:
- Note how we go back and forth between using the parens' for and the trailing closure
- syntax form.  You need to master this.
+ Note how we go back and forth between using the parens form and the trailing closure
+ syntax form.  You need to master doing this as well.
  
  Let's look at `zip` now and think about it's general form. Like `map`,
  `zip` is an amazingly general form that applies to almost any generic you will
  encounter, i.e. you can write a function with this signature for almost any generic G:
  
- `(G<A>, G<B>) -> G<(A, B)>
+     `(G<A>, G<B>) -> G<(A, B)>`
  
  Again, we'll do this below for Optional but for now, we'll show how it works with Sequence.
  
@@ -261,7 +266,7 @@ type(of: fm0)
 let fm1 = fm0.flatMap { $0 }
 fm1
 type(of: fm1)
-/*;
+/*:
  Notice that we have gone from [[Int]] to [Int] and that all of the inner array
  values have been preserved.  Again there is only one way to do this with an
  array and a function of this type signature.  Nothing else really makes sense.
@@ -277,7 +282,7 @@ type(of: fm3)
  You may ask: how many times do I have an Array<Array<A>> as my given type after all?
  That's really the wrong question.  What we're dealing with here is Sequences of which
  Array is only a particular type.  A better question is "under what circumstances am
- I likely to be dealing with a subsequence of a given sequence.  Or when am I likely
+ I likely to be dealing with a subsequence of a given sequence"?  Or: "when am I likely
  to have have to run a query against some back that provides me as its return type
  the values I need to run a sequence of other queries?"  _THAT_ is when flatMap on
  Sequence really begins to show its power.

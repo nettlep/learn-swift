@@ -45,8 +45,8 @@ Two questions that should be in your mind are:
           [String]
 ```
  Eventually in Swift, you have to understand functions which take functions AND
- functions which return functions. And even more you have to understand how they
- chain.
+ functions which return functions. And even more you have to understand
+ how they chain.
 
  Interestingly, there are several ways syntactically to invoke that function that
  we captured as `f`. Look at the lines below and their type signatures.
@@ -111,7 +111,7 @@ public func flip<A, B, C>(
  
  We have 3 functions here:
  
- 1.  The one that begins: `public func flip<A, B, C>(`
+ 1. the function that begins: `public func flip<A, B, C>(`
  
  2. the one that begins: `{ (c: C) -> (A) -> B in`
  
@@ -184,17 +184,20 @@ type(of: StructA.append)
  If you look at _THOSE_ type signatures, you'll find that they fit our `flip` function above
  perfectly.  i.e. we could shift around the order of the arguments if we found that convenient.
  
- Ok so we can write our own static functions that bind `self` and they behave precisely the way
- that "objects" do.  i.e. everything you think of as an "instance method" is actually a
+ But the big lesson here is that we can write our own static functions that
+ bind `self` and they behave _precisely_ the way that "objects" do.  i.e.
+ everything you think of as an "instance method" is actually a
  function returning a function where Swift has passed in "self" to the first function, which
  has bound it and returned the function that you think of as the "method". (The compiler
  optimizes the hell out of this for your methods, so it's not literally true underneath,
  but from a syntactic standpoint, they are exactly the same).
  
- This is _exactly_ equivalent to what ObjC does when it passes self as the first argument to an
- Impl.  Swift just uses a different technique.
+ If you are familiare with ObjC, this is _exactly_ equivalent to what
+ it does when it passes self as the first argument to an Impl.  Swift
+ just uses a different technique for designating `self`.  And it turns
+ out that that technique is just a use of functional composition.
  
- But... we can in fact do what ObjC does too.  Let's write a function for that.
+ But... we can in fact do what ObjC does, too.  Let's write a function for that.
  */
 public func uncurry<A, B, C>(
     _ function: @escaping (A) -> (B)  -> C
@@ -202,12 +205,24 @@ public func uncurry<A, B, C>(
     { (a: A, b: B) -> C in function(a)(b) }
 }
 /*:
- This one takes a function returning function where the arguments are single values and combines them to make a single function that takes two arguments. Lets try it.
+ This one takes as its only argument a function returning a function
+ where the arguments to the passed in function are single values and it
+ combines them to make a single function that takes two arguments.
+ Lets try it.
  */
 let u = uncurry(StructA.append)
 type(of: u)
 /*:
- To reiterate, we just turned StructA.append into an ObjC style function where `self` is the first argument.  Hmm..  What can be seen here is that everything you think of as OOP is in fact a specific notation that can be derived by manipulating functions and seasoning to taste with syntactic sugar.
+ Look at the output of that `type(of:)`.  If you are familiar with other OO
+ languages like ObjectiveC, it should remind you of exactly what those languages
+ do to provide method invocation.
+ 
+ To reiterate, we just turned `StructA.append` into an ObjC-style Impl where `self`
+ is the first argument.  Hmm..  What can be seen here is that everything you think
+ of as OOP is in fact a specific notation that can be derived by manipulating
+ functions and seasoning to taste with syntactic sugar.  What Swift has done
+ is promote these techniques from being compiler magic to being run-of-the-mill,
+ garden variety, language features.
 
  And.... just for kicks, lets undo what we just did.
  */
@@ -223,14 +238,24 @@ type(of: c)
  And we see that c recovers the shape of the original function.
  
  This sort of "shape manipulation" is an incredibly powerful feature
- that allows you glue functions together in really interesting ways.
+ that allows you to glue existing functions together in really interesting ways.
  
  NB, everything we've just done, could also be done in e.g. ObjC.
- The difference (and the reason that these techniques are not used there) is
- 1) generics and 2) syntax.  `flip`, `curry` and `uncurry` are real
+ There are two differences (and the differences are the entire
+ reason that these techniques are not used there):
+ 
+ 1. generics and
+ 2. syntax.
+ 
+ `flip`, `curry` and `uncurry` are real
  generic functions with reified implementations created on demand.
  Unlike in Java or ObjC, they are not just hints to the compiler.
- And the syntax of swift is _designed_ to make this sort of reshaping easy.
+ Reified generics are precisely what is required to remove the boiler-
+ plate code necessary to reshape functions in a general sense.  Without it
+ you end up writing custom code to reshape functions the way that you want
+ and that custom code is just too cumbersome to implement in the volume
+ you would need. And the syntax of swift is _designed_ to make this use
+ of generics and this sort of reshaping easy.
  
  In fact, [this NSHipster article](https://nshipster.com/callable/) is
  an excellent explantion of what the syntactic sugar here is doing and
@@ -253,15 +278,41 @@ func >>> <A, B, C>(
 ) -> (A) -> C {
     { (a: A) -> C in g(f(a)) }
 }
+/*:
+ Note that all this function does is take two functions which
+ fit together (f outputs g's input type) and roll them up into
+ one function.
 
+ Here's an example:
+ */
 let left = { (a: Int) -> Double in Double(2 * a) }
 type(of: left)
+
 let right = { (b: Double) -> String in "\(b)" }
 type(of: right)
 
 (left >>> right)(4)
 type(of: left >>> right)
 
+let combined = left >>> right
+type(of: combined)
+combined(4)
+combined(5)
 /*:
+ So look closely at that line:
+ 
+     `let combined = left >>> right`
+ 
+ Using a functional composition technique,
+ we were able to combine two functions together without invoking
+ either one.
+ 
+ This gave us a single function we could then invoke
+ at our leisure.  Which we then do with the lines:
+ ```
+ combined(4)
+ combined(5)
+ ```
+ 
  And now... we are ready to talk about what Combine does.
  */

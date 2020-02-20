@@ -185,7 +185,7 @@ ructs and classes). Many OOP type systems such as C++, Java (for now) and ObjC (
 \f1\b0 . In Swift, generic types are not simply hints to the compiler, but are real types subject to rigorous type checking.  The difference is that instead of typing the code for a given generic type yourself, the compiler generated (aka reified) the type for you. Swift's generics are best thought of as functions on types which are called at compile time rather than at run time.  There's a lot of generic enhancement still to come in future versions of Swift so it is important to be aware of changes in the system.\
 {\listtext	\uc0\u8226 	}
 \f0\b Type Inference
-\f1\b0 .  Swift provides type inference mechanisms built on ADT's and reified generics that make it possible to write type safe code that would be extremely difficult to write or subsequently read in C-based languages.\
+\f1\b0 .  Swift provides type inference mechanisms built on Algebraic Data Types and reified generics that make it possible to write type safe code that would be extremely difficult to write or subsequently read in C-based languages.\
 {\listtext	\uc0\u8226 	}
 \f0\b Function composition.
 \f1\b0  The features above, taken together, allow Swift to provide syntax and semantics for forms of functional composition which simply are not available in ObjC or Java (Javascript actually does much better at this).  This is probably the hardest feature for OO programmers to grasp.  In OO languages, you can pass a function to another function or invoke a function - but the syntax for writing a function or method to take other functions or methods as arguments, compose them in some manner and return the composition is (charitably put) unwieldy to use. So it very rarely is.  Fundamentally, it is composition of this sort (taking/returning other functions with strict type checking, aka "higher order functions") which differentiates functional programming from OOP. (See the John Hughes paper in the bibliography below).\
@@ -252,18 +252,21 @@ Wrt to side-effects, in this model, side-effects are \'93pushed to the edge of t
 \
 This model is precisely the one used by SwiftUI. Display update is a direct side-effect of updating ApplicationState implemented as part of the SwiftUI framework.  SwiftUI's Views are not mutable for this reason.  They are generated using a particular value of the Application State to which they are connected by property wrappers of various forms.\
 \
-Because of the above, it becomes clear that long-running applications should be organized as collections of functions of the form: 
-\f6 \cf5 (ApplicationState, Event)->(ApplicationState, Effect<Action>)
+The above almost inevitably implies that long-running applications should be organized as collections of functions of the form: 
+\f6 \cf5 (ApplicationState, Event)->(ApplicationState, [Effect<Action>])
 \f1 \cf0 .  In functional programming terms, functions with this signature are called reducers. Your application should decompose this function into a chain of function invocations mediated by the type system. If you are working with a mutable ApplicationState, this signature is 
-\f6 \cf5 (&ApplicationState, Event)->Effect<Action>
+\f6 \cf5 (&ApplicationState, Event)->[Effect<Action>]
 \f5\i \cf0 .
 \f1\i0  The equivalent form of this latter function in OO notation is: 
-\f6 \cf5 applicationState.handle(anEvent)->Effect<Action>
+\f6 \cf5 applicationState.handle(anEvent)->[Effect<Action>]
 \f1 \cf0  where the applicationState is mutated by the event handling method call.  \
 \
 The unconstrained creation of side-effects arising from the introduction of mutation by the OOP style is 
 \f5\i a
-\f1\i0  critical difference between the two approaches. This difference explains why you don't want to return Void during your function application. Returning Void anywhere in this chain is a clear signal that you have introduced a side-effect that is not being pushed to the edge of the world and it breaks the flow of the function invocation chain.\
+\f1\i0  critical difference between the two approaches. This difference explains why you don't want to return Void during your function application. Returning Void anywhere in this chain is a clear signal that you have introduced a side-effect that is not being pushed to the edge of the world 
+\f5\i \kerning1\expnd0\expndtw0 and
+\f1\i0 \expnd0\expndtw0\kerning0
+ it breaks the flow of the function invocation chain.\
 \
 Chaining on the return type of Void also means that the type system cannot help you reason about the handling of an event or assist in managing side-effects.  Allowing the type system to help is one of 
 \f5\i the 
@@ -281,7 +284,7 @@ The FRB style is so different from the traditional UIKit MVC model that it can b
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
 
-\fs28 \cf0 FRP-based applications should be thought of as following this model with State being divided into many intercommunicating substates.  This point is very important.  None of the discussion above implies at all that there should be only a single global state available to the application.  Most large UIKit applications end up with such a single global type (frequently signalled by a name that includes the word `Context`).  \
+\fs28 \cf0 FRP-based applications should be thought of as following this model with State being divided into many intercommunicating substates.  This point is very important.  None of the discussion above implies at all that there should be only a single global state available to the application.  Most large UIKit applications end up with such a single global type (frequently signalled by a name that includes the word `Context`), but this is an anti-pattern in SwiftUI.  \
 \
 Under the FRP architecture, the State shown in the diagram above becomes a tree of smaller State objects with communication allowed only up or down the tree, using Combine.   All UI is grouped in modules, each of which can see a particular node on the State tree.  So for any given sub-hierarchy of views, the diagram above is correct.  What is missing is the communication between sub- and super- States. \expnd0\expndtw0\kerning0
 \
@@ -333,7 +336,7 @@ You will want to:\
 \ls14\ilvl0\cf0 {\listtext	\uc0\u8226 	}Fully understand when you should use structural types and when you should use nominal types\
 {\listtext	\uc0\u8226 	}Observe in passing that enums have no corresponding nominal type form, though this has been discussed in the community\
 {\listtext	\uc0\u8226 	}Make sure you understand tuple syntax and in particular that tuples can be broken apart into their constituent pieces - this feature is called "destructuring"\
-{\listtext	\uc0\u8226 	}Note that each function in Swift takes exactly only one argument - and somewhat as you would expect - that argument is a tuple\
+{\listtext	\uc0\u8226 	}Note that each function in Swift takes exactly only one argument - and somewhat as you would expect - that argument is a tuple (This has not strictly been true at the compiler level since Swift 3, but from an API usage standpoint it is still the case)\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 
@@ -341,6 +344,7 @@ You will want to:\
 \f1\b0\fs28 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls15\ilvl0\cf0 {\listtext	\uc0\u8226 	}Functions in Swift are first-class objects, they can be passed in to other functions as arguments and can be returned from functions just like any other type.\
+{\listtext	\uc0\u8226 	}It is important that note that when a function returns a function, the return value is necessarily a composition of some function.\
 {\listtext	\uc0\u8226 	}Swift syntax provides very powerful tools for composing functions together in ways that are extremely difficult in ObjectiveC, C++ or Java\
 {\listtext	\uc0\u8226 	}Because functions are first class objects, this means that in your code you can invoke functions which return new functions.  You can then assign them to variables, pass them to other functions or invoke them.\
 {\listtext	\uc0\u8226 	}Again, other languages allow this and in this area, Swift's contribution has been simply to optimize the syntax in an idiosyncratic way that makes it much easier to do.  Accordingly, programming techniques which are built around function composition are used much more often in Swift than in other languages where the syntax is not so optimized.\
@@ -379,7 +383,8 @@ You will want to:\
 {\listtext	\uc0\u8226 	}
 \f5\i flip
 \f1\i0 ping and currying a function's arguments to designate one of the function's arguments as THE object being operated on is the entire basis of OOP.  `flip` is also a valid function in Swift.\
-{\listtext	\uc0\u8226 	}You should understand the following about functions which are 'methods' associated with enums, structs, classes and protocols:\
+{\listtext	\uc0\u8226 	}OOP in a functional programming setting is purely a notational device designed to enhance programmer intuition.  Any functional program can be written in OOP notation, but this is not always the more intuitive means of expression and should be used judiciously.\
+{\listtext	\uc0\u8226 	}In regards to the OOP notation, you should understand the following about functions which are 'methods' associated with enums, structs, classes and protocols:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls15\ilvl1\cf0 {\listtext	\uc0\u8259 	}Each function you think of as an "instance method" on a type A, taking arguments such as X, Y, and Z and returning B is actually just a static function of the form: \
 \pard\tx1660\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li2160\fi-2160\pardirnatural\partightenfactor0
@@ -455,21 +460,21 @@ You will want to:\
 \ls19\ilvl0
 \f1\b0\fs28 \cf0 {\listtext	\uc0\u8226 	}Void and Never\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
-\ls19\ilvl1\cf0 {\listtext	\uc0\u8259 	}Be aware that Void is actually a meaningful type in Swift, specifically it is the type inhabited by only one value.  Incredibly, this has meaning and makes sense of a lot of other things once you really grasp it.  \
-{\listtext	\uc0\u8259 	}Understand that Void's syntax is different than other types because `()` represents both the 
+\ls19\ilvl1\cf0 {\listtext	\uc0\u8259 	}Be aware that Void is actually a meaningful type in Swift, specifically it is the structural type inhabited by only one value.  Incredibly, this has meaning and makes sense of a lot of other things once you really grasp it.  \
+{\listtext	\uc0\u8259 	}Understand that Void's syntax is different than other types because the way it is expressed syntacticly, `()`, represents both the 
 \f5\i type
 \f1\i0  and the 
 \f5\i value
 \f1\i0  for Void and whether it is the type or value being referenced in any given situation is context-dependent.  \
 {\listtext	\uc0\u8259 	}Understand that typealias'ing Void as a tuple (aka a structural type) has some downsides, since Void is an empty tuple it is not possible to define extensions on it.  You might want to consider emulating Haskell here and defining an equivalent struct (aka a nominal type) called Unit which is the empty struct.  This has the advantage of being extensible.\
-{\listtext	\uc0\u8259 	}Also be aware that Never is also actually a meaningful type in Swift, i.e. it is the type inhabited by NO values.  This also has meaning especially as a parameter to generic types.  \
+{\listtext	\uc0\u8259 	}Also be aware that Never is also actually a meaningful type in Swift, i.e. it is the nominal type inhabited by NO values.  This also has meaning especially as a parameter to generic types.  \
 {\listtext	\uc0\u8259 	}For reference, Never is defined as the empty enum. (Think about it)\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls19\ilvl0\cf0 {\listtext	\uc0\u8226 	}Understand that 
 \f5\i structs
 \f1\i0  are Product types and 
 \f5\i enums
-\f1\i0  are Sum (or Coproduct) types.  If ADTs are not familiar, you may want to spend a little time understanding the difference, it will really improve your design and architecture skills.\
+\f1\i0  are Sum (or Coproduct) types in Algebraic Data Type (ADT) Theory.  If ADTs are not familiar, you may want to spend a little time understanding the difference, it will really improve your design and architecture skills.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\b\fs36 \cf0 \
@@ -522,7 +527,7 @@ Structs and Classes
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls23\ilvl0\cf0 {\listtext	\uc0\u8226 	}When creating enums, the strong temptation is to treat them similarly to NS_ENUM and use raw types like Int and String.  This is usually too inflexible as a design.  \
 {\listtext	\uc0\u8226 	}Much more frequently than you think initially, you will want to use associated values in your enum. \
-{\listtext	\uc0\u8226 	}You should think of enum as a C union type rather than a C enum type.  \
+{\listtext	\uc0\u8226 	}If you are familiar with C, you should practice thinking of enum as a C union type rather than a C enum type.  \
 {\listtext	\uc0\u8226 	}Remember that tuples work very well as associated values for enums\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
@@ -563,8 +568,7 @@ Sequences\
 {\listtext	\uc0\u8259 	}publisher\
 {\listtext	\uc0\u8259 	}forEach\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls25\ilvl0\cf0 {\listtext	\uc0\u8226 	}`forEach` is listed last, because its use should be only as a last resort because it returns Void.\
-{\listtext	\uc0\u8226 	}Its use should be limited to interfacing into legacy imperative code. \
+\ls25\ilvl0\cf0 {\listtext	\uc0\u8226 	}`forEach` is listed last, because its use should be only as a last resort because it returns Void, so its use should be limited to interfacing into legacy imperative code. \
 {\listtext	\uc0\u8226 	}The most common case where `forEach` can't be avoided is walking over collections of UIKit objects to change their state.  \
 {\listtext	\uc0\u8226 	}The one other place you might make an exception is where you have a mutating method on a struct for performance reasons.\
 {\listtext	\uc0\u8226 	}These are all frequently used and provide very good practice for using Combine.\

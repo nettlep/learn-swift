@@ -110,6 +110,9 @@
       location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/28. Higher Order Functions 2.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/29. Combine.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/29. Combine I - The Basics.playground">
+   </FileRef>
+   <FileRef
+      location = "group:30. Combine II - Networking.playground">
    </FileRef>
 </Workspace>
