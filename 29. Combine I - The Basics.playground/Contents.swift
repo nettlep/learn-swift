@@ -1,5 +1,5 @@
 /*:
- # Combine
+ # Combine I - The Basics
  
  Combine combines (pun intended) two concepts we've already seen:
  function composition and higher order functions on Sequences.

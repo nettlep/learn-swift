@@ -1,4 +1,15 @@
 /*:
+ # Combine II - Networking
+ 
+ Now that we know we can use functional composition
+ to compose a really big function from small readable
+ parts, we can start to analyze places in our existing
+ codebases that could benefit from this.
+ 
+ The best place to start is anywhere we are doing asynchronous
+ code and the first thing that springs to mind we
+ we do that is network access.
+
  Chris Latner and Joe Groff wrote the following in the
  [Swift Concurrency Manifesto](https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782).
  It bears repeating at length:
@@ -68,5 +79,79 @@
  
  ====================================
 
- Network access is _the_ canonical asynchrony example.
+ Network access is _the_ canonical asynchrony example.  The sort of callback
+ driven approach to network access has been for decades the staple way
+ of handling the problem.  The functional way is a bit different.  Here's
+ an example of a real invocation which hits an endpoint and returns a model
+ object.
+ */
+import Foundation
+import Combine
+/*:
+ Let's start by creating a model object to hold the output.
 */
+struct Configuration {
+    let title : String
+    let contents: [[Int]]
+}
+/*:
+ And, let's make sure that it can be encoded in and out of JSON:
+ */
+extension Configuration: Codable { }
+/*:
+ Lets follow standard practice and make our API handle any errors
+ we encounter:
+ */
+public enum APIError: Error {
+    case urlError(URLError)
+    case badResponse(URLResponse)
+    case badResponseStatus(Int)
+}
+/*:
+ Now lets use the Foundation-provided URLSession class to fetch
+ a URL. (I'm using an easily accessible dropbox file as a stand in
+ for a real API here.  We'll do something more elaborate later.
+ */
+var c1 = URLSession(configuration: URLSessionConfiguration.default)
+    .dataTaskPublisher(for: URL(string: "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1")!)
+    .sink(
+        receiveCompletion: { completion in
+            switch completion {
+            case .finished:
+                "C'est finis!"
+            case .failure(let error):
+                print(error)
+            }
+        },
+        receiveValue: { response in
+            print(response)
+        }
+    )
+
+
+var cancellable = URLSession(configuration: URLSessionConfiguration.default)
+    .dataTaskPublisher(for: URL(string: "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1")!)
+    .mapError { APIError.urlError($0) }
+    .tryMap { data, response throws -> Data in
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.badResponse(response)
+        }
+        guard httpResponse.statusCode == 200 else {
+            throw APIError.badResponseStatus(httpResponse.statusCode)
+        }
+        return data
+    }
+    .decode(type: [Configuration].self, decoder: JSONDecoder())
+    .sink(
+        receiveCompletion: { completion in
+            switch completion {
+            case .finished:
+                "C'est finis!"
+            case .failure(let error):
+                print(error)
+            }
+        },
+        receiveValue: { configs in
+            print(configs)
+        }
+    )
