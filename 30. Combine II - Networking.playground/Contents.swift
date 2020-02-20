@@ -112,22 +112,68 @@ public enum APIError: Error {
  a URL. (I'm using an easily accessible dropbox file as a stand in
  for a real API here.  We'll do something more elaborate later.
  */
+let urlString = "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1"
 var c1 = URLSession(configuration: URLSessionConfiguration.default)
-    .dataTaskPublisher(for: URL(string: "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1")!)
+    .dataTaskPublisher(for: URL(string: urlString)!)
     .sink(
         receiveCompletion: { completion in
             switch completion {
-            case .finished:
-                "C'est finis!"
-            case .failure(let error):
-                print(error)
+            case .finished: "C'est finis!"
+            case .failure(let error): print(error)
             }
         },
-        receiveValue: { response in
-            print(response)
+        receiveValue: { data, response in
+            type(of: response)
+            response
+            data
         }
     )
-
+/*:
+ And just like that we have asked the network for some data and it has given us
+ a response.  This particular response was successful and handed us back 1543
+ bytes in a buffer.  Had it failed, we would have seen the error be printed
+ to stdout.
+ 
+ Looking more closely we see that `dataTaskPublisher` publishes values of
+ type (Data?, HTTPURLResponse?), i.e. a tuple of `Optional<Data>` and
+ `Optional<HTTPURLResponse>`.  What does it mean for `response` to be `.none`.
+ Well generally it means that the network is down. Stuff, as they say,
+ happens and we need to protect against that.
+ 
+ What does it mean for `data` to be `.none`?  Well if our URL were ill-formed
+ or just plain wrong in some way there would be no way to give us back `data`
+ and so it would be `.none` so we need to protect against that as well.
+ 
+ So let's do that.
+ */
+var c2 = URLSession(configuration: URLSessionConfiguration.default)
+    .dataTaskPublisher(for: URL(string: urlString)!)
+    .tryMap { data, response throws -> Data in
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.badResponse(response)
+        }
+        guard httpResponse.statusCode == 200 else {
+            throw APIError.badResponseStatus(httpResponse.statusCode)
+        }
+        return data
+    }
+    .sink(
+        receiveCompletion: { completion in
+            switch completion {
+            case .finished: "C'est finis!"
+            case .failure(let error): print(error)
+            }
+        },
+        receiveValue: { data in
+            type(of: data)
+            data
+        }
+    )
+/*:
+ We've added a `tryMap` which will verify the response and if the
+ response code is good return the data.  If anything in the `tryMap`
+ throws, we end up in `.sink` with completion being a `.failure`.
+ */
 
 var cancellable = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1")!)
