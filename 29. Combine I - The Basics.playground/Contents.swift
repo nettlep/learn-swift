@@ -171,19 +171,20 @@ r2
  */
 type(of: c1a)
 /*:
- As before we create an array to hold the output.  But now instead of using `[Int].publisher` we use a new kind of Publisher, as PassThruSubject
+ As before we create an array to hold the output.
  */
 var r3: [String] = []
-let sub1 = PassthroughSubject<Int, Never>()
-let p2 = sub1
+/*:
+ But now instead of using `[Int].publisher`
+ we use a new kind of Publisher, as `PassThruSubject`.  Notice how this code looks exactly
+ like the `[Int].publisher`
+ */
+let c2 = PassthroughSubject<Int, Never>()
     .map { $0 * 2 }
     .map { Double($0) }
     .map { "\($0)" }
+    .sink { r3.append($0) }
 type(of: p2)
-/*:
- And now we attach the sink just as above and observe that we have yet another AnyCancellable.
-*/
-let c2 = p2.sink { r3.append($0) }
 /*:
  This time however, unlike both the examples above, we don't send all the values immediately, we send them one at a time.  Note the value of r3 after each send.
  */
@@ -196,7 +197,8 @@ sub1.send(3)
 r3
 /*:
  And now after sending the same three values we've been sending we have the
- same results as before, but we have sent the values in asynchronously.
+ same results as before, but we have sent the values into the
+ Passthru subject asynchronously.
  In fact, we could have programmed random delays into the sequence above,
  just to illustrate the asynchronous nature of what we are doing.
  
@@ -272,19 +274,23 @@ r5
 /*:
  If you expected r4 to have 4 values and r5 to have only 3, you got it right.
  
- So there are two places that this technique should immediately spring
+ So there are three places that this technique should immediately spring
  out at you as being useful:
  
  1. Doing network access - if we could have our webservice calls just pop
  the returned values into a Publisher
  we would never have to write loads of nested callback code again.
- 2. If we could model UI interaction as _events_ then we could tie these
- chains to our UI and process the stream
- of events that way, rather than using the traditional callback method
+ 2. Responding to timers - we could attach listeners to our timers
+ as above with PassthruSubject and process timer firing in the same
+ way we process network events.
+ 3. Touch handling.  If we could model touches and other UI interaction
+ as _events_ then we could tie these
+ chains to our UI and process the stream of user interactions
+ that way, rather than using the traditional UIKit callback method
  of `delegation`.
  
- We'll defer the second one for now until we talk about SwiftUI, but suffice
- it to say that if we cover network access and GUI events, we will have
+ We'll defer the third ones for now until we talk about SwiftUI, but suffice
+ it to say that if we cover network access, timers and GUI events, we will have
  radically overhauled the way we architect iOS apps.  In fact, the
  architectural change will be so radical as to be disorienting at times.
  
