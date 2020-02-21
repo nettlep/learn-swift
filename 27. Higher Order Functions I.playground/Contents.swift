@@ -461,8 +461,9 @@ m11
        Array<A>: func map <B>(_ f: (A) -> B) ->    Array<B> // Array
     Optional<A>: func map <B>(_ f: (A) -> B) -> Optional<B> // Optional
  
- Does the similarity stick out?   For basically ANY generic G, parameterized by a type
- A, you can use `map` to turn that G<A> into a G<B>.  When we get to Combine, we'll observe
+ Does the similarity stick out?   For basically ANY generic `G` (say `Array` or `Optional` since we are most familiar with those), parameterized by a type
+ `A`, you can use `map` to turn that `G<A>` into a `G<B>`.
+ When we get to Combine, we'll observe
  exactly the same pattern on a broader variety of generic types, btw.
  
  So let's do that with Optional.
