@@ -4,9 +4,9 @@
 \f6\fnil\fcharset0 AndaleMono;\f7\fswiss\fcharset0 ArialNarrow;\f8\fnil\fcharset0 HelveticaNeue;
 }
 {\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue0;
-\red0\green0\blue255;\red22\green21\blue22;}
+\red0\green0\blue255;\red22\green21\blue22;\red0\green0\blue255;}
 {\*\expandedcolortbl;;\cssrgb\c0\c0\c0\c85098;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;
-\cssrgb\c1680\c19835\c100000;\cssrgb\c11373\c10980\c11373;}
+\cssrgb\c1680\c19835\c100000;\cssrgb\c11373\c10980\c11373;\cssrgb\c1680\c19835\c100000;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
 {\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
 {\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
@@ -118,7 +118,7 @@ NEVER USE OUTSIDE OF MIXED IMPERATIVE/FUNCTIONAL CODEBASES
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls6\ilvl0\cf0 {\listtext	\uc0\u8226 	}
 \f0\b functions that return Void
-\f1\b0 .  Void-returning functions, by construction, can only be used to accomplish side-effects. The type system has specific capabilities to handle side-effects in more efficient functional ways, so void-returning functions should be avoided. E.g. if you return Void because you are dispatching an asynchronous operation, you should look at Combine or SwiftNIO and return a Future instead, if you are returning Void from a setter, you should consider the functional alternatives that allow chained application. \
+\f1\b0 .  Void-returning functions, by construction, can only be used to accomplish side-effects. The type system has specific capabilities to handle side-effects in more efficient functional ways, so Void-returning functions should be avoided. E.g. if you return Void because you are dispatching an asynchronous operation, you should look at Combine or SwiftNIO and return a Future instead, if you are returning Void from a setter, you should consider the functional alternatives that allow chained application. \
 {\listtext	\uc0\u8226 	}
 \f0\b PassthruSubject from Combine. 
 \f1\b0 In a pure functional codebase this is not needed.  It is there to connect the imperative and functional parts of your codebase.\
@@ -171,7 +171,7 @@ Differentiating Swift Features
 \ls10\ilvl0\cf0 {\listtext	\uc0\u8226 	}
 \f0\b \expnd0\expndtw0\kerning0
 Value types are first class objects. 
-\f1\b0 In many OOP languages (Java, JavaScript, ObjC, Python) only reference types can be objects. In Swift, _all_ structs, classes, enums and protocols are objects.  This has important performance and memory implications especially in server side or multi-threaded code.\
+\f1\b0 In many OOP languages (Java, JavaScript, ObjC, Python) only reference types can be objects. In Swift, _all_ structs, classes, enums and protocols are objects.  This has important performance and memory implications especially in server side or multi-threaded code.  This is possible because underneath the covers Swift views all 'objects' as data types with associated static functions and this fact itself can be leveraged in many interesting ways.\
 \ls10\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
 \f0\b Extensibility of all Types
 \f1\b0 . Because of the way the type system is implemented, every type in can be extended - including things like Int and CGRect.\expnd0\expndtw0\kerning0
@@ -179,7 +179,7 @@ Value types are first class objects.
 \ls10\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
 \f0\b Sum Types
 \f1\b0 . Swift's type system includes Sum types (enums) as well as Product types (st\expnd0\expndtw0\kerning0
-ructs and classes). Many OOP type systems such as C++, Java (for now) and ObjC (for always) lack Sum types (except in a very primitive form built on Int).  Both Sum and Product types are required for any system of Algebraic Data Types (ADT's).  Enums allow succinct formulations of algorithms that require very clumsy circumlocutions in languages without sum types .\
+ructs and classes). Many OOP type systems such as C++, Java (for now) and ObjC (for always) lack Sum types (except in a very primitive form built on C's int type).  Both Sum and Product types are required for any system of Algebraic Data Types (ADT's).  Enums allow succinct formulations of algorithms that require very clumsy circumlocutions in languages without sum types .\
 \ls10\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
 \f0\b Reified generics
 \f1\b0 . In Swift, generic types are not simply hints to the compiler, but are real types subject to rigorous type checking.  The difference is that instead of typing the code for a given generic type yourself, the compiler generated (aka reified) the type for you. Swift's generics are best thought of as functions on types which are called at compile time rather than at run time.  There's a lot of generic enhancement still to come in future versions of Swift so it is important to be aware of changes in the system.\
@@ -288,7 +288,7 @@ The FRB style is so different from the traditional UIKit MVC model that it can b
 \
 Under the FRP architecture, the State shown in the diagram above becomes a tree of smaller State objects with communication allowed only up or down the tree, using Combine.   All UI is grouped in modules, each of which can see a particular node on the State tree.  So for any given sub-hierarchy of views, the diagram above is correct.  What is missing is the communication between sub- and super- States. \
 \
-This is in fact, where an {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782#actor-model-theory"}}{\fldrslt Actor model}} of concurrency would fit perfectly. An event would be dispatched into an actor designated to handle it.  The event could be processed concurrently with any number of other events all of which would submit their side-effects as Requests back to a main dispatch actor.\expnd0\expndtw0\kerning0
+This is in fact, where an {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782#actor-model-theory"}}{\fldrslt Actor model}} of concurrency would fit perfectly. An event would be dispatched into an actor designated to handle it.  The event could be processed concurrently with any number of other events all of which would submit their side-effects as Requests back to dispatch actors designated to process them.\expnd0\expndtw0\kerning0
 \
 \pard\pardeftab720\partightenfactor0
 
@@ -329,7 +329,7 @@ are all the same structural type and can be substituted freely for one another -
 	struct Coord \{ let x: Int; let y: Int \}\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-have identical structures, but are completely different nominal types precisely because they have been assigned different names.  And one cannot substitute for the other in any context.  \
+have identical structures, but are completely different nominal types precisely because they have been assigned different names.  And one cannot substitute one for the other in any context.  \
 \
 The first example is called structural typing because it depends only on the structure of the type. The second is called nominal typing because it depends only on the name of the type. \
 \
@@ -346,7 +346,7 @@ You will want to:\
 \f1\b0\fs28 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls15\ilvl0\cf0 {\listtext	\uc0\u8226 	}Functions in Swift are first-class objects, they can be passed in to other functions as arguments and can be returned from functions just like any other type.\
-{\listtext	\uc0\u8226 	}It is important that note that when a function returns a function, the return value is necessarily a composition of some function.\
+{\listtext	\uc0\u8226 	}It is important to note that when a function returns a function, the return value is necessarily a composition of some function.\
 {\listtext	\uc0\u8226 	}Swift syntax provides very powerful tools for composing functions together in ways that are extremely difficult in ObjectiveC, C++ or Java\
 {\listtext	\uc0\u8226 	}Because functions are first class objects, this means that in your code you can invoke functions which return new functions.  You can then assign them to variables, pass them to other functions or invoke them.\
 {\listtext	\uc0\u8226 	}Again, other languages allow this and in this area, Swift's contribution has been simply to optimize the syntax in an idiosyncratic way that makes it much easier to do.  Accordingly, programming techniques which are built around function composition are used much more often in Swift than in other languages where the syntax is not so optimized.\
@@ -423,6 +423,7 @@ You will want to:\
 \ls17\ilvl0\cf0 {\listtext	\uc0\u8226 	}Use a guideline of a maximum of 5 lines per function/closure.  This is not always possible with Swift bc it lacks pattern matching as powerful as some other languages, but it is a very handy standard to say you should look at functions that get longer than 5 lines with a lot of skepticism and consider splitting the function into smaller named pieces.\
 {\listtext	\uc0\u8226 	}Combining small functions with the preference for guard/guard-let and the recommendation above to prefer ternaries over if's means that you will find that your code will have _very_ few `if` and `if-let` statements.  This is not accidental.\
 {\listtext	\uc0\u8226 	}As much as possible, try to make closures you pass into a function NOT be @escaping.  The compiler can perform several performance optimizations on non-escaping functions that it can't when the function is @escaping. \
+{\listtext	\uc0\u8226 	}When dealing with asynchronous functions, this is of course, not possible, but its worth looking at every @escaping usage to try to determine if it has been introduced without good reason and can be avoided.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 
@@ -468,7 +469,7 @@ You will want to:\
 \f1\i0  and the 
 \f5\i value
 \f1\i0  for Void and whether it is the type or value being referenced in any given situation is context-dependent.  \
-{\listtext	\uc0\u8259 	}Understand that typealias'ing Void as a tuple (aka a structural type) has some downsides, since Void is an empty tuple it is not possible to define extensions on it.  You might want to consider emulating Haskell here and defining an equivalent struct (aka a nominal type) called Unit which is the empty struct.  This has the advantage of being extensible.\
+{\listtext	\uc0\u8259 	}Understand that Swift's implementation of Void which typealias'es it as a tuple (aka a structural type) has some downsides. Since Void is an empty tuple it is not possible to define extensions on it.  You might want to consider emulating Haskell here and defining an equivalent struct (aka a nominal type) called Unit which is the empty struct.  This has the advantage of being extensible.\
 {\listtext	\uc0\u8259 	}Also be aware that Never is also actually a meaningful type in Swift, i.e. it is the nominal type inhabited by NO values.  This also has meaning especially as a parameter to generic types.  \
 {\listtext	\uc0\u8259 	}For reference, Never is defined as the empty enum. (Think about it)\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
@@ -494,7 +495,7 @@ Structs and Classes
 {\listtext	\uc0\u8226 	}If you think you need a class (and particularly some sort of subclass), almost certainly what you actually need is a generic class that wraps the struct that you _really_ need as its generic type.\
 {\listtext	\uc0\u8226 	}All classes should be marked as final but can accommodate mutating any wrapped values. \
 {\listtext	\uc0\u8226 	}If you think you need inheritance, you definitely need a protocol witness and/or a generic wrapper of some sort. \
-{\listtext	\uc0\u8226 	}Seriously, look at the Swift std library, at SwiftUI, at SwiftNIO, the new Swift Numerics and at Combine.  Classes are used only as reference types, inheritance is never used, and every class is marked final.\
+{\listtext	\uc0\u8226 	}Seriously, look at the Swift std library, at SwiftUI, at SwiftNIO, the new Swift Numerics and at Combine.  Classes are used only as reference types, inheritance is never used, and every class is marked final to make sure it stays that way.\
 {\listtext	\uc0\u8226 	}Property wrappers have been added to Swift specifically to assist you in 
 \f5\i not
 \f1\i0  using inheritance. \
@@ -570,10 +571,10 @@ Sequences\
 {\listtext	\uc0\u8259 	}publisher\
 {\listtext	\uc0\u8259 	}forEach\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls25\ilvl0\cf0 {\listtext	\uc0\u8226 	}`forEach` is listed last, because its use should be only as a last resort because it returns Void, so its use should be limited to interfacing into legacy imperative code. \
+\ls25\ilvl0\cf0 {\listtext	\uc0\u8226 	}`forEach` is listed last, because its use should be only as a last resort as it returns Void.  As mentioned above, void returning functions should be avoided, so its use should be limited to interfacing into legacy imperative code. \
 {\listtext	\uc0\u8226 	}The most common case where `forEach` can't be avoided is walking over collections of UIKit objects to change their state.  \
 {\listtext	\uc0\u8226 	}The one other place you might make an exception is where you have a mutating method on a struct for performance reasons.\
-{\listtext	\uc0\u8226 	}These are all frequently used and provide very good practice for using Combine.\
+{\listtext	\uc0\u8226 	}The rest of the elements of the list above0] are all frequently used and provide very good practice for using Combine.\
 {\listtext	\uc0\u8226 	}Properly used, the above methods obviate the need to ever use for-loop's. (Really, they do, you don't need the `for` statement, 
 \f5\i ever
 \f1\i0 ).\
@@ -679,7 +680,7 @@ Optional
 \cf0 Combine\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls34\ilvl0
-\f1\b0\fs28 \cf0 It is difficult to overstate how important it will be to understand the Combine framework. \
+\f1\b0\fs28 \cf0 {\listtext	\uc0\u8226 	}It is difficult to overstate how important it will be to understand the Combine framework. \
 {\listtext	\uc0\u8226 	}Combine can best be understood as a Sequence without the 
 \f5\i makeIterator 
 \f1\i0 or
@@ -691,7 +692,8 @@ Optional
 {\listtext	\uc0\u8226 	}Seriously, that's all combine is.\
 {\listtext	\uc0\u8226 	}And that completely explains why the Publisher protocol looks so much like Sequence.\
 {\listtext	\uc0\u8226 	}Start studying the Combine library by starting with PassthruSubject.  This is the standard way to adapt Combine to your imperative-style code, usually in the form of some network access or other asynchronous code.  \
-{\listtext	\uc0\u8226 	}Once you understand what happens in a map/flatMap/mapError/flatMapError in that setting, replace your PassthruSubject/send() construct with a Defer/Future construct.\
+{\listtext	\uc0\u8226 	}Once you understand what happens in a map/flatMap/mapError/flatMapError in that setting, replace your PassthruSubject/send() construct with a Defer/Future construct for example.\
+{\listtext	\uc0\u8226 	}Be aware that all of the asynchronous types in the Foundation library have had Combine Publishers added to them and many of the synchronous types (e.g. Array) as well.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\b\fs36 \cf0 \
@@ -720,8 +722,8 @@ UIKIt vs SwiftUI
 \f1\b0\fs28 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls37\ilvl0\cf0 {\listtext	\uc0\u8226 	}As of early 2020, you should avoid the use of storyboards and UIKit where ever possible and use SwiftUI.  \
-{\listtext	\uc0\u8226 	}Building new code on UIKit is knowingly adding tech debt which will need to be rewritten from scratch in the not too distant future.\
-{\listtext	\uc0\u8226 	}In places where UIKit is still required you should examine how to drive your UI in an FTP style rather than in traditional MVC style.\
+{\listtext	\uc0\u8226 	}Building new code on UIKit is knowingly adding tech debt which will need to be rewritten from scratch in the not too distant future if you do not start planning for a major architectural shift soon.\
+{\listtext	\uc0\u8226 	}In places where UIKit is still required you should examine how to drive your UI in an FRP style rather than in traditional MVC style.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 
@@ -749,8 +751,8 @@ UIKIt vs SwiftUI
 While swift has syntax for generic types in protocols,  it does not have syntax for generic functions in protocols.   (Exercise try to write a protocol for a generic type F parameterized by T which implements the following signature:\
 		\
 		
-\f5\i map<U>(transform: (T) -> U) -> F<U>
-\f1\i0   \
+\f5\i \cf7 map<U>(transform: (T) -> U) -> F<U>
+\f1\i0 \cf6   \
 		\
 		It\'92s not possible to write map because you can\'92t add the generic type which parameterizes the return value.  The {\field{\*\fldinst{HYPERLINK "https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md#generic-associatedtypes"}}{\fldrslt Generics Manifesto was recently modified}} to address this and PATs will eventually get generic associated types at which point a pretty good facsimile of higher kinded types will be available in Swift.
 \fs28 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
@@ -776,7 +778,7 @@ How Swift Achieved Dynamic Linking Where Rust Couldn't}}  is absolutely the best
 \ls39\ilvl1\cf0 {\listtext	\uc0\u8259 	}the concurrency manifesto that Latner and Groff were writing: {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782"}}{\fldrslt The Concurrency Manifesto}} seems to have been abandoned.  There have been no steps to implementing it taken in Swift 5 and no changes to the document in a long time. It specifies the addition of Async/Await and an Actor model in the language.  \
 {\listtext	\uc0\u8259 	}there was also {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/429b9070918248274f25b714dcfc7619"}}{\fldrslt a concrete proposal for Async/Await}} by the same authors.  It was even tentatively scheduled as a Swift Evolution proposal (i.e. the title of the doc is SE-XXXX).  Again, no steps toward implementation in master seem to have been taken.\
 {\listtext	\uc0\u8259 	}Apple has been completely silent about open sourcing the Combine framework which has led to numerous open source projects trying to implement an identical solution for use on non-Apple platforms.  The silence and failure to include such obviously important APIs in either the Std Lib or in \
-{\listtext	\uc0\u8259 	}There has been no roadmap for Swift 6.0 published.\
+{\listtext	\uc0\u8259 	}The main themes for Swift 6.0 were recently published and those are: expanding Swift to other platforms and Concurrency.  In short, stand-by for major improvements in the handling of asynchronous and concurrent APIs.\
 {\listtext	\uc0\u8259 	}SwiftNIO is all about concurrency and is built using industry standard techniques.  It is very reasonable to presume that support for its techniques will work its way into actual language syntactic support.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
