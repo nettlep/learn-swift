@@ -84,7 +84,7 @@ Coming Swift features:\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls3\ilvl0\cf0 {\listtext	\uc0\u8226 	}Direct language support of Rust-style memory ownership\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls4\ilvl0\cf0 {\listtext	\uc0\u8226 	}Direct language support of concurrency constructs\
+\ls4\ilvl0\cf0 {\listtext	\uc0\u8226 	}Direct language support of concurrency constructs.  My own belief here is that Swift is going to adopt an {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782#actor-model-theory"}}{\fldrslt Actor model}} for concurrency.  See below in the section on Functional Reactive Programming for how this fits into the overall architectural of an app.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 See below for more details on these and several other FP-related features.\
@@ -286,7 +286,9 @@ The FRB style is so different from the traditional UIKit MVC model that it can b
 
 \fs28 \cf0 FRP-based applications should be thought of as following this model with State being divided into many intercommunicating substates.  This point is very important.  None of the discussion above implies at all that there should be only a single global state available to the application.  Most large UIKit applications end up with such a single global type (frequently signalled by a name that includes the word `Context`), but this is an anti-pattern in SwiftUI.  \
 \
-Under the FRP architecture, the State shown in the diagram above becomes a tree of smaller State objects with communication allowed only up or down the tree, using Combine.   All UI is grouped in modules, each of which can see a particular node on the State tree.  So for any given sub-hierarchy of views, the diagram above is correct.  What is missing is the communication between sub- and super- States. \expnd0\expndtw0\kerning0
+Under the FRP architecture, the State shown in the diagram above becomes a tree of smaller State objects with communication allowed only up or down the tree, using Combine.   All UI is grouped in modules, each of which can see a particular node on the State tree.  So for any given sub-hierarchy of views, the diagram above is correct.  What is missing is the communication between sub- and super- States. \
+\
+This is in fact, where an {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782#actor-model-theory"}}{\fldrslt Actor model}} of concurrency would fit perfectly. An event would be dispatched into an actor designated to handle it.  The event could be processed concurrently with any number of other events all of which would submit their side-effects as Requests back to a main dispatch actor.\expnd0\expndtw0\kerning0
 \
 \pard\pardeftab720\partightenfactor0
 

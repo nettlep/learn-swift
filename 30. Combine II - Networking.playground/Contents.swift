@@ -171,13 +171,12 @@ var c2 = URLSession(configuration: URLSessionConfiguration.default)
     )
 /*:
  We've added a `tryMap` which will verify the response and if the
- response code is good return the data.  If anything in the `tryMap`
- throws, we end up in `.sink` with completion being a `.failure`.
+ response exists and the response code is good, will return the data.
+ If anything in the `tryMap` throws, we end up in `.sink` with completion
+ being a `.failure`.
  */
-
-var cancellable = URLSession(configuration: URLSessionConfiguration.default)
-    .dataTaskPublisher(for: URL(string: "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1")!)
-    .mapError { APIError.urlError($0) }
+var c3 = URLSession(configuration: URLSessionConfiguration.default)
+    .dataTaskPublisher(for: URL(string: urlString)!)
     .tryMap { data, response throws -> Data in
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.badResponse(response)
@@ -191,13 +190,30 @@ var cancellable = URLSession(configuration: URLSessionConfiguration.default)
     .sink(
         receiveCompletion: { completion in
             switch completion {
-            case .finished:
-                "C'est finis!"
-            case .failure(let error):
-                print(error)
+            case .finished: "C'est finis!"
+            case .failure(let error): print(error)
             }
         },
-        receiveValue: { configs in
-            print(configs)
+        receiveValue: { config in
+            type(of: data)
+            data
         }
     )
+/*:
+ Now we have decoded the JSON data that we received back form the
+ server into an array of our custom model objects. And boom
+ we're done.  If at any point in the process we threw an error
+ what happens?  We end up in the sink closure with a completion
+ of type `failure` and we handle it there.
+ 
+ Note how we have completely avoided the "pyramid of doom"
+ that Latner and Groff discuss in the quote at the top of this
+ playground.  Instead of nesting callbacks endlessly we have
+ used functional composition to produce a very readable
+ set of steps that are understandable to anyone who has
+ worked with networking before.
+ 
+ Lets go a little further and explore a common pattern that is
+ often used when writing these kind of layers, using an enum
+ to define the API in a type-safe manner
+ */
