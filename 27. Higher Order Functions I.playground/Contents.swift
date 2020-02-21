@@ -279,6 +279,22 @@ let fm3 = fm0.flatMap { "\($0)" }
 fm3
 type(of: fm3)
 /*:
+ I'm going to bet the results of that were not what you expected to see  :) Let's explain.
+ 
+ Inside the `flatMap` we turned each `[Int]` into a `String`.  Interestingly, `String`
+ conforms to the `Sequence` protocol, i.e. it is a `Sequence` of `Character`.
+ So when we converted `[1, 2, 3]` to `"[1, 2, 3]"` we got something back that could
+ be `flatMap`ped over and the result was produce an `Array<Character>` where each
+ element of the array was a single character taken from the description string
+ of an array.
+ 
+ Here's what you were probably expecting where we turn each element of the `[[Int]]`
+ into `[String]` and thereby flatten a `[[String]]`:
+ */
+let fm4 = fm0.flatMap { a in a.map { "\($0)" } }
+fm4
+type(of: fm4)
+/*:
  You may ask: how many times do I have an Array<Array<A>> as my given type after all?
  That's really the wrong question.  What we're dealing with here is Sequences of which
  Array is only a particular type.  A better question is "under what circumstances am
