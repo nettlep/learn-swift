@@ -30,11 +30,13 @@ let f = [Int].myCompactMap
 ```
     ([Int]) -> (Int -> String?) -> [String]
 ```
-Two questions that should be in your mind are:
+At least three questions that should be in your mind are:
  
  1. wtf? with the multiple `->`'s? and
  
  2. why do I have ([Int]) at the beginning?
+ 
+ 3. why does the middle set of things have parens around it?
  
  In words this function signature is:
 ```
@@ -47,11 +49,26 @@ Two questions that should be in your mind are:
  Eventually in Swift, you have to understand functions which take functions AND
  functions which return functions. And even more you have to understand
  how they chain.
-
+ 
+ Quick comment on the parens in the middle.  If you left them out the signature
+ would change from what I've just said above to:
+ ```
+  a function which takes [Int] and returns:
+     a function which takes an Int and returns:
+        a function which takes a String? and returns:
+           [String]
+ ```
+ That is NOT the same function signature! The lesson here is that by default
+ the `->` operator associates to the right, specifying that a function _accepts_
+ a function as an argument rather than returning a function is causing the `->`
+ to associate left and you have to use parens to indicate to the compiler that
+ that is what you want.
+ 
  Interestingly, there are several ways syntactically to invoke that function that
- we captured as `f`. Look at the lines below and their type signatures.
+ we captured above as `f`. Look at the lines below and their type signatures.
  All of these statements are exactly the same.  The ONLY difference
- is that f1a is in OOP notation. But the compiler turns them into the exact same code.
+ is that f1a is in OOP notation. But the compiler turns them into the exact same code
+ as you can see over to the right where the playground prints the types.
 */
 let f1a = [1,2,3].myCompactMap
 let f1b = [Int].myCompactMap([1,2,3])
@@ -64,12 +81,13 @@ In words these are all functions which
     and return:
        [String]
  ```
-i.e. they are the original `f` function with the first part cut off.  As you would expect because we've taken the first function and done an invocation on it.
+ i.e. they are the original `f` function with the first part cut off.  As you would expect
+ because we've taken the first function and done an invocation on it.
 
- Note that I refer above to the `OOP notation`.  In Swift, OOP is just that, a notation, nothing more, nothing less.  This one of the primary lessons
- of this playground, btw.
+ Note that I refer above to the `OOP notation`.  In Swift, OOP is just that, a notation,
+ nothing more, nothing less. This one of the primary lessons of this playground, btw.
  
- So lets invoke the 3 functions above.  Ok!  now we have some values.  And look, they're all the same.
+ So lets invoke the 3 functions above.
  */
 let r1 = [1,2,3].myCompactMap { "\($0)" }
 r1
@@ -78,7 +96,10 @@ r2
 let r3 = f([1,2,3])( { "\($0)" } )
 r3
 /*:
- NB these functions are the same.
+ Ok!  now we have some values.  And look, they're all the same. Which
+ had better be the case or this is one wasted playground.
+ 
+ NB these functions are also all the same.
 */
 f1a { "\($0)" }
 f1b { "\($0)" }
@@ -93,7 +114,7 @@ f1c { "\($0)" }
 
  ` ((Int) -> String?) -> ([Int]) -> [String?]`
  
- Here it is:
+ Don't believe me? Here it is:
  */
 public func flip<A, B, C>(
     _ function: @escaping (A) -> (C) -> B
@@ -105,11 +126,11 @@ public func flip<A, B, C>(
     }
 }
 /*:
- This is our first real example of functional composition.  Using a function to change
- the "shape" of another function.  This particular example rewards paying it a lot of
+ This is our first real example of functional composition, i.e. using a function to change
+ the "shape" of another function or functions.  This particular example rewards paying it a lot of
  attention.
  
- We have 3 functions here:
+ We have 3 functions specified here:
  
  1. the function that begins: `public func flip<A, B, C>(`
  
@@ -128,6 +149,9 @@ public func flip<A, B, C>(
 let f2   = flip(f)
 let f2a  = flip([Int].myCompactMap)
 /*:
+ These are precisely the same functions as what we started with
+ only the 1st and 2nd argument have been flipped around.
+ 
  Now lets use it that way by invoking function 2...
  */
 let f3   = f2  { "\($0)" }
@@ -140,7 +164,18 @@ f3a
  wrote such a function!  I composed those functions from other functions
  by passing those other functions through a higher-order function.
  
- _This_ is what is meant by `functional composition`.
+ _This_ is what is meant by `functional composition`.  The forms
+ that composition can take are many and varied.  For now we are dealing
+ with some simple ones, but if you are actually curious about how combine
+ works, the best statement is that Combine consists of functions to
+ compose functions which compose functions.  (It all gets a bit self-rerential
+ after a while).
+ 
+ Anyway, one of the big ways that people judge features in the Swift language
+ now is based on how well some feature composes.  It's that important.
+ When property wrappers were initially proposed for the language the
+ proposal by a member of the core team was bounced, because the wrappers
+ did not compose well.  Let that be a lesson to you.
  
 Now lets take the final step and invoke function 3...
 */
@@ -247,7 +282,7 @@ type(of: c)
  This sort of "shape manipulation" is an incredibly powerful feature
  that allows you to glue existing functions together in really interesting ways.
  
- NB, everything we've just done, could also be done in e.g. ObjC.
+ NB, everything we've just done, could also be done in e.g. Java or ObjC.
  There are two differences (and the differences are the entire
  reason that these techniques are not used there):
  

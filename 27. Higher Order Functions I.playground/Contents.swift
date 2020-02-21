@@ -300,16 +300,17 @@ type(of: fm4)
  Array is only a particular type.  A better question is "under what circumstances am
  I likely to be dealing with a subsequence of a given sequence"?  Or: "when am I likely
  to have have to run a query against some back that provides me as its return type
- the values I need to run a sequence of other queries?"  _THAT_ is when flatMap on
- Sequence really begins to show its power.
+ the values I need to run a sequence of other queries?"  Or: "when will I be walking
+ an array and calling a function that returns an Array on each element"
+ _THOSE_ situations are when flatMap on Sequence really begins to show its power.
  
  ### Chaining
  
  All of the higher order functions on Sequence return an Array, which is itself
  a Sequence, so all of these functions can be chained together.  Below we walk
  through various transformations using chaining on Array.  It is important that
- you understand that these much of Sequence handling is in fact chaining of transformations
- based on the results of previous transformations.
+ you understand that  much of Sequence handling is in fact chaining of
+ transformations based on the results of previous transformations.
  
  First let's create a few handy types and functions to use.
  */
@@ -342,7 +343,15 @@ protocol IntDescribable: Describable, IntegerValuable { }
 extension String: IntDescribable {}
 extension Int: IntDescribable {}
 
-struct MyInteger: Equatable, Hashable, IntDescribable {
+struct MyInteger: Equatable, Hashable, IntDescribable, Comparable {
+    static func < (lhs: MyInteger, rhs: MyInteger) -> Bool {
+        lhs.integerValue < rhs.integerValue
+    }
+
+    static func intValue(_ val: IntegerValuable) -> Int {
+        val.integerValue
+    }
+
     var integerValue = 0
     var description: String { "Instance of \(type(of: self))" }
     
@@ -369,7 +378,6 @@ type(of: d)
 var m1 = d
 type(of: m1)
 m1
-
 /*:
  As we go through we'll highligh each transformation with it's type signature.
  
@@ -381,7 +389,6 @@ var m2 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
 type(of: m2)
 m2
-    
 /*:
  FlatMap acts on an Array of Arrays to produce an Array
  FlatMap - [[A]] -> [B]
@@ -391,41 +398,40 @@ var m4 = d
     .flatMap(id)
 type(of: m4)
 m4
-    
 /*:
- Sorted - [A] -> [A]
- */
+Map - [A] -> [B]
+*/
 var m5 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
     .flatMap(id)
-    .sorted { $0.integerValue > $1.integerValue }
+    .map { MyInteger($0.integerValue) }
 type(of: m5)
 m5
-
 /*:
- Map - [A] -> [B]
- */
+Sorted - [A] -> [A]
+*/
 var m6 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
     .flatMap(id)
-    .sorted { $0.integerValue > $1.integerValue }
     .map { MyInteger($0.integerValue) }
+    .sorted(by: <)
 type(of: m6)
 m6
-
 /*:
  Reduce - [A] -> B
  */
 var m7 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
     .flatMap(id)
-    .sorted { $0.integerValue > $1.integerValue }
     .map { MyInteger($0.integerValue) }
-    .reduce(0) { $0 + $1.integerValue }
+    .sorted(by: <)
+    .map(MyInteger.intValue)
+    .reduce(0, +)
 type(of: m7)
 m7
-
 /*:
+ Note that the type which falls out of all those transformations is `Int`
+ 
  Since Set is a Sequence everything above also applies to it.
  */
 var m8 = Set<MyInteger>(m6)

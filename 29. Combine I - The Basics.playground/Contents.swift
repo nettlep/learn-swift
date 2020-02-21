@@ -150,8 +150,14 @@ type(of: p1)
  the type).
  
  So it turns out that each of those calls subsequent to `[1, 2, 3].publisher` returns a new publisher which
- wraps its predecessor, i.e. we are building up the function associated with the chain by using ta-dah, _functional
+ is initialized with its predecessor.  The initialization with the predecessor is really important.
+ What's going to happen is at some point the publisher will be provided with a subscription closure by its
+ successor type. When that happens it will compose the subscription closure with it's own closure
+ and provide the composed function to its predecessor as the predecessor's subscription function.
+ i.e. we are building up the function associated with the chain by using ta-dah, _functional
  composition_.
+ 
+ Feel free to read that paragraph again.  I'll wait.
  
  And just for completeness we see that we get an AnyCancellable back here as well. And that everything works like before.
  */
@@ -179,12 +185,13 @@ var r3: [String] = []
  we use a new kind of Publisher, as `PassThruSubject`.  Notice how this code looks exactly
  like the `[Int].publisher`
  */
-let c2 = PassthroughSubject<Int, Never>()
+let sub1 = PassthroughSubject<Int, Never>()
+let c2 = sub1
     .map { $0 * 2 }
     .map { Double($0) }
     .map { "\($0)" }
     .sink { r3.append($0) }
-type(of: p2)
+type(of: c2)
 /*:
  This time however, unlike both the examples above, we don't send all the values immediately, we send them one at a time.  Note the value of r3 after each send.
  */

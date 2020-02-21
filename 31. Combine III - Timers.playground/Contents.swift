@@ -1,9 +1,35 @@
 import Foundation
 import Combine
 
-var t1: Timer.TimerPublisher? = Timer.publish(every: 0.10, on: .main, in: .common)
-let shared = t1?.share()
+/*:
+ Easy timer
+ */
+
+var timesFired = 0
+var cancellable: AnyCancellable? = Timer
+    .publish(every: 1.0, on: .main, in: .common)
+    .autoconnect()
+    .sink { time in
+        timesFired += 1
+        print("Fired \(timesFired) times")
+    }
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+    print("Stopping first timer")
+    cancellable?.cancel()
+    cancellable = .none
+}
+
+
+/*:
+ Complicated timer
+ */
+
+var t1: Timer.TimerPublisher? = Timer.publish(every: 0.45, on: .main, in: .common)
 type(of: t1)
+
+let shared = t1?.share()
+type(of: shared)
 
 var c1Counter = 0
 var c1: AnyCancellable?
@@ -22,7 +48,7 @@ c1 = shared?
 var c2Counter = 0
 var c2: AnyCancellable?
 c2 = shared?
-    .throttle(for: 1.0, scheduler: DispatchQueue.main, latest: true)
+    .throttle(for: 1.2, scheduler: DispatchQueue.main, latest: true)
     .sink { time in
         c2Counter += 1
         print("c2 \(c2Counter): @\(time)")
@@ -36,7 +62,8 @@ c2 = shared?
 let c3 = t1?.connect()
 type(of: c3)
 
-DispatchQueue.main.asyncAfter(deadline: .now() + 12.0) {
+DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) {
+    print("Stopping second timer")
     c3?.cancel()
     t1 = nil
 }

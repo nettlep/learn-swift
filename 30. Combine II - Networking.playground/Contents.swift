@@ -7,7 +7,7 @@
  codebases that could benefit from this.
  
  The best place to start is anywhere we are doing asynchronous
- code and the first thing that springs to mind we
+ code and the first thing that springs to mind when
  we do that is network access.
 
  Chris Latner and Joe Groff wrote the following in the
@@ -194,7 +194,7 @@ var c3 = URLSession(configuration: URLSessionConfiguration.default)
             case .failure(let error): print(error)
             }
         },
-        receiveValue: { config in
+        receiveValue: { data in
             type(of: data)
             data
         }
