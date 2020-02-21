@@ -2,11 +2,12 @@ import Foundation
 import Combine
 
 let t1 = Timer.publish(every: 0.10, on: .main, in: .common)
+let shared = t1.share()
 type(of: t1)
 
 var c1Counter = 0
 var c1: AnyCancellable?
-c1 = t1
+c1 = shared
     .throttle(for: 0.9, scheduler: DispatchQueue.main, latest: true)
     .sink { time in
         c1Counter += 1
@@ -20,7 +21,7 @@ c1 = t1
 
 var c2Counter = 0
 var c2: AnyCancellable?
-c2 = t1
+c2 = shared
     .throttle(for: 1.0, scheduler: DispatchQueue.main, latest: true)
     .sink { time in
         c2Counter += 1
