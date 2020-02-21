@@ -135,6 +135,13 @@ f3
 let f3a  = f2a { "\($0)" }
 f3a
 /*:
+ Here's the amazing thing about that if you aren't used to the style.
+ `f3` and `f3a` are functions `(Array<Int>) -> Array<String>` but I _never_
+ wrote such a function!  I composed those functions from other functions
+ by passing those other functions through a higher-order function.
+ 
+ _This_ is what is meant by `functional composition`.
+ 
 Now lets take the final step and invoke function 3...
 */
 f3([1,2,3])
