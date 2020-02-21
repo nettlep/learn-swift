@@ -1,13 +1,13 @@
 import Foundation
 import Combine
 
-let t1 = Timer.publish(every: 0.10, on: .main, in: .common)
-let shared = t1.share()
+var t1: Timer.TimerPublisher? = Timer.publish(every: 0.10, on: .main, in: .common)
+let shared = t1?.share()
 type(of: t1)
 
 var c1Counter = 0
 var c1: AnyCancellable?
-c1 = shared
+c1 = shared?
     .throttle(for: 0.9, scheduler: DispatchQueue.main, latest: true)
     .sink { time in
         c1Counter += 1
@@ -21,7 +21,7 @@ c1 = shared
 
 var c2Counter = 0
 var c2: AnyCancellable?
-c2 = shared
+c2 = shared?
     .throttle(for: 1.0, scheduler: DispatchQueue.main, latest: true)
     .sink { time in
         c2Counter += 1
@@ -33,6 +33,11 @@ c2 = shared
         }
     }
 
-let c3 = t1.connect()
+let c3 = t1?.connect()
 type(of: c3)
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 12.0) {
+    c3?.cancel()
+    t1 = nil
+}
 
