@@ -174,6 +174,25 @@ var c2 = URLSession(configuration: URLSessionConfiguration.default)
  response exists and the response code is good, will return the data.
  If anything in the `tryMap` throws, we end up in `.sink` with completion
  being a `.failure`.
+ 
+ And _THAT_ is how we meet Requirement 3 (Error handling) from the previous
+ playground.
+ 
+ In normal Swift usage if you `throw` an error in an API
+ you enclose the code that might `throw` in a `do-catch` construct and
+ handle the error at the call site, i.e. you `throw` the error backwards
+ up the call chain. In Combine, however, you generally want to `throw`
+ the error _forwards_ to the completion of the Combine chain which can
+ seem almost counter-intuitive until you think about it a bit.
+ 
+ So in this case, if anything in the `tryMap` throws, we will go
+ into the `sink` with a completion of `.failure(theThrownError)`.
+ 
+ There's lots more to Combine error handling than that, but this is
+ enough to get us started.
+ 
+ Now let's do something with that data that we have culled out of
+ our request.
  */
 var c3 = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: urlString)!)
@@ -200,7 +219,7 @@ var c3 = URLSession(configuration: URLSessionConfiguration.default)
         }
     )
 /*:
- Now we have decoded the JSON data that we received back form the
+ Now we have decoded the JSON data that we received back from the
  server into an array of our custom model objects. And boom
  we're done.  If at any point in the process we threw an error
  what happens?  We end up in the sink closure with a completion

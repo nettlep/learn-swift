@@ -113,9 +113,15 @@
       location = "group:29. Combine I - The Basics.playground">
    </FileRef>
    <FileRef
-      location = "group:30. Combine II - Networking.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/30. Combine II - Error Handling.playground">
    </FileRef>
    <FileRef
-      location = "group:31. Combine III - Timers.playground">
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/31. Combine III - Networking.playground">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/rvs/Development/Projects/HarvardExtension/learn-swift/32. Combine IV - Timers.playground">
+   </FileRef>
+   <FileRef
+      location = "group:33. Combine V - Property Wrappers.playground">
    </FileRef>
 </Workspace>
