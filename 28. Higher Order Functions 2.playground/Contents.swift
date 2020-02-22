@@ -356,14 +356,36 @@ combined(5)
  
  Using a functional composition technique,
  we were able to combine two functions together without invoking
- either one.  And there's a real syntactic beauty here
+ either one. And this chain can be extended as far as we like
+ because >>> is like addition only for functions.  Just
+ like you can say: `1 + 2 + 3 + 4` ..., you can say:
+ `a >>> b >>> c >>> d`...
+ 
+ And there's a real syntactic beauty here
  as well.  In the first form `right(left(4))`, `right` is invoked
  _after_ `left` has been evaluated, yet that's not the
  way it reads to normal English speakers who read left to
  right.  Functional techniques with infix notation actually
- let us make our code more naturally readable!.
+ let us make our code more naturally readable!
  
- This gave us a single function we could then invoke
+ While this operator and a handful of others
+ are _very_ commonly used across most
+ functional languages, we won't be using it in this class.
+ We _will_ however be extensively using left to right functional
+ chaining that incorporates this and plenty of other
+ compositional techniques, we just won't be using operators
+ other than `.` .
+ So you need to be aware that this particular composition
+ technique is as fundamental to functional programming
+ as addition is to arithmetic and that you need to understand
+ how to use it just as well as you understand how to
+ calculate a tip at a restaurant.
+ 
+ Going back:
+ 
+     `let combined = left >>> right`
+ 
+ gave us a single function we could then invoke
  at our leisure.  Which we then do with the lines:
  ```
  combined(4)
