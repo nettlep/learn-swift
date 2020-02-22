@@ -234,7 +234,7 @@ type(of: StructA.append)
  optimizes the hell out of this for your methods, so it's not literally true underneath,
  but from a syntactic standpoint, they are exactly the same).
  
- If you are familiare with ObjC, this is _exactly_ equivalent to what
+ If you are familiar with ObjC, this is _exactly_ equivalent to what
  it does when it passes self as the first argument to an Impl.  Swift
  just uses a different technique for designating `self`.  And it turns
  out that that technique is just a use of functional composition.
@@ -333,6 +333,8 @@ type(of: left)
 let right = { (b: Double) -> String in "\(b)" }
 type(of: right)
 
+right(left(4))
+
 (left >>> right)(4)
 type(of: left >>> right)
 
@@ -341,13 +343,25 @@ type(of: combined)
 combined(4)
 combined(5)
 /*:
+ Note how all of these produce the exact same result:
+ ```
+     right(left(4))
+     (left >>> right)(4)
+     combined(4)
+ ```
+ 
  So look closely at that line:
  
      `let combined = left >>> right`
  
  Using a functional composition technique,
  we were able to combine two functions together without invoking
- either one.
+ either one.  And there's a real syntactic beauty here
+ as well.  In the first form `right(left(4))`, `right` is invoked
+ _after_ `left` has been evaluated, yet that's not the
+ way it reads to normal English speakers who read left to
+ right.  Functional techniques with infix notation actually
+ let us make our code more naturally readable!.
  
  This gave us a single function we could then invoke
  at our leisure.  Which we then do with the lines:
@@ -355,6 +369,8 @@ combined(5)
  combined(4)
  combined(5)
  ```
+ This is the essence of functional composition.  You build up
+ new functions from old ones _without invoking the old ones_.
  
  And now... we are ready to talk about what Combine does.
  */

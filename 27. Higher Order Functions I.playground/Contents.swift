@@ -461,8 +461,9 @@ m11
  
  `map`, `zip` and `flatMap` are not just methods on Sequence.  They
  all apply to Optional as well.  You have to defocus your eyes a little
- and think about them as methods on pretty much all generic types.  Lets discuss what that means a bit.  Here are the type signatures for `map` on Array<A> and `map` on Optional<A>
- respectively.
+ and think about them as methods on pretty much all generic types.
+ Lets discuss what that means a bit.  Here are the type signatures
+ for `map` on `Array<A>` and `map` on `Optional<A>` respectively.
  
        Array<A>: func map <B>(_ f: (A) -> B) ->    Array<B> // Array
     Optional<A>: func map <B>(_ f: (A) -> B) -> Optional<B> // Optional
