@@ -25,8 +25,8 @@ let r1 = [1, 2, 3]
 r1
 /*:
  This behaves in the way that we've become accustomed to:
- each of the 4 lines returns an Array. The first two lines return '[Int]',
- the 3rd line returns '[Double]' and the 4th line returns '[String]'.
+ each of the 4 lines returns an Array. The first two lines return `[Int]`,
+ the 3rd line returns `[Double]` and the 4th line returns `[String]`.
  Each line operates on a  batch, it processes its entire input array to
  produce an output array which is chained to the next call.
  
@@ -35,6 +35,14 @@ r1
  and pass it to the next function immediately rather than waiting
  for the whole batch to be complete before going to the next step.
  And _THAT_ is what Combine does.  Nothing more, nothing less.
+ 
+ Seriously, that's all it does, it lets you drop values in one
+ at a time at the top of a chain (aka publish), transform them
+ through the chain, and then get the resulting value out at the
+ bottom of the chain (aka subscribe).
+ If you truly understand that operation, and all
+ the transformations that make sense in between, then you understand
+ Combine.
  
  Of course we need to account for a few extra things when doing that.
  Here's the list of what you need:
@@ -162,6 +170,7 @@ type(of: p1)
  And just for completeness we see that we get an AnyCancellable back here as well. And that everything works like before.
  */
 let c1a = p1.sink { r2.append($0) }
+type(of: c1a)
 r2
 /*:
  At this point we're only missing requirements 2 and 3 above, and we'll deal with those shortly.  But first let's ask,
@@ -174,15 +183,13 @@ r2
  This technique allows us to invoke our chain of transformations of our input asynchronously.
  So lets do that the simplest way that Combine allows by using the same example we've been
  working on.
- */
-type(of: c1a)
-/*:
+
  As before we create an array to hold the output.
  */
 var r3: [String] = []
 /*:
  But now instead of using `[Int].publisher`
- we use a new kind of Publisher, as `PassThruSubject`.  Notice how this code looks exactly
+ we use a new kind of Publisher, a `PassThruSubject`.  Notice how this code looks exactly
  like the `[Int].publisher`
  */
 let sub1 = PassthroughSubject<Int, Never>()
