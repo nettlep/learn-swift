@@ -259,7 +259,7 @@ type(of: x2)
  `zip` is an amazingly general form that applies to almost any generic you will
  encounter, i.e. you can write a function with this signature for almost any generic G:
  
-     `(G<A>, G<B>) -> G<(A, B)>`
+     (G<A>, G<B>) -> G<(A, B)>
  
  Again, we'll do this below for Optional but for now, we'll show how it works with Sequence.
  
