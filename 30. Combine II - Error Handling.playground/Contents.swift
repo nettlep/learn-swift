@@ -1,14 +1,19 @@
 /*:
  # Combine II - Error Handling
  
+ In this playground we'll dive into Combine's ways of handling errors
+ in some depth.  It turns out that Combine's error handling looks like
+ a couple of things we've already seen in Optional and in Result. So
+ let's explore some areas of those two things which you may not
+ have considered before.
+ 
  ### Binary Enums
 
  There are two `enum`s which play a hugely important role in all
  Swift programming - `Optional` and `Result`.
  
- The general principles behind the two extend into programming with Combine.  Let's make our own
- version of the two and discuss the more general mechanism that underlies them.  Then we'll
- talk about how Combine implements that mechanism.
+ The general principles behind the two extend into programming with Combine.
+ Let's make our own version of the two and discuss the more general mechanism that underlies them.  Then we'll talk about how Combine implements that same mechanism.
  */
 enum MyOptional<T> {
     case some(T)
@@ -131,6 +136,7 @@ finalResult
 type(of: finalResult)
 
 /*:
- Now we should be able to execute the exact same things using Combine
- with a PassthruSubject<Int, OurError>:
+ Now lets extend this to Combine.
+ We should be able to execute the exact same things using
+ a PassthruSubject<Int, OurError>:
  */

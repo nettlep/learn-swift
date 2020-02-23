@@ -71,7 +71,8 @@ At least three questions that should be in your mind are:
  Interestingly, there are several ways syntactically to invoke that function that
  we captured above as `f`. Look at the lines below and their type signatures.
  All of these statements are exactly the same.  The ONLY difference
- is that f1a is in OOP notation. But the compiler turns them into the exact same code
+ is that f1a is in OOP notation. But the compiler turns them into the
+ exact same code
  as you can see over to the right where the playground prints the types.
 */
 let f1a = [1,2,3].myCompactMap
@@ -85,11 +86,14 @@ In words these are all functions which
     and return:
        [String]
  ```
- i.e. they are the original `f` function with the first part cut off.  As you would expect
+ i.e. they are the original `f` function with the first part cut off.
+ As you would expect
  because we've taken the first function and done an invocation on it.
 
- Note that I refer above to the `OOP notation`.  In Swift, OOP is just that, a notation,
- nothing more, nothing less. This one of the primary lessons of this playground, btw.
+ Note that I refer above to the `OOP notation`.  In Swift,
+ OOP is just that, a notation,
+ nothing more, nothing less. This one of the primary lessons of
+ this playground, btw.
  
  So lets invoke the 3 functions above.
  */
@@ -113,10 +117,15 @@ f1c { "\($0)" }
  
  `([Int]) -> ((Int) -> String?) -> [String?]`
 
- Amazingly it is possible to write a Swift function which can
- invert the order of those arguments to:
+ Amazingly it is possible to write a single Swift
+ function which can invert the order of those arguments to:
 
  ` ((Int) -> String?) -> ([Int]) -> [String?]`
+ 
+ Make sure that you see what's different between those two.
+ Furthermore we can make that single
+ function work even if we replace `Int` and `String`
+ with any other types at all.
  
  Don't believe me? Here it is:
  */
@@ -130,8 +139,10 @@ public func flip<A, B, C>(
     }
 }
 /*:
- This is our first real example of functional composition, i.e. using a function to change
- the "shape" of another function or functions.  This particular example rewards paying it a lot of
+ This is our first real example of functional composition,
+ i.e. using a function to change
+ the "shape" of another function or functions.
+ This particular example rewards paying it a lot of
  attention.
  
  We have 3 functions specified here:
@@ -142,7 +153,9 @@ public func flip<A, B, C>(
  
  3. the one that begins: `{ (a: A) -> B in`
  
- When invoked, function 1 returns function 2.  If you then invoke function 2, it
+ When invoked, function 1 returns function 2.  Function 1 is our
+ original function and function 2 is that function with it's first
+ two arguments "flipped" positionally. If you then invoke function 2, it
  returns function 3. If at the end of everything, you invoke function 3, you will
  _finally_ have a type that is not a function of some sort, you will have an
  "honest" value of type B. (of course B could be a function  :) )
@@ -171,12 +184,12 @@ f3a
  _This_ is what is meant by `functional composition`.  The forms
  that composition can take are many and varied.  For now we are dealing
  with some simple ones, but if you are actually curious about how combine
- works, the best statement is that Combine consists of functions to
- compose functions which compose functions.  (It all gets a bit self-rerential
- after a while).
+ works, the best statement of what its doing is that Combine consists
+ of functions to compose functions which compose functions.
+ (It can all get a bit self-rerential after a while).
  
- Anyway, one of the big ways that people judge features in the Swift language
- now is based on how well some feature composes.  It's that important.
+ Anyway, one of the big ways that people judge a feature in the Swift language
+ now is based on how well that feature composes.  It's that important.
  When property wrappers were initially proposed for the language the
  proposal by a member of the core team was bounced, because the wrappers
  did not compose well.  Let that be a lesson to you.
@@ -206,7 +219,8 @@ struct StructA {
 type(of: StructA.append)
 let a = StructA(a: "some string")
 /*:
- Note that these are exactly the same, it's just that one
+ Note that the following to invocations are exactly the same,
+ it's just that one
  of them is in OO notation while the other is just a plain
  function call.  (You should be able to say which is which
  on your own at this point).  The point is that they are
@@ -232,8 +246,10 @@ extension StructA {
 type(of: StructA.staticAppend)
 type(of: StructA.append)
 /*:
- If you look at _THOSE_ type signatures, you'll find that they fit our `flip` function above
- perfectly.  i.e. we could shift around the order of the arguments if we found that convenient.
+ If you look at _THOSE_ type signatures, you'll find that they fit our
+ `flip` function above
+ perfectly.  i.e. we could shift around the order of the arguments
+ if we found that convenient.
  
  But the big lesson here is that we can write our own static functions that
  bind `self` and they behave _precisely_ the way that "objects" do.  i.e.
@@ -249,13 +265,13 @@ type(of: StructA.append)
  those extra `->`'s were doing in our simple method attached to a struct.
  
  What we've learned is that every "method" on a Swift type is actually
- just a static function-return-function with the name of the type somehow
+ just a static function-returning-function with the name of the type somehow
  prepended to put it in the correct namespace.  Swift keeps track
  of these things and provides the syntactic sugar to let you fool yourself
  into thinking that somehow it's "Object Oriented" but underneath,
  it's all just static functions.
  
- If you are familiar with ObjC, this is _exactly_ equivalent to what
+ Btw, if you are familiar with ObjC, this is _exactly_ equivalent to what
  it does when it passes self as the first argument to an Impl.  Swift
  just uses a different technique for designating `self`.  And it turns
  out that that technique is just a use of functional composition.
@@ -269,7 +285,7 @@ public func uncurry<A, B, C>(
 }
 /*:
  This one takes as its only argument a function returning a function
- where the arguments to the passed in function are single values and it
+ where the arguments to the passed-in function are single values and it
  combines them to make a single function that takes two arguments.
  Lets try it.
  */
@@ -318,13 +334,15 @@ type(of: c)
  
  Without reified generics, you end up writing custom code to do
  each desired reshaping. And you don't get the boilerplate for
- different types of reshaping generated for you. That custom code is just
+ different types of reshaping generated for you automagically.
+ It turns out that that custom code is just
  too cumbersome to implement in the volume you would need to accomodate
  the type signature of every function you might want to reshape somehow.
- So no one ever does the reshaping.
+ So no one ever does reshaping like this in Java or ObjC or Python et al.
  
- The syntax of swift is _designed_ (aka stolen from other languages)
- to make this use of generics and this sort of reshaping easy.
+ The syntax of Swift is _designed_ (aka stolen from other languages)
+ to make this use of generics and this sort of reshaping really easy.
+ It's just what modern functional languages do.
  
  In fact, [this NSHipster article](https://nshipster.com/callable/) is
  an excellent explantion of what the syntactic sugar here is doing and
@@ -348,11 +366,22 @@ func >>> <A, B, C>(
     { (a: A) -> C in g(f(a)) }
 }
 /*:
- Note that all this function does is take two functions which
- fit together (f outputs g's input type) and roll them up into
+ Up to now we've been reshaping single functions to our liking.
+ But note that this function takes _two_ functions as arguments which
+ fit together. I.e. f outputs g's input type. And it rolls them up into
  one function.
+ 
+ (Incidentally, this starts to explain why the standard style in Swift
+ when doing long function declarations is to put every argument
+ on a separate line and to put the return value on its own line as well.
+ Arguments that describe functions can have very long type declarations and you
+ need, mentally, to be able to correctly conceive of the type of each
+ in order to reason about the function as a whole.  If I tried to
+ put more than one argument on a line, the `->` parts would dominate the
+ naming parts and you'd be unable to figure out the compiler messages
+ when you got it wrong.  And you will _always_ get something wrong).
 
- Here's an example:
+ Anyway, here's an example of using our new `>>>` operator:
  */
 let left = { (a: Int) -> Double in Double(2 * a) }
 type(of: left)
@@ -379,7 +408,7 @@ combined(5)
  
  So look closely at that line:
  
-     `let combined = left >>> right`
+     let combined = left >>> right
  
  Using a functional composition technique,
  we were able to combine two functions together without invoking
@@ -410,7 +439,7 @@ combined(5)
  
  Going back:
  
-     `let combined = left >>> right`
+     let combined = left >>> right
  
  gave us a single function we could then invoke
  at our leisure.  Which we then do with the lines:
