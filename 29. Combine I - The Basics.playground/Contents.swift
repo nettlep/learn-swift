@@ -9,6 +9,8 @@
  */
 import Combine
 /*:
+ ### Synchronous Sequences
+ 
  Now let's take a simple use of higher order functions on a Sequence.
  In this case the Sequence is `[Int]` and we'll stick with `map` for
  simplicity of explication.  (And yes I know that all 3 map lines below
@@ -87,6 +89,8 @@ r1
  return different _types_ of publisher, which is not the case with
  the operations on Array).
  
+ ### Functional Comoposition in Combine
+ 
  So where does functional composition come in?  The best way to
  understand it is to try and write a mini version of Combine yourself.
  This lets you gain a lot of intuition about why Combine does things
@@ -128,6 +132,8 @@ r1
  to almost any generic?  Well here's another generic (i.e. Publisher) and
  in fact, `map` applies to it. And if you look, it also responds to `zip`
  and `flatMap`
+ 
+ ### Using Combine
  
  Ok, so let's translate our example to Combine.  We'll start by creating a value to hold our output.
  */
@@ -226,6 +232,8 @@ r2
  above, and we'll deal with those shortly.  But first let's ask,
  what's the point of all this?
  
+ ### Asynchronous Sequences
+ 
  I mean, it's all great that we can replace the functions on Array with publishers and avoid
  creating the intermediate arrays. But this seems pretty esoteric, what's the big deal?
  In a single word, the big deal is ASYNCHRONY.
@@ -252,8 +260,8 @@ type(of: c2)
 /*:
  This time however, unlike both the examples above, we don't send all the values
  immediately, we send them one at a time.  Note the value of r3 after each send.
- Also note that the thing which responds to `send` is the PassthruSubject, not
- any of the intervening Publishers.  That's why we had to keep the subject in
+ Also note that the thing which responds to `send` is the `PassthruSubject`, not
+ any of the intervening `Publisher`s.  That's why we had to keep the subject in
  a separate variable, so that we could later call `send` on it.
  */
 r3
@@ -368,10 +376,9 @@ r5
  radically overhauled the way we architect iOS apps.  In fact, the
  architectural change will be so radical as to be disorienting at times.
  
- There's one more thing we need to talk about before we get to Networking, though,
- - Error handling.  Networks are things that fail and somehow we need to deal with
- failure.
+ There's one more thing we need to talk about before we get to Networking, though:
+ Requirement 3 (Error handling).  Networks are things that fail and somehow
+ we need to deal with failure.
  
- In the next playground we'll explain how we meet Requirement 3 (Error handling)
- in Combine.
+ In the next playground we'll explain how we do error handling in Combine.
 */

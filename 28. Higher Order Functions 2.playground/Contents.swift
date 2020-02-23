@@ -7,6 +7,10 @@ The point of this playground is to demonstrate Swift's capabilities to
  
  This feature is generally what people are referring to when they
  speak of `functional programming`. Its use informs the entire style.
+ The previous higher order functions are part of functional programming,
+ but they are not the key distinguishing factor.  The elements of
+ this playground ARE what makes functional programming different and
+ makes it matter.
  
  So... Lets start with a  function.  This one extends `Array<Int>` and
  basically gives us `compactMap` to play with.  (I'll explain much later
@@ -202,7 +206,12 @@ struct StructA {
 type(of: StructA.append)
 let a = StructA(a: "some string")
 /*:
- Note that these are exactly the same
+ Note that these are exactly the same, it's just that one
+ of them is in OO notation while the other is just a plain
+ function call.  (You should be able to say which is which
+ on your own at this point).  The point is that they are
+ invoking exactly the same functions in precisely the same
+ order.
 */
 let s1 = StructA.append(a)(string:" 5")
 let s2 = StructA(a:"some string").append(string: " 5")
@@ -229,10 +238,22 @@ type(of: StructA.append)
  But the big lesson here is that we can write our own static functions that
  bind `self` and they behave _precisely_ the way that "objects" do.  i.e.
  everything you think of as an "instance method" is actually a
- function returning a function where Swift has passed in "self" to the first function, which
- has bound it and returned the function that you think of as the "method". (The compiler
- optimizes the hell out of this for your methods, so it's not literally true underneath,
- but from a syntactic standpoint, they are exactly the same).
+ function returning a function where Swift has passed in "self" to the
+ first function, which
+ has bound it and returned the function that you think of as the "method".
+ (The compiler
+ optimizes the hell out of this for your methods, so it's not
+ literally true underneath,
+ but from a syntactic standpoint, they are exactly the same). And
+ this precisely explains our questions up above about what all
+ those extra `->`'s were doing in our simple method attached to a struct.
+ 
+ What we've learned is that every "method" on a Swift type is actually
+ just a static function-return-function with the name of the type somehow
+ prepended to put it in the correct namespace.  Swift keeps track
+ of these things and provides the syntactic sugar to let you fool yourself
+ into thinking that somehow it's "Object Oriented" but underneath,
+ it's all just static functions.
  
  If you are familiar with ObjC, this is _exactly_ equivalent to what
  it does when it passes self as the first argument to an Impl.  Swift
@@ -289,22 +310,28 @@ type(of: c)
  1. generics and
  2. syntax.
  
- `flip`, `curry` and `uncurry` are real
+ `flip`, `curry` and `uncurry` are real, simple, one-line
  generic functions with reified implementations created on demand.
- Unlike in Java or ObjC, they are not just hints to the compiler.
+ Unlike in Java or ObjC, generics are not just hints to the compiler.
  Reified generics are precisely what is required to remove the boiler-
- plate code necessary to reshape functions in a general sense.  Without it
- you end up writing custom code to reshape functions the way that you want
- and that custom code is just too cumbersome to implement in the volume
- you would need. And the syntax of swift is _designed_ to make this use
- of generics and this sort of reshaping easy.
+ plate code necessary to reshape functions in a general sense.
+ 
+ Without reified generics, you end up writing custom code to do
+ each desired reshaping. And you don't get the boilerplate for
+ different types of reshaping generated for you. That custom code is just
+ too cumbersome to implement in the volume you would need to accomodate
+ the type signature of every function you might want to reshape somehow.
+ So no one ever does the reshaping.
+ 
+ The syntax of swift is _designed_ (aka stolen from other languages)
+ to make this use of generics and this sort of reshaping easy.
  
  In fact, [this NSHipster article](https://nshipster.com/callable/) is
  an excellent explantion of what the syntactic sugar here is doing and
  why it is so useful.
  
- Let's do one more function that comes in useful in this regard, forward composition,
- which we'll describe as the `>>>` operator.
+ Let's do one more function that is useful in this regard,
+ forward composition, which we'll describe as the `>>>` operator.
  */
 
 precedencegroup CompositionPrecedence {

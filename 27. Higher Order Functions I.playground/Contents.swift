@@ -144,14 +144,19 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
  
  i.e. map implements a for-loop which calls the transform function on each
  element of the Sequence, _no matter what kind of Sequence it is_!
+ ALL of the Sequence higher order functions work this way.
  
- ALL of the Sequence higher order functions work this way.  Note, if you have a performance
- problem with one, it is because you haven't really understood its use, because it's
- really not possible for you to do it any faster in your own implementation.
+ As an aside, if find yourself having a performance
+ problem with one these implementations, you will want to look at the source
+ underneath to make sure you understand its use. These implementations
+ have been highly tuned in the standard lib source to take advantage of
+ the underlying compiler optimizations.  It's just
+ really not possible for you to do it any faster by writing your own
+ boilerplate.
  
  Below are the higher order patterns that are most used.  You should familiarize
  yourself with the use of ALL of the following and you should do it in the order
- we show here. (Don't worry we're going to drill you on several of them below):
+ we show here. (Don't worry, we're going to drill you on several of them below):
  
  The following 3 functions are easily the most important ones.
  They apply to almost ALL generic types in addition to Sequence.
@@ -195,6 +200,8 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
  them on demand.  `publisher` is a Combine sequence which we will discuss in excruciating
  detail in a later playground.
 
+ ### Map
+ 
  Here're some simple examples of the most general methods, starting with `map`:
  */
 let x0 = [1, 2, 3]
@@ -224,6 +231,8 @@ type(of: x2)
  Note how we go back and forth between using the parens form and the trailing closure
  syntax form.  You need to master doing this as well.
  
+ ### Zip
+ 
  Let's look at `zip` now and think about it's general form. Like `map`,
  `zip` is an amazingly general form that applies to almost any generic you will
  encounter, i.e. you can write a function with this signature for almost any generic G:
@@ -235,17 +244,20 @@ type(of: x2)
  `zip` is a top level function that takes a tuple of sequences and returns a
  single sequence of tuples.  In the case of Sequence it does it in a lazy manner,
  so to we need to force the returned zip sequence into an array in order to see it easily.
+ (Thats what the `Array(...)` is doing in the example).
 */
 let z0 = Array(zip([1, 2, 3], ["a", "b", "c", "d"]))
 z0
 type(of: z0)
 /*:
- Note that we do in fact have a fully realized Array<(Int, String)> and that further
+ Note that we do in fact have a fully realized `Array<(Int, String)>` and that further
  this array only has 3 elements.  The fourth element in the second array could not be
  matched up with an element in the first array and was therefore dropped.  To do otherwise
  we would have had to make use of Optional on either Int or String and this would have
  violated the type signature of zip.  You can certainly write a zip which pads either side,
  but the std library does not include it.
+ 
+ ### FlatMap
  
  And finally lets look at the most general form we have `flatMap`.
  `flatMap` on Sequence allows us to unnest one Sequence from another.
@@ -376,13 +388,17 @@ struct MyInteger: Equatable, Hashable, IntDescribable, Comparable {
      (key, value)
  
  Here we create a [String: Describable] including a `map` in the initialization
- of the dictionary.
+ of the dictionary.  Just for kicks we'll use a call to `map`
+ in our initialization of `d`. Note that this particular `map` invocation is picking out
+ the keys of the input `Dictionary`.  We could as just have easily picked the values
+ by mapping `$0.1` which would have produced `[Int]` rather than `[String]` .
  */
+var smallD = [ "1": 1, "2": 2, "3": 3, "4": 4]
 var d: [String: Describable] = [
     "1" : "1",
     "2" : 2,
     "3" : [1, 2, 3],
-    "4" : [ "1": 1, "2": 2, "3": 3, "4": 4].map { $0.0 },
+    "4" : smallD.map { $0.0 },
     "5" : [MyInteger(5)],
     "6" : ["6"]
 ]
@@ -392,9 +408,16 @@ var m1 = d
 type(of: m1)
 m1
 /*:
- As we go through we'll highligh each transformation with it's type signature.
+ As we go through we'll highlight each transformation with it's type signature.
  
- CompactMap acts for example on an array of optional A to produce an array of non-optional B.
+ CompactMap acts for example on an array of optional A to produce an array of non-optional B.  We're getting an `Optional` here because we want only those elements of
+ `d` which are Array<IntDescribable>, any element which does not meet that type
+ will return nil.  So we are first `map`ping (Describable) -> [IntDescribable?] and
+ `compact`ing by removing `.none`.  Note by the way that I refer to this as `.none`
+ rather than `nil`.  This is not strictly necessary, but is a really good habit
+ that you will want to get into for a number of reasons, primarily that it makes
+ you _think_ about the type of `Optional` you have on hand rather than mentally
+ eliding the generic parameter.
  
  CompactMap - [A?] -> [B]
  */
@@ -444,6 +467,8 @@ type(of: m7)
 m7
 /*:
  Note that the type which falls out of all those transformations is `Int`
+ 
+ ### Set is also a Sequence
  
  Since Set is a Sequence everything above also applies to it.
  */
