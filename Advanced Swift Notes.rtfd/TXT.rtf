@@ -4,9 +4,9 @@
 \f6\fnil\fcharset0 AndaleMono;\f7\fswiss\fcharset0 ArialNarrow;\f8\fnil\fcharset0 HelveticaNeue;
 }
 {\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue0;
-\red0\green0\blue255;\red22\green21\blue22;\red0\green0\blue255;}
+\red0\green0\blue255;\red22\green21\blue22;}
 {\*\expandedcolortbl;;\cssrgb\c0\c0\c0\c85098;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;
-\cssrgb\c1680\c19835\c100000;\cssrgb\c11373\c10980\c11373;\cssrgb\c1680\c19835\c100000;}
+\cssrgb\c1680\c19835\c100000;\cssrgb\c11373\c10980\c11373;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
 {\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
 {\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
@@ -210,7 +210,10 @@ Using Swift's functional composition capabilities allows one to use functional d
 \ls11\ilvl0
 \fs24 \cf4 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
 \f1\fs28 \cf0 A key insight of the functional style is that\cf4 \expnd0\expndtw0\kerning0
- all programs can be decomposed into the application of functions, some higher order, some not. While Swift does not do lazy evaluation, it does handle higher order functions quite well.\cf0 \
+ all programs can be decomposed into the application of functions, some higher order, some not. \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls11\ilvl0\cf4 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+While Swift does not do lazy evaluation, it does handle higher order functions quite well.\cf0 \
 \pard\pardeftab720\partightenfactor0
 \cf0 \
 
@@ -234,15 +237,14 @@ Technically speaking there are a couple of layers between the entry of the event
 \ls12\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
 Also, technically, the ApplicationState can be mutable if sufficient thought and care are given to managing mutation, however, frequently this is neither desirable nor necessary.\
 \pard\pardeftab720\partightenfactor0
-\cf0 \
-This point about application state and how it changes over time is the architectural crux of all application development in SwiftUI and SwiftNIO.  Let's explain what that means.\
+\cf0 This point about application state and how it changes over time is the architectural crux of all application development in SwiftUI and SwiftNIO.  Let's explain what that means.\
 \pard\pardeftab720\partightenfactor0
 \cf0 \kerning1\expnd0\expndtw0 \
 
 \f0\b\fs36 \expnd0\expndtw0\kerning0
 Functional Reactive Programming
 \f1\b0\fs28 \
-The functional reactive programming (FRP) style as embodied in Combine takes functional decomposition into the asynchronous domain of handling events.  Under FRP you should think of your application as being a collection of functions which are nested in an event loop or loops. In GUI apps that's typically the event loop of the main thread, in server apps, its the event loop of a worker thread.  \
+The functional reactive programming (FRP) style as embodied in Combine takes functional decomposition into the asynchronous domain of handling events.  Under FRP you should think of your application as being a collection of functions which are nested in an event loop or loops. In GUI apps that's typically the event loop of the main thread, in server apps, it's the event loop of a worker thread.  \
 \
 When an event enters the event loop, a function is selected to dispatch the event into. That function is called by passing in 
 \f5\i 1) the current state of the application AND 2) the new event.  The function returns 3) a tuple composed of the new state of the application and any side-effects to be performed
@@ -252,7 +254,7 @@ Wrt to side-effects, in this model, side-effects are \'93pushed to the edge of t
 \
 This model is precisely the one used by SwiftUI. Display update is a direct side-effect of updating ApplicationState implemented as part of the SwiftUI framework.  SwiftUI's Views are not mutable for this reason.  They are generated using a particular value of the Application State to which they are connected by property wrappers of various forms.\
 \
-The above almost inevitably implies that long-running applications should be organized as collections of functions of the form: 
+The above ineluctably implies that long-running applications should be organized as collections of functions of the form: 
 \f6 \cf5 (ApplicationState, Event)->(ApplicationState, [Effect<Action>])
 \f1 \cf0 .  In functional programming terms, functions with this signature are called reducers. Your application should decompose this function into a chain of function invocations mediated by the type system. If you are working with a mutable ApplicationState, this signature is 
 \f6 \cf5 (&ApplicationState, Event)->[Effect<Action>]
@@ -288,7 +290,8 @@ The FRB style is so different from the traditional UIKit MVC model that it can b
 \
 Under the FRP architecture, the State shown in the diagram above becomes a tree of smaller State objects with communication allowed only up or down the tree, using Combine.   All UI is grouped in modules, each of which can see a particular node on the State tree.  So for any given sub-hierarchy of views, the diagram above is correct.  What is missing is the communication between sub- and super- States. \
 \
-This is in fact, where an {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782#actor-model-theory"}}{\fldrslt Actor model}} of concurrency would fit perfectly. An event would be dispatched into an actor designated to handle it.  The event could be processed concurrently with any number of other events all of which would submit their side-effects as Requests back to dispatch actors designated to process them.\expnd0\expndtw0\kerning0
+This is in fact, where an {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782#actor-model-theory"}}{\fldrslt Actor model}} of concurrency would fit perfectly. An event would be dispatched into an actor designated to handle it.  The event could be processed concurrently with any number of other events all of which would submit their side-effects as Requests back to dispatch actors designated to process them.\
+An actor model is part of the original Groff/Latner Concurrency Manifesto and is probably under consideration for Swift 6. \expnd0\expndtw0\kerning0
 \
 \pard\pardeftab720\partightenfactor0
 
@@ -297,8 +300,9 @@ This is in fact, where an {\field{\*\fldinst{HYPERLINK "https://gist.github.com/
 
 \fs36 \cf0 \kerning1\expnd0\expndtw0 The Type System
 \f1\b0\fs28 \
-Swift's type system is discussed below in detail and consists of: tuples, functions, structs, enums, classes, and protocols PLUS generics of the first 5 things in that list (Protocols and generics interact in very weird ways). If you are coming from an OO background it is frequently the case that you will think the following things when you pick up Swift: \
+Swift's type system is discussed below in detail and consists of: tuples, functions, structs, enums, classes, and protocols PLUS generics of the first 5 things in that list (Protocols and generics interact in very weird ways). \
 \
+If you are coming from an OO background it is frequently the case that you will think the following things when you pick up Swift: \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls13\ilvl0\cf0 {\listtext	\uc0\u8226 	}Classes and protocols look quite familiar to what you are accustomed to in Java or ObjC or JavaScript\
 {\listtext	\uc0\u8226 	}Structs seem like classes with several useless limitations \
@@ -306,29 +310,22 @@ Swift's type system is discussed below in detail and consists of: tuples, functi
 {\listtext	\uc0\u8226 	}Generics seem a bit superfluous and \
 {\listtext	\uc0\u8226 	}Enums and tuples look like trivial extensions from C \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
-Each and every one of these perceptions is mistaken in some fundamental way. \
+\cf0 Be aware that each and every one of these perceptions is mistaken in some fundamental way. \
 \
 
 \f0\b\fs36 Tuples
 \f1\b0\fs28 \
-Tuples in Swift are called `structural` types, whilst structs are called `nominal` types. Here's an example of what this means:\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-
+Tuples in Swift are called `structural` types, whilst structs are called `nominal` types. Here's an example of what this means:
 \f7 \cf5 \
 	(Int, Int) \
 	(row: Int, col: Int) \
-	(x: Int, y: Int)\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-
+	(x: Int, y: Int)
 \f1 \cf0 \
-are all the same structural type and can be substituted freely for one another - anywhere the type system allows one, it allows the others. OTOH, \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf5 \
+are all the same structural type and can be substituted freely for one another - anywhere the type system allows one, it allows the others. \
+\
+OTOH, \cf5 \
 	struct Location \{ let row: Int; let col: Int \}\
-	struct Coord \{ let x: Int; let y: Int \}\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+	struct Coord \{ let x: Int; let y: Int \}\cf0 \
 have identical structures, but are completely different nominal types precisely because they have been assigned different names.  And one cannot substitute one for the other in any context.  \
 \
 The first example is called structural typing because it depends only on the structure of the type. The second is called nominal typing because it depends only on the name of the type. \
@@ -751,7 +748,7 @@ UIKIt vs SwiftUI
 While swift has syntax for generic types in protocols,  it does not have syntax for generic functions in protocols.   (Exercise try to write a protocol for a generic type F parameterized by T which implements the following signature:\
 		\
 		
-\f5\i \cf7 map<U>(transform: (T) -> U) -> F<U>
+\f5\i \cf5 map<U>(transform: (T) -> U) -> F<U>
 \f1\i0 \cf6   \
 		\
 		It\'92s not possible to write map because you can\'92t add the generic type which parameterizes the return value.  The {\field{\*\fldinst{HYPERLINK "https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md#generic-associatedtypes"}}{\fldrslt Generics Manifesto was recently modified}} to address this and PATs will eventually get generic associated types at which point a pretty good facsimile of higher kinded types will be available in Swift.
