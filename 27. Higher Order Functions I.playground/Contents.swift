@@ -3,24 +3,39 @@
  
  ### Functions Taking Functions as Arguments
  
- People always start a discussion of functions which take and return other functions
- (referred to as higher order functions) with the family of functions which operate
+ This is Part 1 of an introduction to Swift's feature set for
+ writing functions which take other
+ functions as arguments and/or return functions as return values.
+ Such functions are referred to as "higher order" functions for obvious reasons.
+ It has been my experience when teaching Swift
+ that this is the single hardest concept for students to grasp.
+ Because of that, I recommend that you look closely at every
+ line of code in this and the next playground, making sure that you understand
+ what it is doing before proceeding. The material involved builds up at every step
+ and you'll need to keep in mind several new things in order to follow the flow.
+ 
+ People always start a discussion of higher order functions
+ with the family of functions which operate
  on the Sequence protocol.  Our discussion will lean on these heavily as an example
  as well, but be prepared to move beyond them quickly.
  
- You should keep in mind that this is only half the story because the functions
- we are studying in this playground are those
+ You should keep in mind that this playground
+ is only half the story because the functions
+ we are studying here are those
  functions which accept a function as an argument and return a struct, class or enum type.
  (In the case of Sequence the type returned is an Array)
  However, the true power of higher order functions comes into focus in the
  next playground when we write functions that not only accept a single
  function as an argument, but which take _multiple_ functions as arguments,
  compose the arguments together somehow and return a function as a result.
+ The patterns of function composition are critical to absorb to be able to even
+ read idiomatic Swift, much less write it.
  
  The power of this approach is amplified even more when it is combined with Swift's
- generic programming capability which we will begin to explore in this playground.
+ generic programming capability which we utilize fully in this playground.  You may
+ want to keep "Playground 22. Generics" handy while we do this.
  
- So... let's start with a a simple function which takes a function as an argument:
+ So... let's start with a simple function which takes a function as an argument:
  */
 
 func f(_ value: Int, _ g: (Int) -> Double) -> String { "\(g(value))" }
@@ -91,12 +106,18 @@ h(4)
 /*:
  So now, lets use `f` in several different ways.
  */
-f(4, g) // pass the second variable as a func
-f(4, h) // pass the second variable as a named closure variable
+f(4, g)               // pass the second variable as a func
+f(4, h)               // pass the second variable as a named closure variable
 f(4, { Double($0) } ) // pass the second variable as an anonymous closure
 f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
 /*:
- So we have built a function that takes a function as an argument and shown its use.
+ So we have built a function that takes a function as an argument and shown its use
+ in four different syntactic forms.  I have made the forms here as simple as possible,
+ they can get much more complex.  You need to be able to recognize all 4 forms
+ fluently, as any of them can be used at any time. There's not really a preferred
+ style here.  _Trailing closure syntax_ in particular confuses people.
+ We will drill you extensively on it in class, but you should
+ drill yourself on it as well.
  
  ### Sequences and especially Array
  
@@ -150,7 +171,8 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
  problem with one these implementations, you will want to look at the source
  underneath to make sure you understand its use. These implementations
  have been highly tuned in the standard lib source to take advantage of
- the underlying compiler optimizations.  It's just
+ the underlying compiler optimizations.  (Note for example the use
+ of `@inlined` here to do precisely that).  It's just
  really not possible for you to do it any faster by writing your own
  boilerplate.
  
@@ -324,7 +346,7 @@ type(of: fm4a)
  That's really the wrong question.  What we're dealing with here is Sequences of which
  Array is only a particular type.  A better question is "under what circumstances am
  I likely to be dealing with a subsequence of a given sequence"?  Or: "when am I likely
- to have have to run a query against some back that provides me as its return type
+ to have have to run a query against some back end that provides me as its return type
  the values I need to run a sequence of other queries?"  Or: "when will I be walking
  an array and calling a function that returns an Array on each element"
  _THOSE_ situations are when flatMap on Sequence really begins to show its power.
@@ -387,8 +409,7 @@ struct MyInteger: Equatable, Hashable, IntDescribable, Comparable {
       
      (key, value)
  
- Here we create a [String: Describable] including a `map` in the initialization
- of the dictionary.  Just for kicks we'll use a call to `map`
+ Here we create a [String: Describable].  Just for kicks we'll use a call to `map`
  in our initialization of `d`. Note that this particular `map` invocation is picking out
  the keys of the input `Dictionary`.  We could as just have easily picked the values
  by mapping `$0.1` which would have produced `[Int]` rather than `[String]` .
@@ -570,8 +591,8 @@ o5
 type(of: o5)
 /*:
  Here's the problem, suppose that `l` were zero?  what should be do?  Well to prevent
- a crash we need to guard against that by returning an Optional<Int> rather than
- a naked Int.  So let's do that.
+ a crash we need to guard against that by returning an `Optional<Int>` rather than
+ a plain ol' `Int`.  So let's do that.
  */
 let o6 = o1.map { i -> Int? in
     guard l != 0 else { return nil }
@@ -580,15 +601,15 @@ let o6 = o1.map { i -> Int? in
 o6
 type(of: o6)
 /*:
- Ruh-roh, Rorge. What the heck is this Optional<Optional<Int>> type for o6?
- Well it's what you get from the definition of map if A is Int and B is
- Optional<Int>. So lets look at something similar we had on Array.
- Remember the signature of flatMap on Array<A> looks like this:
+ Ruh-roh, Rorge. What the heck is this `Optional<Optional<Int>>` type for `o6`?
+ Well it's what you get from the definition of map if `A` is `Int` and `B` is
+ `Optional<Int>`. So lets look at something similar we had on Array.
+ Remember the signature of `flatMap` on `Array<A>` looks like this:
  
      func flatMap<B>( (A) -> Array<B> ) -> Array<B>
  
- When the transforming function returned an Array itself we could flatten out the
- Array<Array<B>> structure to form just an Array<B>.  And we can do the same thing with
+ When the transforming function returned an `Array` itself we could flatten out the
+ `Array<Array<B>>` structure to form just an `Array<B>`.  And we can do the same thing with
  Optional:
  */
 let o7 = o1.flatMap { i -> Int? in
@@ -598,12 +619,17 @@ let o7 = o1.flatMap { i -> Int? in
 o7
 type(of: o7)
 /*:
+ And here we see the reason it's called `flatMap`.  `flatMap` removes one level of
+ generics, i.e. `Array<Array<A>>` becomes just `Array<A>`.  What do you think will
+ happen on `Optional<Optional<A>>` if we `flatMap` it?  Yeah, it becomes just
+ `Optional<A>`.
+ 
  Now everything looks right.  And we've demonstrated that not only do map, zip and flatMap
  work on Sequence, they also work on Optional.  And this hints that they work on
  a lot of other stuff as well.
  
  `flatMap` turns out to be one of the most powerful concepts in all of computer science and
- we will use it extensively in the next few playgrounds.  For now you should just note
+ we will use it extensively in future playgrounds.  For now you should just note
  the pattern:
  
          Array<A>: func flatMap<B>( (A) ->    Array<B> ) ->    Array<B>

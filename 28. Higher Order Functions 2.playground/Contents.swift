@@ -62,11 +62,23 @@ At least three questions that should be in your mind are:
         a function which takes a String? and returns:
            [String]
  ```
- That is NOT the same function signature! The lesson here is that by default
- the `->` operator associates to the right, specifying that a function _accepts_
- a function as an argument rather than returning a function is causing the `->`
- to associate left and you have to use parens to indicate to the compiler that
- that is what you want.
+ That is NOT the same function signature!
+ 
+ The lesson here is that, by default,
+ the `->` operator associates to the right.  Right association says:
+ a function without the parens in place to say which is which,
+ will  _return_ a function rather than _accepting_ one as an argument.
+ 
+ Read that slowly,
+ as it's very important. To specify that a function _accepts_
+ a function as an argument rather than returning a function, you _must_
+ put parens around the argument. This is hard to get used to because
+ all of the arithmetic functions we have been taught since childhood
+ associate to the left.
+ Anyway, in this case, `( ... )` is causing the `->`
+ to associate left, which is what we want.
+ 
+ ### Higher-order Function Invocation
  
  Interestingly, there are several ways syntactically to invoke that function that
  we captured above as `f`. Look at the lines below and their type signatures.
@@ -113,6 +125,8 @@ f1a { "\($0)" }
 f1b { "\($0)" }
 f1c { "\($0)" }
 /*:
+ ### Writing our first function-returning-function
+ 
  Look at the type signature of `f` again.  To remind, it is:
  
  `([Int]) -> ((Int) -> String?) -> [String?]`
@@ -141,9 +155,24 @@ public func flip<A, B, C>(
 /*:
  This is our first real example of functional composition,
  i.e. using a function to change
- the "shape" of another function or functions.
+ the "shape" of another function or functions.  To be clear, this
+ function takes a generic argument of type:
+ 
+    (A) -> (C) -> B
+ 
+ and returns an argument of type:
+ 
+    (C) -> (A) -> B
+ 
+ i.e., it `flip`s the order of the C and the A.  And that's _all_
+ it does.  There's nothing magic here.  It's as if in another language
+ you had a function `(A,C) -> B` and you decided to change the signature
+ to `(C,A) -> B` and made no other change.  It is a syntactic change
+ only, with no difference in semantics.  I chose this one to start
+ with precisely to avoid making you think about what it does semantically.
+ 
  This particular example rewards paying it a lot of
- attention.
+ attention, however.
  
  We have 3 functions specified here:
  
@@ -190,9 +219,10 @@ f3a
  
  Anyway, one of the big ways that people judge a feature in the Swift language
  now is based on how well that feature composes.  It's that important.
- When property wrappers were initially proposed for the language the
- proposal by a member of the core team was bounced, because the wrappers
- did not compose well.  Let that be a lesson to you.
+ When property wrappers were initially proposed for the language, the
+ proposal (by a member of Apple's Swift core team no less)
+ was bounced, because the wrappers did not compose well.
+ Let that be a lesson to you.
  
 Now lets take the final step and invoke function 3...
 */
@@ -203,7 +233,7 @@ f3a([1,2,3])
  academic, where would _ANYONE_ ever use this stuff.  Well, it turns out
  that Swift itself uses this stuff as should be obvious from above where we typed:
  
-    `[Int].myCompactMap`
+    [Int].myCompactMap
  
  and got back a function returning a function. So lets explore that a bit more.
  
@@ -219,7 +249,7 @@ struct StructA {
 type(of: StructA.append)
 let a = StructA(a: "some string")
 /*:
- Note that the following to invocations are exactly the same,
+ Note that the following two invocations are exactly the same,
  it's just that one
  of them is in OO notation while the other is just a plain
  function call.  (You should be able to say which is which
@@ -290,9 +320,8 @@ public func uncurry<A, B, C>(
  Lets try it.
  */
 let u = uncurry(StructA.append)
-type(of: u)
 /*:
- Look at the output of that `type(of:)`.  If you are familiar with other OO
+ Look at the output of that.  If you are familiar with other OO
  languages like ObjectiveC, it should remind you of exactly what those languages
  do to provide method invocation.
  
