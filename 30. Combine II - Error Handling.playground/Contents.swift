@@ -72,6 +72,11 @@ extension MyResult {
     }
 }
 /*:
+ So `map` passes a `.failure` through unchanged and `mapError` passes a
+ `.success` through unchanged.  This is really important, in that it allows
+ you to view certain steps in a chain as skipped if they are of the
+ wrong value.
+ 
  But we still haven't accounted for everything that could happen on MyResult.
  Suppose that the transform `(T) -> U` was actually `(T) throws -> U`.
  That's not handled in the code above.  You should be able to guess what

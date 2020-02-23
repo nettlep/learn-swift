@@ -114,11 +114,11 @@ r1
  
  That composition proceeds backwards up the chain
  from bottom to top _but only when we subscribe_.  It is really important to note
- that the composition does occur until you attach a subscriber
+ that the composition does not occur until you attach a subscriber
  at the end.  Until that point, you can think of the publishers
  as being a sort of freeze-dried composition that is ready to
  be composed as soon as it is immersed in the water of a subscriber.
- This is what I meant previously about Combine being a package
+ This is what I meant previously about Combine being a package of functions
  for composing functions that compose functions.
  
  You can just try to understand Combine holistically,
@@ -302,10 +302,19 @@ So if you go and look at the Apple doc on PassthruSubject,
  
  Unlike CurrentValueSubject, a PassthroughSubject doesn’t have an initial value or a buffer of the most recently-published element. A PassthroughSubject drops values if there are no subscribers, or its current demand is zero.
  ```
- So this is way we can interface our existing imperative code to the functional world.
- When our imperative code generates
+ This is way we can interface our existing imperative code to the functional world
+ in Combine.  When our imperative code generates
  some new value we want to publish, we drop it into a PassthruSubject and *boom!*
  out it comes the other end of the chain.
+ 
+ Btw, if you are familiar with UIKit programming, this will remind you of something.
+ It's a lot like a NotificationCenter, only everything that goes through it is
+ explicitly typed and you can do this chaining action on things _before_ you
+ receive the notification.
+ 
+ Among other things, Combine replaces NSNotification and NSNotificationCenter with
+ a much more flexible mechanism which can garbage collect far more readily and which
+ does not steer you into using one gigantic singleton of NotificationCenter.
  
  One more important thing to note about PassthruSubject that lets
  you know it still has one foot in the imperative
@@ -350,7 +359,7 @@ c4.cancel()
 sub2.send(4)
 /*:
  So what do you expect the values of r4 and r5 to be?
- */
+*/
 r4
 r5
 /*:
