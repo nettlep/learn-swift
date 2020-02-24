@@ -25,6 +25,11 @@ extension Array where Element == Int {
 
 let f = [Int].myCompactMap
 /*:
+ Note that `[Int].myCompactMap` is just the name of a function.  We could
+ have called it `foo`.  Swift simply chose to put this function in a namespace
+ associated with `[Int]` and it did that by prepending the type name as
+ the namespace.
+
  Take a look at the far right column of the playground.  Expand that column
  so that you can see the type of `f` there.
  To remind, the type of `f` is *_NOT_* `function`.  The type of `f` is that entire
@@ -50,8 +55,8 @@ At least three questions that should be in your mind are:
        and returns:
           [String]
 ```
- Eventually in Swift, you have to understand functions which take functions AND
- functions which return functions. And even more you have to understand
+ Eventually in Swift, you have to understand functions-which-take-functions AND
+ functions-which-return-functions. And even more you have to understand
  how they chain.
  
  Quick comment on the parens in the middle.  If you left them out the signature
@@ -160,7 +165,7 @@ public func flip<A, B, C>(
  
     (A) -> (C) -> B
  
- and returns an argument of type:
+ and returns something of type:
  
     (C) -> (A) -> B
  
@@ -212,8 +217,9 @@ f3a
  
  _This_ is what is meant by `functional composition`.  The forms
  that composition can take are many and varied.  For now we are dealing
- with some simple ones, but if you are actually curious about how combine
- works, the best statement of what its doing is that Combine consists
+ with some simple ones, but if you are actually curious about how the
+ Combine library works its magic,
+ the best statement of what its doing is that Combine consists
  of functions to compose functions which compose functions.
  (It can all get a bit self-rerential after a while).
  
@@ -235,7 +241,7 @@ f3a([1,2,3])
  
     [Int].myCompactMap
  
- and got back a function returning a function. So lets explore that a bit more.
+ and got back a function-returning-function. So lets explore that a bit more.
  
  Lets define some structs of our own with some functions
  */
@@ -282,7 +288,8 @@ type(of: StructA.append)
  if we found that convenient.
  
  But the big lesson here is that we can write our own static functions that
- bind `self` and they behave _precisely_ the way that "objects" do.  i.e.
+ bind `self` and they behave _precisely_ the way that "instance methods"
+ on objects do,  i.e.
  everything you think of as an "instance method" is actually a
  function returning a function where Swift has passed in "self" to the
  first function, which
@@ -314,7 +321,7 @@ public func uncurry<A, B, C>(
     { (a: A, b: B) -> C in function(a)(b) }
 }
 /*:
- This one takes as its only argument a function returning a function
+ This one takes as its only argument a function-returning-function
  where the arguments to the passed-in function are single values and it
  combines them to make a single function that takes two arguments.
  Lets try it.
