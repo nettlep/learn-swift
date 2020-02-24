@@ -104,7 +104,7 @@ extension Configuration: Codable { }
  */
 public enum APIError: Error {
     case urlError(URLError)
-    case badResponse(URLResponse)
+    case badResponse
     case badResponseStatus(Int)
 }
 /*:
@@ -146,29 +146,32 @@ var c1 = URLSession(configuration: URLSessionConfiguration.default)
  
  So let's do that.
  */
+func verifyHttpResponse(data: Data?, response: URLResponse?) throws -> Data {
+    guard let httpResponse = response as? HTTPURLResponse else {
+        throw APIError.badResponse
+    }
+    guard httpResponse.statusCode == 200 else {
+        throw APIError.badResponseStatus(httpResponse.statusCode)
+    }
+    return data ?? Data()
+}
+
+func log<E>(completion: Subscribers.Completion<E>) {
+    switch completion {
+    case .finished: "C'est finis!"
+    case .failure(let error): print(error)
+    }
+}
+
+func log<T>(data: T) {
+    type(of: data)
+    data
+}
+
 var c2 = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: urlString)!)
-    .tryMap { data, response throws -> Data in
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw APIError.badResponse(response)
-        }
-        guard httpResponse.statusCode == 200 else {
-            throw APIError.badResponseStatus(httpResponse.statusCode)
-        }
-        return data
-    }
-    .sink(
-        receiveCompletion: { completion in
-            switch completion {
-            case .finished: "C'est finis!"
-            case .failure(let error): print(error)
-            }
-        },
-        receiveValue: { data in
-            type(of: data)
-            data
-        }
-    )
+    .tryMap(verifyHttpResponse)
+    .sink(receiveCompletion: log(completion:), receiveValue: log(data:))
 /*:
  We've added a `tryMap` which will verify the response and if the
  response exists and the response code is good, will return the data.
@@ -196,28 +199,9 @@ var c2 = URLSession(configuration: URLSessionConfiguration.default)
  */
 var c3 = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: urlString)!)
-    .tryMap { data, response throws -> Data in
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw APIError.badResponse(response)
-        }
-        guard httpResponse.statusCode == 200 else {
-            throw APIError.badResponseStatus(httpResponse.statusCode)
-        }
-        return data
-    }
+    .tryMap(verifyHttpResponse)
     .decode(type: [Configuration].self, decoder: JSONDecoder())
-    .sink(
-        receiveCompletion: { completion in
-            switch completion {
-            case .finished: "C'est finis!"
-            case .failure(let error): print(error)
-            }
-        },
-        receiveValue: { data in
-            type(of: data)
-            data
-        }
-    )
+    .sink(receiveCompletion: log(completion:), receiveValue: log(data:))
 /*:
  Now we have decoded the JSON data that we received back from the
  server into an array of our custom model objects. And boom
