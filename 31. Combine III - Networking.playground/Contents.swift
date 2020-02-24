@@ -1,5 +1,5 @@
 /*:
- # Combine II - Networking
+ # Combine III - Networking
  
  Now that we know we can use functional composition
  to compose a really big function from small readable
@@ -112,22 +112,22 @@ public enum APIError: Error {
  a URL. (I'm using an easily accessible dropbox file as a stand in
  for a real API here.  We'll do something more elaborate later.
  */
+func log<E>(completion: Subscribers.Completion<E>) {
+    switch completion {
+    case .finished: "C'est finis!"
+    case .failure(let error): print(error)
+    }
+}
+
+func log<T>(data: T) {
+    type(of: data)
+    data
+}
+
 let urlString = "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1"
 var c1 = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: urlString)!)
-    .sink(
-        receiveCompletion: { completion in
-            switch completion {
-            case .finished: "C'est finis!"
-            case .failure(let error): print(error)
-            }
-        },
-        receiveValue: { data, response in
-            type(of: response)
-            response
-            data
-        }
-    )
+    .sink(receiveCompletion: log(completion:), receiveValue: log(data:))
 /*:
  And just like that we have asked the network for some data and it has given us
  a response.  This particular response was successful and handed us back 1543
@@ -154,18 +154,6 @@ func verifyHttpResponse(data: Data?, response: URLResponse?) throws -> Data {
         throw APIError.badResponseStatus(httpResponse.statusCode)
     }
     return data ?? Data()
-}
-
-func log<E>(completion: Subscribers.Completion<E>) {
-    switch completion {
-    case .finished: "C'est finis!"
-    case .failure(let error): print(error)
-    }
-}
-
-func log<T>(data: T) {
-    type(of: data)
-    data
 }
 
 var c2 = URLSession(configuration: URLSessionConfiguration.default)
