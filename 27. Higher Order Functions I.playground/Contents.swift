@@ -22,7 +22,8 @@
  You should keep in mind that this playground
  is only half the story because the functions
  we are studying here are those
- functions which accept a function as an argument and return a struct, class or enum type.
+ functions which accept a function as an argument and return a struct,
+ class or enum type.
  (In the case of Sequence the type returned is an Array)
  However, the true power of higher order functions comes into focus in the
  next playground when we write functions that not only accept a single
@@ -37,10 +38,8 @@
  
  So... let's start with a simple function which takes a function as an argument:
  */
-
 func f(_ value: Int, _ g: (Int) -> Double) -> String { "\(g(value))" }
 type(of: f)
-
 /*:
  Note that f takes _TWO_ arguments.  The first is internally named `value` and the
  second is internally named `g`. Note that `value` is of type Int, and that `g` is of type:
@@ -224,7 +223,22 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
 
  ### Map
  
- Here're some simple examples of the most general methods, starting with `map`:
+ Here're some simple examples of the most general methods, starting with `map`.
+ Map has the signature:
+
+    Array<A>: func map <B>(_ f: (A) -> B) -> Array<B>
+
+ That is, it is a method on `Array<A>`, that accepts as it's only argument
+ a function which takes an `A` and returns a `B`.  `Map` overall returns
+ an `Array<B>`.
+
+ You use map to transform every element of an array in some way and return
+ an array with exactly the same number elements, each element in the new array
+ being the result of calling the transform function with the corresponding
+ element of the original array.
+
+ Here's an example.  Our transformation in this case is simply turning
+ an Int into a Double representing the same value.
  */
 let x0 = [1, 2, 3]
 type(of: x0)
@@ -232,8 +246,11 @@ let x1 = x0.map(g)
 x1
 type(of: x1)
 /*:
- The important point to note here is that map takes an array of one type, in this case `[Int]`
- and changes it to an array of the same length of another type, in this case `[Double]`.
+ The important point to note here is that map takes an array of one type,
+ in this case `[Int]`
+ and changes it to an array of the same length of another type,
+ in this case `[Double]`.  `map` can produce an array of a completely
+ different type than what you started with.
  
  It does this by applying a function `(A) -> B` to every element of an `[A]`
  to generate an `[B]`.
@@ -255,7 +272,15 @@ type(of: x2)
  
  ### Zip
  
- Let's look at `zip` now and think about it's general form. Like `map`,
+ Let's look at `zip` now and think about it's general form.  Here's the
+ signature of zip:
+
+    Array<A>: func zip( Array<A>, Array<B>) -> Array<(A, B)>
+
+ You use `zip` to take two arrays, match up the elements and combine
+ then into one.
+
+ In words, zip transforms a tuple of arrays into an array of tuples. Like `map`,
  `zip` is an amazingly general form that applies to almost any generic you will
  encounter, i.e. you can write a function with this signature for almost any generic G:
  
@@ -281,18 +306,26 @@ type(of: z0)
  
  ### FlatMap
  
- And finally lets look at the most general form we have `flatMap`.
+ And finally lets look at the most general form we have `flatMap`.  Here's it's
+ signature:
+
+    Array<A>: func flatMap<B>( (A) -> Array<B> ) -> Array<B>
+
  `flatMap` on Sequence allows us to unnest one Sequence from another.
  In this case I have [[Int]] and I want to turn it into an [Int].  If you think
  about it, like zip, you'll see that there's really only one way to implement
  this type signature.
  
- Side-note.  From here on out, you will notice that the code we write is largely driven
- by the type signatures.  Everything in this higher-order land we're exploring is about
- looking at a type signature and thinking about what we can do with it and what patterns
+ Side-note.  From here on out, you will notice that the code we write is
+ largely driven
+ by the type signatures.  Everything in this higher-order land we're
+ exploring is about
+ looking at a type signature and thinking about what we can do with
+ it and what patterns
  it adheres to.  More on this below.
  
- `flatMap` on Sequence does this by simply appending each nested structure to a new structure
+ `flatMap` on Sequence does this by simply appending each nested
+ structure to a new structure
  of the same type.
  */
 let fm0 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -440,15 +473,15 @@ m1
  you _think_ about the type of `Optional` you have on hand rather than mentally
  eliding the generic parameter.
  
- CompactMap - [A?] -> [B]
+ ### CompactMap - [A?] -> [B]
  */
 var m2 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
 type(of: m2)
 m2
 /*:
+ ### FlatMap - [[A]] -> [B]
  FlatMap acts on an Array of Arrays to produce an Array
- FlatMap - [[A]] -> [B]
  */
 var m4 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
@@ -456,7 +489,7 @@ var m4 = d
 type(of: m4)
 m4
 /*:
-Map - [A] -> [B]
+ ### Map - [A] -> [B]
 */
 var m5 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
@@ -465,7 +498,7 @@ var m5 = d
 type(of: m5)
 m5
 /*:
-Sorted - [A] -> [A]
+ ### Sorted - [A] -> [A]
 */
 var m6 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
@@ -475,7 +508,7 @@ var m6 = d
 type(of: m6)
 m6
 /*:
- Reduce - [A] -> B
+ ### Reduce - [A] -> B
  */
 var m7 = d
     .compactMap { (_, v) in v as? [IntDescribable] }
@@ -544,11 +577,14 @@ type(of: o2)
  Sure enough, Optional has `map` already defined on it in the std lib.  And it
  behaves in many ways like guard-let and if-let.  In fact Optional.map can frequently
  be a much more compact way of accomplishing the same thing that guard-let or if-let
- accomplish with a lot less typing.  To be fluent in Swift, you really need to understand
+ accomplish with a lot less typing.  To be fluent in Swift, you really
+ need to understand
  this.
  
- The standard library doesn't include a zip for Optional, so let's write one using the
- form we gave above. (I'm spelling out Optional to make it more clear).  There's not much
+ The standard library doesn't include a zip for Optional, so let's
+ write one using the
+ form we gave above. (I'm spelling out Optional to make it more clear).
+ There's not much
  choice in how we write this:
  */
 func zip<A, B>(_ a: Optional<A>, _ b: Optional<B>) -> Optional<(A, B)> {
@@ -656,7 +692,8 @@ var d2 = a.b?.c?.value
 d2
 type(of: d2)
 /*:
- See the value of `d2` there? well it turns out that that expression with the `?`'s on
+ See the value of `d2` there? well it turns out that that
+ expression with the `?`'s on
  the right is just syntactic sugar for the following:
  */
 let d3 = a.b.flatMap { $0.c }.flatMap { $0.value }
@@ -666,6 +703,6 @@ type(of: d3)
  In other words calling flatMap on Optional was so incredibly pervasive that Apple
  put special syntax in the language to save you having to type it so much.
  This is precisely the conceptual basis necessary to support ObjC interoperability
- where basically everything could return nil and Swift needed to handle the nil returns
- in a modern manner.
+ where basically everything could return nil and Swift needed to handle the
+ nil returns in a modern manner.
  */
