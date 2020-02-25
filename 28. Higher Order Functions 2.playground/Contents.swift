@@ -253,7 +253,6 @@ struct StructA {
 }
 
 type(of: StructA.append)
-let a = StructA(a: "some string")
 /*:
  Note that the following two invocations are exactly the same,
  it's just that one
@@ -263,7 +262,7 @@ let a = StructA(a: "some string")
  invoking exactly the same functions in precisely the same
  order.
 */
-let s1 = StructA.append(a)(string:" 5")
+let s1 = StructA.append(StructA(a: "some string"))(string:" 5")
 let s2 = StructA(a:"some string").append(string: " 5")
 /*:
  now look at the following extension.
@@ -277,13 +276,14 @@ extension StructA {
     }
 }
 /*:
- Lets get the signature of _THAT_
+ Lets get the signature of _THAT_ and compare it with the previous
+ "instance method" version of `append`:
  */
 type(of: StructA.staticAppend)
 type(of: StructA.append)
 /*:
- If you look at _THOSE_ type signatures, you'll find that they fit our
- `flip` function above
+ If you look at those two type signatures, you'll find that
+ a) are exactly the same and b) still fit our `flip` function above
  perfectly.  i.e. we could shift around the order of the arguments
  if we found that convenient.
  
@@ -306,10 +306,15 @@ type(of: StructA.append)
  prepended to put it in the correct namespace.  Swift keeps track
  of these things and provides the syntactic sugar to let you fool yourself
  into thinking that somehow it's "Object Oriented" but underneath,
- it's all just static functions.
+ it's all just static functions and some syntactic sugar to hide
+ the function-returning-function aspect from you.  Let me say it
+ another way: you could do everything you think of in Swift as OOP
+ by giving static functions appropriate names and never actually
+ attaching them to your structs and enums.
  
- Btw, if you are familiar with ObjC, this is _exactly_ equivalent to what
- it does when it passes self as the first argument to an Impl.  Swift
+ Btw, if you are familiar with ObjC, what we have done
+ here is _exactly_ equivalent to what ObjC
+ does when it passes self as the first argument to an Impl.  Swift
  just uses a different technique for designating `self`.  And it turns
  out that that technique is just a use of functional composition.
  
