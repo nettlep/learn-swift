@@ -434,8 +434,8 @@ right(left(4))
 
 (left >>> right)(4)
 type(of: left >>> right)
-
 let combined = left >>> right
+
 type(of: combined)
 combined(4)
 combined(5)
@@ -471,7 +471,7 @@ combined(5)
  We _will_ however be extensively using left to right functional
  chaining that incorporates this and plenty of other
  compositional techniques, we just won't be using operators
- other than `.` .
+ other than the "`.`" operator.
  So you need to be aware that this particular composition
  technique is as fundamental to functional programming
  as addition is to arithmetic and that you need to understand
