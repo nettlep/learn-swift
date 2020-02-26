@@ -262,13 +262,13 @@ type(of: StructA.append)
  invoking exactly the same functions in precisely the same
  order.
 */
-let s1 = StructA.append(StructA(a: "some string")(string:" 5")
+let s1 = StructA.append(StructA(a: "some string"))(string:" 5")
 let s2 = StructA(a:"some string").append(string: " 5")
 /*:
  now look at the following extension.
  */
 extension StructA {
-    static func staticAppend(a: StructA) -> (String) -> String {
+    static func staticAppend(_ a: StructA) -> (String) -> String {
         let `self` = a
         return { string -> String in
             return `self`.a + string
@@ -281,6 +281,12 @@ extension StructA {
  */
 type(of: StructA.staticAppend)
 type(of: StructA.append)
+/*:
+ And, if we look at calling static append, the call and the result
+ look _exactly_ like the call to `s1` above.
+ */
+let s3 = StructA.staticAppend(StructA(a: "some string"))(" 5")
+
 /*:
  If you look at those two type signatures, you'll find that
  a) are exactly the same and b) still fit our `flip` function above
@@ -323,7 +329,9 @@ type(of: StructA.append)
 public func uncurry<A, B, C>(
     _ function: @escaping (A) -> (B)  -> C
 ) -> (A, B) -> C {
-    { (a: A, b: B) -> C in function(a)(b) }
+    { (a: A, b: B) -> C in
+        function(a)(b)
+    }
 }
 /*:
  This one takes as its only argument a function-returning-function
@@ -349,7 +357,11 @@ let u = uncurry(StructA.append)
 public func curry<A, B, C>(
     _ function: @escaping (A, B) -> C
 ) -> (A) -> (B) -> C {
-    { (a: A) -> (B) -> C in { (b: B) -> C in function(a, b) } }
+    { (a: A) -> (B) -> C in
+        { (b: B) -> C in
+            function(a, b)
+        }
+    }
 }
 
 let c = curry(u)
