@@ -11,7 +11,11 @@ import Combine
 /*:
  ### Synchronous Sequences
  
- Now let's take a simple use of higher order functions on a Sequence.
+ Now let's start with a simple use of higher order functions on a Sequence.
+ The idea is that we'll do some operations on a plain ordinary Sequence
+ like an `Array` and show that the exact same operations can
+ be performed using Combine Publishers and Subscribers.
+
  In this case the Sequence is `[Int]` and we'll stick with `map` for
  simplicity of explication.  (And yes I know that all 3 map lines below
  could be more efficiently turned into a single map.  If you like and
@@ -100,26 +104,28 @@ r1
  
  See all those `map` statements? What each one actually does is
  to `compose` a function by combining a) the closure argument attached
- to it and b) a function presented
- to it by its downstream counterpart.  It then presents the composed
- function to its upstream parent.  At the top of the chain publishing a
- new value simply consists of calling the function you received from
- your immediate neighbor downstream.
+ to it with b) a function presented to it by its downstream successor Publisher.
+ It then presents the function it composed upstream to its predecessor.
+
+ At the top of the chain publishing a new value simply consists of
+ calling the function you received from your immediate neighbor downstream.
  
  Read that paragraph again, too.  We did not talk about functional
  composition in the previous playground just for fun.  What we've
  done here is move to a higher level where we are doing more than
- just one composition, we're doing an entire chain of composition
+ just one composition, we're doing an entire chain of compositions
  recursively.
  
  That composition proceeds backwards up the chain
- from bottom to top _but only when we subscribe_.  It is really important to note
+ from bottom to top, but and this is important, _only when we subscribe_.
+ It is really important to note
  that the composition does not occur until you attach a subscriber
  at the end.  Until that point, you can think of the publishers
- as being a sort of freeze-dried composition that is ready to
+ as being a sort of freeze-dried process that is ready to
  be composed as soon as it is immersed in the water of a subscriber.
- This is what I meant previously about Combine being a package of functions
- for composing functions that compose functions.
+ This is what I meant in the previous playground
+ about Combine being a package of functions for composing functions that
+ compose functions.
  
  You can just try to understand Combine holistically,
  but if you don't want it to ever be able to fool you, you need to be
@@ -284,7 +290,8 @@ r3
 sub1.send(completion: .finished)
 r3
 /*:
- And _that_ is how we deal with requirement 2 above.  We didn't have to do this with
+ And _that_ is how we deal with Requirement 2 (Completion) above.
+ We didn't have to do this with
  the Array publisher before, because that particular publisher sends the completion
  down the pipe itself.  With PassthruSubject, we have to do it ourselves.
  
@@ -364,6 +371,8 @@ r4
 r5
 /*:
  If you expected r4 to have 4 values and r5 to have only 3, you got it right.
+
+ ### Conclusion
  
  So there are three places that this technique should immediately spring
  out at you as being useful:
