@@ -25,11 +25,11 @@
  functions which accept a function as an argument and return a struct,
  class or enum type.
  (In the case of Sequence the type returned is an Array)
- However, the true power of higher order functions comes into focus in the
+ The true power of higher order functions only comes into focus in the
  next playground when we write functions that not only accept a single
  function as an argument, but which take _multiple_ functions as arguments,
  compose the arguments together somehow and return a function as a result.
- The patterns of function composition are critical to absorb to be able to even
+ These patterns of function composition are critical to absorb to be able to even
  read idiomatic Swift, much less write it.
  
  The power of this approach is amplified even more when it is combined with Swift's
@@ -113,8 +113,8 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
  So we have built a function that takes a function as an argument and shown its use
  in four different syntactic forms.  I have made the forms here as simple as possible,
  they can get much more complex.  You need to be able to recognize all 4 forms
- fluently, as any of them can be used at any time. There's not really a preferred
- style here.  _Trailing closure syntax_ in particular confuses people.
+ fluently, as any of them can be used at any time. There's not really a
+ style that fits all use cases.  _Trailing closure syntax_ in particular confuses people.
  We will drill you extensively on it in class, but you should
  drill yourself on it as well.
  
@@ -276,7 +276,7 @@ type(of: x2)
  Let's look at `zip` now and think about it's general form.  Here's the
  signature of zip:
 
-    Array<A>: func zip( Array<A>, Array<B>) -> Array<(A, B)>
+    Array<A>: func zip(Array<A>, Array<B>) -> Array<(A, B)>
 
  You use `zip` to take two arrays, match up the elements and combine
  then into one.
@@ -310,7 +310,7 @@ type(of: z0)
  And finally lets look at the most general form we have `flatMap`.  Here's it's
  signature:
 
-    Array<A>: func flatMap<B>( (A) -> Array<B> ) -> Array<B>
+    Array<A>: func flatMap<B>((A) -> Array<B> ) -> Array<B>
 
  `flatMap` on Sequence allows us to unnest one Sequence from another.
  In this case I have [[Int]] and I want to turn it into an [Int].  If you think
@@ -643,7 +643,7 @@ type(of: o6)
  `Optional<Int>`. So lets look at something similar we had on Array.
  Remember the signature of `flatMap` on `Array<A>` looks like this:
  
-     func flatMap<B>( (A) -> Array<B> ) -> Array<B>
+     func flatMap<B>((A) -> Array<B> ) -> Array<B>
  
  When the transforming function returned an `Array` itself we could flatten out the
  `Array<Array<B>>` structure to form just an `Array<B>`.  And we can do the same thing with
