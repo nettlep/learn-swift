@@ -262,7 +262,7 @@ type(of: StructA.append)
  invoking exactly the same functions in precisely the same
  order.
 */
-let s1 = StructA.append(StructA(a: "some string"))(string:" 5")
+let s1 = StructA.append(StructA(a: "some string")(string:" 5")
 let s2 = StructA(a:"some string").append(string: " 5")
 /*:
  now look at the following extension.
@@ -291,7 +291,7 @@ type(of: StructA.append)
  bind `self` and they behave _precisely_ the way that "instance methods"
  on objects do,  i.e.
  everything you think of as an "instance method" is actually a
- function returning a function where Swift has passed in "self" to the
+ function-returning-function where Swift has passed in "self" to the
  first function, which
  has bound it and returned the function that you think of as the "method".
  (The compiler
