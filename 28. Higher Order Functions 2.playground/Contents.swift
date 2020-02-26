@@ -11,7 +11,13 @@ The point of this playground is to demonstrate Swift's capabilities to
  but they are not the key distinguishing factor.  The elements of
  this playground ARE what makes functional programming different and
  makes it matter.
- 
+
+ Let me pause to point out that the subject matter of this playground
+ seems to be where most people who are not previously familiar with
+ functional programming seem to have the most problems.
+ I recommend that you read it slowly and give it some serious
+ thought if you are in the "most people" category.
+
  So... Lets start with a  function.  This one extends `Array<Int>` and
  basically gives us `compactMap` to play with.  (I'll explain much later
  in detail why we can't just use compactMap itself, but for now just note
