@@ -172,7 +172,7 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
  have been highly tuned in the standard lib source to take advantage of
  the underlying compiler optimizations.  (Note for example the use
  of `@inlined` here to do precisely that).  It's just
- really not possible for you to do it any faster by writing your own
+ really not possible for you to do it any faster or better by writing your own
  boilerplate.
  
  Below are the higher order patterns that are most used.  You should familiarize
@@ -207,12 +207,13 @@ f(4) { Double($0) }   // pass the 2nd variable in trailing closure syntax
     allSatisfy(where:)
 
  For completeness we include the `forEach` which behaves as the for-loop you are familiar
- with. Only it doesn't allow breaks.  You should never need this unless you are dealing
+ with, only it doesn't allow `break` or `continue`.
+ You should never need this unless you are dealing
  with old-style imperative code that incorporates Void-returning functions.
  
     forEach
 
- Advanced topics.
+ Advanced topics:
  
     lazy
     publisher
