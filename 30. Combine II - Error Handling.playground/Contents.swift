@@ -87,8 +87,7 @@ extension MyResult {
         switch self {
         case .success(let t):
             do {
-                let u = try transform(t)
-                return MyResult<U, Error>.success(u)
+                return MyResult<U, Error>.success(try transform(t))
             } catch {
                 return MyResult<U, Error>.failure(error)
             }
@@ -111,6 +110,7 @@ finalResult
 indirect enum OurError<T>: Error {
     case ourError(T)
     case ourOtherError(T, Error)
+    case ourSendError(T)
 }
 
 finalResult = MyResult<Int, Error>.success(6)
@@ -145,3 +145,30 @@ type(of: finalResult)
  We should be able to execute the exact same things using
  a PassthruSubject<Int, OurError>:
  */
+import Combine
+
+let sub = PassthroughSubject<Int, OurError<Int>>()
+var output: String = ""
+
+var cancellable = sub
+    .tryMap { value throws -> Int in value * 2 }
+    .mapError { OurError.ourOtherError("in mapError", $0) }
+    .map { "\($0)" }
+    .sink(
+        receiveCompletion: { completion in
+            switch completion {
+            case .failure(let value): output = "Error: \(value)"
+            case .finished: output = "Complete"
+            }
+        },
+        receiveValue: {
+            output = $0
+        }
+    )
+
+sub.send(8)
+output
+
+let error = OurError.ourSendError(42)
+sub.send(completion: .failure(error))
+output
