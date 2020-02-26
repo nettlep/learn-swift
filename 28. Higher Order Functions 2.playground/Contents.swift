@@ -218,8 +218,10 @@ f3a
 /*:
  Here's the amazing thing about that if you aren't used to the style.
  `f3` and `f3a` are functions `(Array<Int>) -> Array<String>` but I _never_
- wrote such a function!  I composed those functions from other functions
+ wrote a function with such a signature!
+ I composed those functions from other functions
  by passing those other functions through a higher-order function.
+ And what a emerged was a completely novel function signature.
  
  _This_ is what is meant by `functional composition`.  The forms
  that composition can take are many and varied.  For now we are dealing
@@ -257,11 +259,15 @@ struct StructA {
         return a + string
     }
 }
-
 type(of: StructA.append)
 /*:
- Note that the following two invocations are exactly the same,
- it's just that one
+ By now you should have expected this to be a function-returning-function.
+ Specifically it's signature is:
+
+     (StructA) -> (String) -> String
+
+ Note that that means that the following two invocations are
+ exactly the same, it's just that one
  of them is in OO notation while the other is just a plain
  function call.  (You should be able to say which is which
  on your own at this point).  The point is that they are
@@ -290,15 +296,17 @@ type(of: StructA.append)
 /*:
  And, if we look at calling static append, the call and the result
  look _exactly_ like the call to `s1` above.
- */
-let s3 = StructA.staticAppend(StructA(a: "some string"))(" 5")
 
-/*:
- If you look at those two type signatures, you'll find that
- a) are exactly the same and b) still fit our `flip` function above
+ In fact, if you look at those two type signatures, you'll find that
+ a) are exactly the same as each other and above
+ and b) they still fit our `flip` function above
  perfectly.  i.e. we could shift around the order of the arguments
  if we found that convenient.
- 
+
+ So let's invoke the new function.
+ */
+let s3 = StructA.staticAppend(StructA(a: "some string"))(" 5")
+/*:
  But the big lesson here is that we can write our own static functions that
  bind `self` and they behave _precisely_ the way that "instance methods"
  on objects do,  i.e.
@@ -307,8 +315,8 @@ let s3 = StructA.staticAppend(StructA(a: "some string"))(" 5")
  first function, which
  has bound it and returned the function that you think of as the "method".
  (The compiler
- optimizes the hell out of this for your methods, so it's not
- literally true underneath,
+ optimizes the hell out of this for your methods, so it's not guaranteed
+ to always be literally true underneath,
  but from a syntactic standpoint, they are exactly the same). And
  this precisely explains our questions up above about what all
  those extra `->`'s were doing in our simple method attached to a struct.
@@ -319,16 +327,18 @@ let s3 = StructA.staticAppend(StructA(a: "some string"))(" 5")
  of these things and provides the syntactic sugar to let you fool yourself
  into thinking that somehow it's "Object Oriented" but underneath,
  it's all just static functions and some syntactic sugar to hide
- the function-returning-function aspect from you.  Let me say it
+ the function-returning-function aspect from you.
+
+ Let me say it
  another way: you could do everything you think of in Swift as OOP
  by giving static functions appropriate names and never actually
- attaching them to your structs and enums.
+ "attaching" them to your structs and enums.
  
  Btw, if you are familiar with ObjC, what we have done
  here is _exactly_ equivalent to what ObjC
- does when it passes self as the first argument to an Impl.  Swift
+ does when it passes `self` as the first argument to an `Impl`.  Swift
  just uses a different technique for designating `self`.  And it turns
- out that that technique is just a use of functional composition.
+ out that that technique is just a normal use of functional composition.
  
  But... we can in fact do what ObjC does, too.  Let's write a function for that.
  */
@@ -340,8 +350,12 @@ public func uncurry<A, B, C>(
     }
 }
 /*:
- This one takes as its only argument a function-returning-function
- where the arguments to the passed-in function are single values and it
+ This one takes as its only argument a function-returning-function. Here
+ it is more clearly:
+
+     ((A) -> (B) -> C) -> (A,B) -> C
+
+ So the arguments to the passed-in function are single values and it
  combines them to make a single function that takes two arguments.
  Lets try it.
  */
@@ -352,10 +366,12 @@ let u = uncurry(StructA.append)
  do to provide method invocation.
  
  To reiterate, we just turned `StructA.append` into an ObjC-style Impl where `self`
- is the first argument.  Hmm..  What can be seen here is that everything you think
+ is the first argument.  Hmm..  What can be seen here again is that everything you think
  of as OOP is in fact a specific notation that can be derived by manipulating
- functions and seasoning to taste with syntactic sugar.  What Swift has done
- is promote these techniques from being compiler magic to being run-of-the-mill,
+ functions and seasoning to taste with syntactic sugar.
+
+ All that Swift has done
+ is to promote these techniques from being compiler magic to being run-of-the-mill,
  garden variety, language features.
 
  And.... just for kicks, lets undo what we just did.
@@ -386,7 +402,7 @@ type(of: c)
  2. syntax.
  
  `flip`, `curry` and `uncurry` are real, simple, one-line
- generic functions with reified implementations created on demand.
+ generic functions with reified implementations, created on demand.
  Unlike in Java or ObjC, generics are not just hints to the compiler.
  Reified generics are precisely what is required to remove the boiler-
  plate code necessary to reshape functions in a general sense.
@@ -447,14 +463,27 @@ type(of: left)
 
 let right = { (b: Double) -> String in "\(b)" }
 type(of: right)
-
+/*:
+ First lets call it the way you probably would in another language
+ */
 right(left(4))
-
+/*:
+ Now lets call it with our cool new operator.
+ */
 (left >>> right)(4)
 type(of: left >>> right)
-let combined = left >>> right
+/*:
+ Note how `(left >>> right)` is in parens and the result of the `>>>`
+ is then evaluated with the value `4`.
 
+ Now let's save that expression in parens to a variable and look
+ at the variable's type.
+ */
+let combined = left >>> right
 type(of: combined)
+/*:
+ Sure 'nuff it's a single function composed from other functions.
+ */
 combined(4)
 combined(5)
 /*:
@@ -470,8 +499,8 @@ combined(5)
      let combined = left >>> right
  
  Using a functional composition technique,
- we were able to combine two functions together without invoking
- either one. And this chain can be extended as far as we like
+ we were able to combine two functions together _without invoking
+ either one_. And this chain can be extended as far as we like
  because >>> is like addition only for functions.  Just
  like you can say: `1 + 2 + 3 + 4` ..., you can say:
  `a >>> b >>> c >>> d`...
@@ -496,11 +525,11 @@ combined(5)
  how to use it just as well as you understand how to
  calculate a tip at a restaurant.
  
- Going back:
+ Going back again:
  
      let combined = left >>> right
  
- gave us a single function we could then invoke
+ gave us a single function which we could then invoke
  at our leisure.  Which we then do with the lines:
  ```
  combined(4)
