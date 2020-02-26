@@ -98,11 +98,31 @@ extension MyResult {
     }
 }
 /*:
+ And we need one other thing, the ability to recover from an error when one occurs
+ (if such is possible).  To do that we need a method that can `catch` an error
+ and convert it into a success of some sort if it can but otherwise rethrow the error.
+ */
+extension MyResult {
+    func `catch`(transform: (E) throws -> T) -> MyResult<T, E> {
+        switch self {
+        case .success:
+            return self
+        case .failure(let e):
+            do {
+                return .success(try transform(e))
+            } catch {
+                return .failure(e)
+            }
+        }
+    }
+}
+/*:
  So for practice let's do a little chaining on MyResult. The chain
  of map commands should look quite familiar by now:
  */
 var finalResult = MyResult<Int, Error>.success(4) 
     .map { $0 * 2 }
+    .catch { _ in 4 }
     .map { Double($0) }
     .map { "\($0)" }
 finalResult
@@ -115,6 +135,7 @@ indirect enum OurError<T>: Error {
 
 finalResult = MyResult<Int, Error>.success(6)
     .tryMap { value throws -> Int in throw OurError.ourError(value) }
+    .catch { _ in 4 }
     .map { Double($0) }
     .map { "\($0)" }
 finalResult
@@ -122,9 +143,19 @@ type(of: finalResult)
 
 finalResult = MyResult<Int, Error>.success(8)
     .tryMap { value throws -> Int in throw OurError.ourError(value) }
+    .catch { _ in 4 }
     .mapError { OurError.ourOtherError("in mapError", $0) }
     .map { "\($0)" }
 finalResult
+type(of: finalResult)
+
+finalResult = MyResult<Int, Error>.success(8)
+    .tryMap { value throws -> Int in throw OurError.ourError(value) }
+    .mapError { OurError.ourOtherError("in mapError", $0) }
+    .catch { _ in 4 }
+    .map { "\($0)" }
+finalResult
+
 type(of: finalResult)
 
 finalResult = MyResult<Int, Error>.success(8)
@@ -141,8 +172,7 @@ finalResult
 type(of: finalResult)
 
 /*:
- Now lets extend this to Combine.
- We should be able to execute the exact same things using
+ Now lets extend this to Combine. We should be able to execute the exact same things using
  a PassthruSubject<Int, OurError>:
  */
 import Combine
@@ -151,8 +181,12 @@ let sub = PassthroughSubject<Int, OurError<Int>>()
 var output: String = ""
 
 var cancellable = sub
-    .tryMap { value throws -> Int in value * 2 }
+    .tryMap { value throws -> Int in
+        guard value != 8 else { throw OurError<Int>.ourError(67) }
+        return value * 2
+    }
     .mapError { OurError.ourOtherError("in mapError", $0) }
+    .catch { _ in Just(4) }
     .map { "\($0)" }
     .sink(
         receiveCompletion: { completion in
@@ -166,9 +200,16 @@ var cancellable = sub
         }
     )
 
+sub.send(4)
+output
 sub.send(8)
 output
-
-let error = OurError.ourSendError(42)
-sub.send(completion: .failure(error))
+sub.send(6)
 output
+
+sub.send(completion: .failure(OurError.ourSendError(42)))
+output
+
+/*:
+ And in fact, it all looks the exactly like it did with MyResult.
+ */

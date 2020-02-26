@@ -115,7 +115,9 @@ c2 = shared
  */
 let c3 = t1.connect()
 type(of: c3)
-
+/*:
+ And let's clean up before we finish and cancel our timer.
+ */
 DispatchQueue.main.asyncAfter(deadline: .now() + 12.0) {
     print("Stopping second timer")
     c3.cancel()
