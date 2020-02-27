@@ -486,7 +486,6 @@ type(of: combined)
  Sure 'nuff it's a single function composed from other functions.
  */
 combined(4)
-combined(5)
 /*:
  Note how all of these produce the exact same result:
  ```
@@ -536,8 +535,17 @@ combined(5)
  combined(4)
  combined(5)
  ```
+ Maybe it's belaboring the point, but what we have done with
+ `left >>> right` is exactly equivalent to:
+ */
+func leftright(_ val: Int) -> String { right(left(val)) }
+/*:
+ Only we did it at run time rather than compile time.
+
  This is the essence of functional composition.  You build up
- new functions from old ones _without invoking the old ones_.
+ new functions from old ones _without invoking the old ones_ or
+ laboriously writing the composed functions or calling hugely
+ nested invocations.
  
  And now... we are ready to talk about what Combine does.
  */
