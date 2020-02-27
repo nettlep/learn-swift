@@ -1,6 +1,6 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2512
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-BoldOblique;
-\f3\fswiss\fcharset0 ArialNarrow-Italic;\f4\froman\fcharset0 Times-Roman;\f5\fswiss\fcharset0 Helvetica-Oblique;
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-BoldOblique;
+\f3\fswiss\fcharset0 Helvetica-Oblique;\f4\fswiss\fcharset0 ArialNarrow-Italic;\f5\froman\fcharset0 Times-Roman;
 \f6\fnil\fcharset0 AndaleMono;\f7\fswiss\fcharset0 ArialNarrow;\f8\fnil\fcharset0 HelveticaNeue;
 }
 {\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue0;
@@ -106,7 +106,9 @@ The community is converging on using the functional programming aspects of Swift
 \f1\b0  (use Sequence higher-order methods instead), \
 {\listtext	\uc0\u8226 	}
 \f0\b while-loops outside of RunLoops
-\f1\b0  (in functional reactive systems, there is a while at the top of a RunLoop and all code below that reacts and returns results, no other while loops are needed)\
+\f1\b0  (in functional reactive systems, there is a 
+\f3\i while-loop
+\f1\i0  at the top of a RunLoop and all code below that reacts and returns results, no other while loops are needed)\
 {\listtext	\uc0\u8226 	}
 \f0\b inheritance
 \f1\b0  (replace with a mix of generic wrappers, enums and protocol witnesses as appropriate),\
@@ -120,8 +122,12 @@ NEVER USE OUTSIDE OF MIXED IMPERATIVE/FUNCTIONAL CODEBASES
 \f0\b functions that return Void
 \f1\b0 .  Void-returning functions, by construction, can only be used to accomplish side-effects. The type system has specific capabilities to handle side-effects in more efficient functional ways, so Void-returning functions should be avoided. E.g. if you return Void because you are dispatching an asynchronous operation, you should look at Combine or SwiftNIO and return a Future instead, if you are returning Void from a setter, you should consider the functional alternatives that allow chained application. \
 {\listtext	\uc0\u8226 	}
-\f0\b PassthruSubject from Combine. 
-\f1\b0 In a pure functional codebase this is not needed.  It is there to connect the imperative and functional parts of your codebase.\
+\f0\b Array.forEach
+\f1\b0  `forEach` is used to perform Void-returning functions on sequences objects.  It is itself a Void-returning function and therefore falls under the guideline of things to avoid for both what it does and what it returns.  This should be avoided except for instances of interacting with imperative code.\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls6\ilvl0
+\f0\b \cf0 {\listtext	\uc0\u8226 	}PassthroughSubject from Combine. 
+\f1\b0 You use PassthroughSubject in order to invoke its `send` function, which is a Void-returning function and therefore indicative of an imperative-only interface.   In a pure functional codebase this is not needed.  It is there to connect the imperative and functional parts of your codebase.\
 {\listtext	\uc0\u8226 	}
 \f0\b throws
 \f1\b0  in APIs that you design, you should use Result instead as `throw`-ing functions simply do not compose well and hence do not fit well inside a functional code base.\
@@ -133,7 +139,7 @@ USE ONLY WITH CAREFUL CONSIDERATION
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls7\ilvl0\cf0 {\listtext	\uc0\u8226 	}
 \f0\b PATs
-\f1\b0  (Protocols with Associated Types) should be reserved as a feature for people writing framework libraries.  They introduce a world of hurt except for very specific cases where the programmer truly understands the interactions of the various concrete types being designed. The only exception to this may be protocols which have an associatedtype of Self only.  If you are planning to make use of PATs you may well want to do some reading on type and category theory to make sure you understand the thinking that has already gone into standard library protocols like Sequence so that you avoid reinventing wheels.\
+\f1\b0  (Protocols with Associated Types) should be reserved as a feature for people writing framework libraries.  They introduce a world of hurt except for very specific cases where the programmer truly understands the interactions of the various concrete types being designed. The only exception to this may be protocols which have an only an associatedtype of Self.  If you are planning to make use of PATs you may well want to do some reading on type and category theory to make sure you understand the thinking that has already gone into standard library protocols like Sequence so that you avoid reinventing wheels.\
 {\listtext	\uc0\u8226 	}
 \f0\b the `mutating` keyword on structs
 \f1\b0 . This should be used only as a performance optimization after it has been proven to be to necessary.  It is frequently associated with functions returning Void.  The deprecated pattern is to create a `var` struct or class and then immediately begin mutating its values to properly configure it.  Usage of this pattern should always be replaced with inits which construct the value correctly to begin with.  Inits of this type frequently take closures so you'll want to be aware of how to use closures in your initializers.\
@@ -204,8 +210,8 @@ Functional Decomposition
 Using Swift's functional composition capabilities allows one to use functional decomposition as the basis for refining an application into smaller more understandable parts.\
 \ls11\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}One of my favorite quotes from the John Hughes article linked below:\expnd0\expndtw0\kerning0
   
-\f3\i "\cf4 Our ability to de- compose a problem into parts depends directly on our ability to glue solutions together. To support modular programming, a language must provide good glue. Functional programming languages provide two new kinds of glue \'97 higher-order functions and lazy evaluation."
-\f4\i0\fs26\fsmilli13333  \
+\f4\i "\cf4 Our ability to de- compose a problem into parts depends directly on our ability to glue solutions together. To support modular programming, a language must provide good glue. Functional programming languages provide two new kinds of glue \'97 higher-order functions and lazy evaluation."
+\f5\i0\fs26\fsmilli13333  \
 \pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
 \ls11\ilvl0
 \fs24 \cf4 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
@@ -221,7 +227,7 @@ While Swift does not do lazy evaluation, it does handle higher order functions q
 \fs28  
 \f1\b0  \
 \pard\tx720\pardeftab720\partightenfactor0
-\cf0 Application architecture in the Functional Reactive Programming (FRP) style broadens functional decomposition to allow interaction with asynchronous streams of events.  FRP is inherently about reacting to events as they arrive (in JavaScript the most common framework used is even called `React`).  Since, by their nature,  events arrive asynchronously, FRP can be viewed as an attempt to tame asynchrony. \
+\cf0 Application architecture in the Functional Reactive Programming (FRP) style broadens functional decomposition to allow interaction with asynchronous streams of events.  FRP is inherently about reacting to events as they arrive (in JavaScript, the most common framework used for this architecture is even called `React`).  Since, by their nature,  events arrive asynchronously, FRP can be viewed as an attempt to tame asynchrony. \
 \pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
 \ls12\ilvl0\cf0 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
 In Swift, FRP is embodied in the Combine framework. \
@@ -247,10 +253,10 @@ Functional Reactive Programming
 The functional reactive programming (FRP) style as embodied in Combine takes functional decomposition into the asynchronous domain of handling events.  Under FRP you should think of your application as being a collection of functions which are nested in an event loop or loops. In GUI apps that's typically the event loop of the main thread, in server apps, it's the event loop of a worker thread.  \
 \
 When an event enters the event loop, a function is selected to dispatch the event into. That function is called by passing in 
-\f5\i 1) the current state of the application AND 2) the new event.  The function returns 3) a tuple composed of the new state of the application and any side-effects to be performed
+\f3\i 1) the current state of the application AND 2) the new event.  The function returns 3) a tuple composed of the new state of the application and 4) any side-effects to be performed
 \f1\i0 . In this model, ApplicationState is an immutable value type wrapped in a reference type which is mutable.  The old value type is replaced at the end of the event loop by the new value computed by the function the event was dispatched into.  \
 \
-Wrt to side-effects, in this model, side-effects are \'93pushed to the edge of the world\'94 by cumulating them and executing them at the bottom of the event loop after execution of the event-handling function.   Side-effects can generate new events, which enter the queue of events to be processed.  Some types of side-effects that you can think of include: updating the display, firing a network request, and starting a timer.  \
+Wrt to side-effects: in this model, side-effects are \'93pushed to the edge of the world\'94 by cumulating them and executing them at the bottom of the event loop after execution of the event-handling function.   Side-effects can generate new events, which enter the queue of events to be processed.  Some types of side-effects that you can think of include: updating the display, firing a network request, and starting a timer.  \
 \
 This model is precisely the one used by SwiftUI. Display update is a direct side-effect of updating ApplicationState implemented as part of the SwiftUI framework.  SwiftUI's Views are not mutable for this reason.  They are generated using a particular value of the Application State to which they are connected by property wrappers of various forms.\
 \
@@ -258,20 +264,20 @@ The above ineluctably implies that long-running applications should be organized
 \f6 \cf5 (ApplicationState, Event)->(ApplicationState, [Effect<Action>])
 \f1 \cf0 .  In functional programming terms, functions with this signature are called reducers. Your application should decompose this function into a chain of function invocations mediated by the type system. If you are working with a mutable ApplicationState, this signature is 
 \f6 \cf5 (&ApplicationState, Event)->[Effect<Action>]
-\f5\i \cf0 .
+\f3\i \cf0 .
 \f1\i0  The equivalent form of this latter function in OO notation is: 
 \f6 \cf5 applicationState.handle(anEvent)->[Effect<Action>]
 \f1 \cf0  where the applicationState is mutated by the event handling method call.  \
 \
 The unconstrained creation of side-effects arising from the introduction of mutation by the OOP style is 
-\f5\i a
+\f3\i a
 \f1\i0  critical difference between the two approaches. This difference explains why you don't want to return Void during your function application. Returning Void anywhere in this chain is a clear signal that you have introduced a side-effect that is not being pushed to the edge of the world 
-\f5\i \kerning1\expnd0\expndtw0 and
+\f3\i \kerning1\expnd0\expndtw0 and
 \f1\i0 \expnd0\expndtw0\kerning0
  it breaks the flow of the function invocation chain.\
 \
 Chaining on the return type of Void also means that the type system cannot help you reason about the handling of an event or assist in managing side-effects.  Allowing the type system to help is one of 
-\f5\i the 
+\f3\i the 
 \f1\i0 main appeals of the FRP style and properly done can greatly improve programmer productivity.\
 \
 Side Note:  one way of looking at the imperative style is to observe that every statement is a Void-returning function call and that even when programming imperatively, the functional model still covers things. It's just that the ability of the type system to assist in writing the program has been discarded.\
@@ -351,14 +357,14 @@ You will want to:\
 {\listtext	\uc0\u8226 	}There are two key syntax elements that are required to use functions as first class objects effectively. These are key to all of the functional programming constructs mentioned below:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls15\ilvl1\cf0 {\listtext	\uc0\u8259 	}When functions are passed as to other 
-\f5\i as functions
+\f3\i as functions
 \f1\i0  they are passed without arguments, this is how you distinguish a 
-\f5\i function
+\f3\i function
 \f1\i0  passed as an argument from one whose 
-\f5\i return value
+\f3\i return value
 \f1\i0  is passed as the argument.  If you meant to pass the return value and instead pass the function, you will see error messages which at first are confusing, but which will seem intuitive once you absorb this distinction.\
 {\listtext	\uc0\u8259 	}You 
-\f5\i must
+\f3\i must
 \f1\i0  remember that the `->` operator associates to the right.  So 
 \f7 \cf5 (X) -> (Y) -> Z
 \f1 \cf0  is equivalent to the signature 
@@ -380,7 +386,7 @@ You will want to:\
 {\listtext	\uc0\u8226 	}Currying and uncurrying are far more important than you may originally think if you are coming from an OOP background.  They illustrate just two of the various function composition techniques available in the language.\
 {\listtext	\uc0\u8226 	}Anytime you see a signature of a function which is curried and which has no side-effects, you can apply a function which can flip the order of any of the arguments without effecting the final result.  This should be as intuitive as changing the order of arguments on any multi-valued function call. \
 {\listtext	\uc0\u8226 	}
-\f5\i flip
+\f3\i flip
 \f1\i0 ping and currying a function's arguments to designate one of the function's arguments as THE object being operated on is the entire basis of OOP.  `flip` is also a valid function in Swift.\
 {\listtext	\uc0\u8226 	}OOP in a functional programming setting is purely a notational device designed to enhance programmer intuition.  Any functional program can be written in OOP notation, but this is not always the more intuitive means of expression and should be used judiciously.\
 {\listtext	\uc0\u8226 	}In regards to the OOP notation, you should understand the following about functions which are 'methods' associated with enums, structs, classes and protocols:\
@@ -391,7 +397,7 @@ You will want to:\
 \f7 \cf5 (A) -> (X,Y,Z) -> B
 \f1 \cf0 .  \
 	NB, this function takes an 
-\f3\i \cf5 a
+\f4\i \cf5 a
 \f7\i0 :A
 \f1 \cf0  as an argument and returns a function 
 \f7 \cf5 (X,Y,Z) -> B 
@@ -399,9 +405,9 @@ You will want to:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls15\ilvl1\cf0 {\listtext	\uc0\u8259 	}This is the way in which an object of type A is bound as 'self' to the method. \
 {\listtext	\uc0\u8259 	}This can be compared or contrasted to the technique used in ObjC where the first argument to every method implementation is `self`. This syntax reinforces that you 
-\f5\i must 
+\f3\i must 
 \f1\i0 become accustomed to reading function signatures involving multiple `
-\f5\i ->
+\f3\i ->
 \f1\i0 ` operators.\
 {\listtext	\uc0\u8259 	}Each initializer on a type A is just a static function with the name init, taking a tuple value and returning a value of type A\
 {\listtext	\uc0\u8259 	}Each static function on A is just a regular function with the name "A." prepended to its name.\
@@ -428,17 +434,17 @@ You will want to:\
 \f1\b0\fs28 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls18\ilvl0\cf0 {\listtext	\uc0\u8226 	}Know how to use the basic functional programming operations like 
-\f5\i pipe
+\f3\i pipe
 \f1\i0 , 
-\f5\i curry
+\f3\i curry
 \f1\i0 , 
-\f5\i uncurry
+\f3\i uncurry
 \f1\i0 , 
-\f5\i flip
+\f3\i flip
 \f1\i0 , 
-\f5\i with
+\f3\i with
 \f1\i0 , 
-\f5\i compose
+\f3\i compose
 \f1\i0  etc.\
 {\listtext	\uc0\u8226 	}Understand why and where to curry your functions so that you don't break the function chain unnecessarily.\
 {\listtext	\uc0\u8226 	}Make sure that any functions you write produce types which move the application's decomposition forward\
@@ -462,18 +468,18 @@ You will want to:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls19\ilvl1\cf0 {\listtext	\uc0\u8259 	}Be aware that Void is actually a meaningful type in Swift, specifically it is the structural type inhabited by only one value.  Incredibly, this has meaning and makes sense of a lot of other things once you really grasp it.  \
 {\listtext	\uc0\u8259 	}Understand that Void's syntax is different than other types because the way it is expressed syntacticly, `()`, represents both the 
-\f5\i type
+\f3\i type
 \f1\i0  and the 
-\f5\i value
+\f3\i value
 \f1\i0  for Void and whether it is the type or value being referenced in any given situation is context-dependent.  \
 {\listtext	\uc0\u8259 	}Understand that Swift's implementation of Void which typealias'es it as a tuple (aka a structural type) has some downsides. Since Void is an empty tuple it is not possible to define extensions on it.  You might want to consider emulating Haskell here and defining an equivalent struct (aka a nominal type) called Unit which is the empty struct.  This has the advantage of being extensible.\
 {\listtext	\uc0\u8259 	}Also be aware that Never is also actually a meaningful type in Swift, i.e. it is the nominal type inhabited by NO values.  This also has meaning especially as a parameter to generic types.  \
 {\listtext	\uc0\u8259 	}For reference, Never is defined as the empty enum. (Think about it)\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls19\ilvl0\cf0 {\listtext	\uc0\u8226 	}Understand that 
-\f5\i structs
+\f3\i structs
 \f1\i0  are Product types and 
-\f5\i enums
+\f3\i enums
 \f1\i0  are Sum (or Coproduct) types in Algebraic Data Type (ADT) Theory.  If ADTs are not familiar, you may want to spend a little time understanding the difference, it will really improve your design and architecture skills.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
@@ -494,12 +500,12 @@ Structs and Classes
 {\listtext	\uc0\u8226 	}If you think you need inheritance, you definitely need a protocol witness and/or a generic wrapper of some sort. \
 {\listtext	\uc0\u8226 	}Seriously, look at the Swift std library, at SwiftUI, at SwiftNIO, the new Swift Numerics and at Combine.  Classes are used only as reference types, inheritance is never used, and every class is marked final to make sure it stays that way.\
 {\listtext	\uc0\u8226 	}Property wrappers have been added to Swift specifically to assist you in 
-\f5\i not
+\f3\i not
 \f1\i0  using inheritance. \
 {\listtext	\uc0\u8226 	}Classes should be used only to provide a reference type to a struct. (It should be viewed as a shortcoming of the type system that enums don't have a similar "reference typability").\
 {\listtext	\uc0\u8226 	}By the above, you should use structs wherever possible instead of classes.  This can\'92t always be helped, but it _usually_ can. \
 {\listtext	\uc0\u8226 	}Only use classes when you 
-\f5\i must
+\f3\i must
 \f1\i0  have a reference type such as when you need to access an instance in multiple threads, or when you will need to perform post-instantiation mutation.\
 {\listtext	\uc0\u8226 	}By default, properties of a struct should be let, not var.  Always look to see if you can make something a let and set it at init time rather than just making it a var on the chance that you will want to update it. \
 {\listtext	\uc0\u8226 	}If you find that you have created a class that only has let properties, it should almost certainly be a struct and not a class \
@@ -573,7 +579,7 @@ Sequences\
 {\listtext	\uc0\u8226 	}The one other place you might make an exception is where you have a mutating method on a struct for performance reasons.\
 {\listtext	\uc0\u8226 	}The rest of the elements of the list above0] are all frequently used and provide very good practice for using Combine.\
 {\listtext	\uc0\u8226 	}Properly used, the above methods obviate the need to ever use for-loop's. (Really, they do, you don't need the `for` statement, 
-\f5\i ever
+\f3\i ever
 \f1\i0 ).\
 {\listtext	\uc0\u8226 	}map/zip/flatMap are listed first and in that order for a reason, these three have huge applicability in almost every generic you will ever write.  You should begin to understand the theory here by practicing on Sequences.\
 {\listtext	\uc0\u8226 	}If you find yourself doing a sequence of maps, compose the mapping functions together and use a single map instead\
@@ -608,11 +614,11 @@ Higher Order Functions\
 \f1\b0\fs28 \cf0 {\listtext	\uc0\u8226 	}Many ObjC programmers think that the higher order functions apply only to Array (or if they think about it, Sequence).  \
 {\listtext	\uc0\u8226 	}This is largely because the only generic type other than Array that they are familiar with is Optional.  \
 {\listtext	\uc0\u8226 	}With Optional they already have, in the 
-\f5\i nil
+\f3\i nil
 \f1\i0  keyword and the 
-\f5\i ? 
+\f3\i ? 
 \f1\i0 / 
-\f5\i !
+\f3\i !
 \f1\i0  syntax, a mental model that when coupled with Xcode's suggestions while writing optional-chaining code, will suffice for many uses.  \
 {\listtext	\uc0\u8226 	}This causes them to lose sight of Optional as a generic enum and creates confusion when they are subsequently faced with map/zip/flatMap on other generics.  \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
@@ -633,17 +639,17 @@ Optional
 {\listtext	\uc0\u8226 	}Avoid using optionals without a good reason - doing this removes the need to check for X == nil everywhere and erases a lot of code. \
 {\listtext	\uc0\u8226 	}Avoid using the nil keyword in your code and use .none instead.  \
 {\listtext	\uc0\u8226 	}I've observed that the use of nil causes people with a background in ObjC to be confused about the Optional type.  In ObjC nil == nil everywhere - it's just an alias for 0x0. Propagating nil in this sense from ObjC into Swift was an unfortunate though understandable decision in that it makes it seem as if nil is in some sense a special object where in fact it is almost always aliasing .none.   In Swift, 
-\f5\i Optional<Bool>.none
+\f3\i Optional<Bool>.none
 \f1\i0  is not the same value as 
-\f5\i Optional<Int>.none
+\f3\i Optional<Int>.none
 \f1\i0  is not the same value as 
-\f5\i Optional<Optional<Int>>.none
+\f3\i Optional<Optional<Int>>.none
 \f1\i0 .  \
 {\listtext	\uc0\u8226 	}Good practice is to get out of the habit of thinking of nil as a special value and instead use the actual value you mean: 
-\f5\i .none
+\f3\i .none
 \f1\i0 .\
 {\listtext	\uc0\u8226 	}There are only two cases where 
-\f5\i nil 
+\f3\i nil 
 \f1\i0 should be used:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls30\ilvl1\cf0 {\listtext	\uc0\u8259 	}when returning from a failable initializer it is syntactically required\
@@ -665,7 +671,7 @@ Optional
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls32\ilvl0\cf0 {\listtext	\uc0\u8226 	}Understand why result has two different types of map and flatMap (and zip, were we to implement it)\
 {\listtext	\uc0\u8226 	}Function chaining is an incredibly valuable technique.  Anywhere in ObjC where you would return have a 
-\f5\i **NSError
+\f3\i **NSError
 \f1\i0  argument to indicate failure, you should instead use Result to chain subsequent calls in a manner similar to the use of Optional.  \
 {\listtext	\uc0\u8226 	}Frequently you can also dispense with throwing in your APIs and return Result instead.  Then you can let the Result propagate the error you would otherwise have to catch.  \
 {\listtext	\uc0\u8226 	}You will still have to perform a do/try/catch at the end where you call get, but it vastly simplifies your API's to propagate errors this way.\
@@ -679,12 +685,12 @@ Optional
 \ls34\ilvl0
 \f1\b0\fs28 \cf0 {\listtext	\uc0\u8226 	}It is difficult to overstate how important it will be to understand the Combine framework. \
 {\listtext	\uc0\u8226 	}Combine can best be understood as a Sequence without the 
-\f5\i makeIterator 
+\f3\i makeIterator 
 \f1\i0 or
-\f5\i  next
+\f3\i  next
 \f1\i0  functions.  \
 {\listtext	\uc0\u8226 	}I.e. Publisher is an implementation of the parts of the  Sequence protocol where the individual elements of the sequence are delivered to the higher-order function 
-\f5\i asynchronously, one at a time
+\f3\i asynchronously, one at a time
 \f1\i0  rather than being pulled through the function using makeIterator and next.  \
 {\listtext	\uc0\u8226 	}Seriously, that's all combine is.\
 {\listtext	\uc0\u8226 	}And that completely explains why the Publisher protocol looks so much like Sequence.\
@@ -748,7 +754,7 @@ UIKIt vs SwiftUI
 While swift has syntax for generic types in protocols,  it does not have syntax for generic functions in protocols.   (Exercise try to write a protocol for a generic type F parameterized by T which implements the following signature:\
 		\
 		
-\f5\i \cf5 map<U>(transform: (T) -> U) -> F<U>
+\f3\i \cf5 map<U>(transform: (T) -> U) -> F<U>
 \f1\i0 \cf6   \
 		\
 		It\'92s not possible to write map because you can\'92t add the generic type which parameterizes the return value.  The {\field{\*\fldinst{HYPERLINK "https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md#generic-associatedtypes"}}{\fldrslt Generics Manifesto was recently modified}} to address this and PATs will eventually get generic associated types at which point a pretty good facsimile of higher kinded types will be available in Swift.
@@ -757,11 +763,11 @@ While swift has syntax for generic types in protocols,  it does not have syntax 
 \ls39\ilvl0
 \f0\b \cf0 {\listtext	\uc0\u8226 	}Memory Semantics
 \f1\b0 : Library writers will need to understand the memory semantics coming soon. If that is you, specifically you need to know when 
-\f5\i move
+\f3\i move
 \f1\i0 , 
-\f5\i borrow
+\f3\i borrow
 \f1\i0 , and 
-\f5\i copy
+\f3\i copy
 \f1\i0  apply as described in {\field{\*\fldinst{HYPERLINK "https://github.com/apple/swift/blob/master/docs/OwnershipManifesto.md"}}{\fldrslt The Ownership Manifesto}}  Basically this is what is needed to make Swift fast enough to be a systems programming language to replace C. The memory ownership model is almost completely \strike \strikec0 stolen\strike0\striked0  borrowed from Rust and there's loads of resources out there on the Rust implementation.  Since the model is "opt-in" on top of the conservative model Swift has always had under ARC, programmers will have to be aware of these things in order to maximize performance of their code.\
 {\listtext	\uc0\u8226 	}
 \f0\b ABI Stability -> Module Stability -> Binary compatibility
@@ -775,7 +781,7 @@ How Swift Achieved Dynamic Linking Where Rust Couldn't}}  is absolutely the best
 \ls39\ilvl1\cf0 {\listtext	\uc0\u8259 	}the concurrency manifesto that Latner and Groff were writing: {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/31ed37682ef1576b16bca1432ea9f782"}}{\fldrslt The Concurrency Manifesto}} seems to have been abandoned.  There have been no steps to implementing it taken in Swift 5 and no changes to the document in a long time. It specifies the addition of Async/Await and an Actor model in the language.  \
 {\listtext	\uc0\u8259 	}there was also {\field{\*\fldinst{HYPERLINK "https://gist.github.com/lattner/429b9070918248274f25b714dcfc7619"}}{\fldrslt a concrete proposal for Async/Await}} by the same authors.  It was even tentatively scheduled as a Swift Evolution proposal (i.e. the title of the doc is SE-XXXX).  Again, no steps toward implementation in master seem to have been taken.\
 {\listtext	\uc0\u8259 	}Apple has been completely silent about open sourcing the Combine framework which has led to numerous open source projects trying to implement an identical solution for use on non-Apple platforms.  The silence and failure to include such obviously important APIs in either the Std Lib or in \
-{\listtext	\uc0\u8259 	}The main themes for Swift 6.0 were recently published and those are: expanding Swift to other platforms and Concurrency.  In short, stand-by for major improvements in the handling of asynchronous and concurrent APIs.\
+{\listtext	\uc0\u8259 	}The main themes for Swift 6.0 were recently published and those are: expanding Swift to other platforms and taking Concurrency forward.  In short, stand-by for major improvements in the handling of asynchronous and concurrent APIs.\
 {\listtext	\uc0\u8259 	}SwiftNIO is all about concurrency and is built using industry standard techniques.  It is very reasonable to presume that support for its techniques will work its way into actual language syntactic support.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
@@ -876,7 +882,7 @@ Generic Programming and Higher Kinded Types
 {\listtext	\uc0\u8226 	}{\field{\*\fldinst{HYPERLINK "https://developer.apple.com/tutorials/swiftui/tutorials"}}{\fldrslt https://developer.apple.com/tutorials/swiftui/tutorials}}\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls47\ilvl0
-\f4\fs26\fsmilli13333 \cf4 	\expnd0\expndtw0\kerning0
+\f5\fs26\fsmilli13333 \cf4 	\expnd0\expndtw0\kerning0
 \
 \pard\tx720\pardeftab720\partightenfactor0
 
