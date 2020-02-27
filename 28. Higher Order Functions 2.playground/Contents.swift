@@ -51,7 +51,8 @@ At least three questions that should be in your mind are:
  
  2. why do I have ([Int]) at the beginning?
  
- 3. why does the middle set of things have parens around it?
+ 3. why does the middle set of things have parens around the entire
+ expression instead of just around the `Int`?
  
  In words this function signature is:
 ```
@@ -167,11 +168,11 @@ public func flip<A, B, C>(
  This is our first real example of functional composition,
  i.e. using a function to change
  the "shape" of another function or functions.  To be clear, this
- function takes a generic argument of type:
+ function takes a generic argument of function-returning-function type:
  
     (A) -> (C) -> B
  
- and returns something of type:
+ and returns something else of function-returning-function type:
  
     (C) -> (A) -> B
  
@@ -217,8 +218,8 @@ let f3a  = f2a { "\($0)" }
 f3a
 /*:
  Here's the amazing thing about that if you aren't used to the style.
- `f3` and `f3a` are functions `(Array<Int>) -> Array<String>` but I _never_
- wrote a function with such a signature!
+ `f3` and `f3a` are functions of type `(Array<Int>) -> Array<String>`
+ but I _never_ wrote a function with such a signature!
  I composed those functions from other functions
  by passing those other functions through a higher-order function.
  And what a emerged was a completely novel function signature.
