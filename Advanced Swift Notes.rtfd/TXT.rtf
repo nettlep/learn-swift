@@ -1,5 +1,5 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
-{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-BoldOblique;
+{\rtf1\ansi\ansicpg1252\cocoartf2512
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-BoldOblique;
 \f3\fswiss\fcharset0 Helvetica-Oblique;\f4\fswiss\fcharset0 ArialNarrow-Italic;\f5\froman\fcharset0 Times-Roman;
 \f6\fnil\fcharset0 AndaleMono;\f7\fswiss\fcharset0 ArialNarrow;\f8\fnil\fcharset0 HelveticaNeue;
 }
@@ -123,7 +123,7 @@ NEVER USE OUTSIDE OF MIXED IMPERATIVE/FUNCTIONAL CODEBASES
 \f1\b0 .  Void-returning functions, by construction, can only be used to accomplish side-effects. The type system has specific capabilities to handle side-effects in more efficient functional ways, so Void-returning functions should be avoided. E.g. if you return Void because you are dispatching an asynchronous operation, you should look at Combine or SwiftNIO and return a Future instead, if you are returning Void from a setter, you should consider the functional alternatives that allow chained application. \
 {\listtext	\uc0\u8226 	}
 \f0\b Array.forEach
-\f1\b0  `forEach` is used to perform Void-returning functions on sequences objects.  It is itself a Void-returning function and therefore falls under the guideline of things to avoid for both what it does and what it returns.  This should be avoided except for instances of interacting with imperative code.\
+\f1\b0  `forEach` is used to perform Void-returning functions on Sequence types.  It is itself a Void-returning function and therefore falls under the guideline of things to avoid for both what it does and what it returns.  This should be avoided except for instances of interacting with imperative code.\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls6\ilvl0
 \f0\b \cf0 {\listtext	\uc0\u8226 	}PassthroughSubject from Combine. 
@@ -172,7 +172,7 @@ If you adopt the points above, you will find that you can adapt to Swift's funct
 Differentiating Swift Features
 \f1\b0\fs28 \kerning1\expnd0\expndtw0 \
 \pard\tx560\pardeftab720\partightenfactor0
-\cf0 Swift is classified as a hybrid OO-functional language, but it is clear that its design anticipates moving heavily from OO to the functional style.  The following features bear directly on that transition.\
+\cf0 Swift is classified as a hybrid OO-functional language, but it is clear that its design anticipates applications moving from OO to a more functional style.  The following features bear directly on that transition.\
 \pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
 \ls10\ilvl0\cf0 {\listtext	\uc0\u8226 	}
 \f0\b \expnd0\expndtw0\kerning0
@@ -188,7 +188,7 @@ Value types are first class objects.
 ructs and classes). Many OOP type systems such as C++, Java (for now) and ObjC (for always) lack Sum types (except in a very primitive form built on C's int type).  Both Sum and Product types are required for any system of Algebraic Data Types (ADT's).  Enums allow succinct formulations of algorithms that require very clumsy circumlocutions in languages without sum types .\
 \ls10\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
 \f0\b Reified generics
-\f1\b0 . In Swift, generic types are not simply hints to the compiler, but are real types subject to rigorous type checking.  The difference is that instead of typing the code for a given generic type yourself, the compiler generated (aka reified) the type for you. Swift's generics are best thought of as functions on types which are called at compile time rather than at run time.  There's a lot of generic enhancement still to come in future versions of Swift so it is important to be aware of changes in the system.\
+\f1\b0 . In Swift, generic types are not simply hints to the compiler, but are real types subject to rigorous type checking.  The difference is that instead of typing the code for a given generic type yourself, the compiler generates (aka reifies) the type for you. Swift's generics are best thought of as functions on types which are called at compile time rather than at run time.  There's a lot of generic enhancement still to come in future versions of Swift so it is important to be aware of changes in the system.\
 {\listtext	\uc0\u8226 	}
 \f0\b Type Inference
 \f1\b0 .  Swift provides type inference mechanisms built on Algebraic Data Types and reified generics that make it possible to write type safe code that would be extremely difficult to write or subsequently read in C-based languages.\
@@ -254,7 +254,7 @@ The functional reactive programming (FRP) style as embodied in Combine takes fun
 \
 When an event enters the event loop, a function is selected to dispatch the event into. That function is called by passing in 
 \f3\i 1) the current state of the application AND 2) the new event.  The function returns 3) a tuple composed of the new state of the application and 4) any side-effects to be performed
-\f1\i0 . In this model, ApplicationState is an immutable value type wrapped in a reference type which is mutable.  The old value type is replaced at the end of the event loop by the new value computed by the function the event was dispatched into.  \
+\f1\i0 . In this model, ApplicationState is an immutable value type wrapped in a reference type which is mutable.  The old value type is replaced at the end of the event loop by the new value computed by the function the event was dispatched into and any accumulated side-effects are dispatched.\
 \
 Wrt to side-effects: in this model, side-effects are \'93pushed to the edge of the world\'94 by cumulating them and executing them at the bottom of the event loop after execution of the event-handling function.   Side-effects can generate new events, which enter the queue of events to be processed.  Some types of side-effects that you can think of include: updating the display, firing a network request, and starting a timer.  \
 \
@@ -274,9 +274,9 @@ The unconstrained creation of side-effects arising from the introduction of muta
 \f1\i0  critical difference between the two approaches. This difference explains why you don't want to return Void during your function application. Returning Void anywhere in this chain is a clear signal that you have introduced a side-effect that is not being pushed to the edge of the world 
 \f3\i \kerning1\expnd0\expndtw0 and
 \f1\i0 \expnd0\expndtw0\kerning0
- it breaks the flow of the function invocation chain.\
+ it breaks the flow of the function invocation chain, to boot.\
 \
-Chaining on the return type of Void also means that the type system cannot help you reason about the handling of an event or assist in managing side-effects.  Allowing the type system to help is one of 
+Chaining on the return type of Void means that the type system cannot help you reason about the handling of an event or assist in managing side-effects.  Allowing the type system to help is one of 
 \f3\i the 
 \f1\i0 main appeals of the FRP style and properly done can greatly improve programmer productivity.\
 \
@@ -327,9 +327,7 @@ Tuples in Swift are called `structural` types, whilst structs are called `nomina
 	(row: Int, col: Int) \
 	(x: Int, y: Int)
 \f1 \cf0 \
-are all the same structural type and can be substituted freely for one another - anywhere the type system allows one, it allows the others. \
-\
-OTOH, \cf5 \
+are all the same structural type and can be substituted freely for one another - anywhere the type system allows one, it allows the others.  OTOH, \cf5 \
 	struct Location \{ let row: Int; let col: Int \}\
 	struct Coord \{ let x: Int; let y: Int \}\cf0 \
 have identical structures, but are completely different nominal types precisely because they have been assigned different names.  And one cannot substitute one for the other in any context.  \
@@ -340,7 +338,7 @@ You will want to:\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls14\ilvl0\cf0 {\listtext	\uc0\u8226 	}Fully understand when you should use structural types and when you should use nominal types\
 {\listtext	\uc0\u8226 	}Observe in passing that enums have no corresponding nominal type form, though this has been discussed in the community\
-{\listtext	\uc0\u8226 	}Make sure you understand tuple syntax and in particular that tuples can be broken apart into their constituent pieces - this feature is called "destructuring"\
+{\listtext	\uc0\u8226 	}Make sure you understand tuple syntax and in particular that tuples can be broken apart into their constituent pieces - this feature is called "destructuring" because it takes a structural type and breaks it apart into nominally-typed components.\
 {\listtext	\uc0\u8226 	}Note that each function in Swift takes exactly only one argument - and somewhat as you would expect - that argument is a tuple (This has not strictly been true at the compiler level since Swift 3, but from an API usage standpoint it is still the case)\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
