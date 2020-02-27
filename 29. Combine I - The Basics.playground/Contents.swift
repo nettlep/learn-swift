@@ -33,20 +33,27 @@ r1
  This behaves in the way that we've become accustomed to:
  each of the 4 lines returns an Array. The first two lines return `[Int]`,
  the 3rd line returns `[Double]` and the 4th line returns `[String]`.
- Each line operates on a  batch, it processes its entire input array to
- produce an output array which is chained to the next call.
+ 
+ Importantly, each line operates on a  batch - it processes
+ its entire input array to produce an output array which is chained
+ to the next call.  None of the elements of any of the arrays can
+ get ahead of each other, the pass through the machinations of
+ the chain as a group. (If necessary, go back to Playground 27.
+ Higher Order Functions I and review the Swift Std Lib code
+ for map to see why this might be).
  
  If you think about it though, there's no reason to do this in a batch.
  Map _could_ take each argument that it is passed, do its thing,
  and pass it to the next function immediately rather than waiting
  for the whole batch to be complete before going to the next step.
  
- Reread that last paragraph.  *_THAT_* is what Combine does.
- Nothing more, nothing less.
+ Reread that last paragraph. Because *_THAT_* is what Combine does.
+ That is _all_ Combine does. Nothing more, nothing less.
  
  Seriously, that's all it does, it lets you drop values in one
- at a time at the top of a chain (aka publish), transform them
- through the chain, and then get the resulting value out at the
+ at a time at the top of one of these chains (aka publish the value),
+ then it transforms the values
+ through the chain, and then you get the resulting value out at the
  bottom of the chain (aka subscribe).
  If you truly understand that operation, and all
  the transformations that make sense in between, then you understand
@@ -111,13 +118,17 @@ r1
  calling the function you received from your immediate neighbor downstream.
  
  Read that paragraph again, too.  We did not talk about functional
- composition in the previous playground just for fun.  What we've
+ composition in the previous playground just for fun.
+ I mean, it was fun, but this notion of functional composition
+ that we built up there is used not only by the Swift language
+ itself, it's used everywhere, starting with Combine. What we've
  done here is move to a higher level where we are doing more than
- just one composition, we're doing an entire chain of compositions
- recursively.
+ just one composition at a time, we're doing an entire chain
+ of compositions recursively.
  
  That composition proceeds backwards up the chain
- from bottom to top, but and this is important, _only when we subscribe_.
+ from bottom to top, but... (and this is important),
+ it happens _only when we subscribe_.
  It is really important to note
  that the composition does not occur until you attach a subscriber
  at the end.  Until that point, you can think of the publishers
@@ -157,6 +168,7 @@ let c1 = [1, 2, 3]
 /*:
  When we look at `r2` we see its contents are exactly the same as we had before in `r1`
  */
+r1
 r2
 /*:
  So what are those `publisher` and `sink` lines in there?

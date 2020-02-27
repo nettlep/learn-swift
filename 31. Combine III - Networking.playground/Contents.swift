@@ -108,9 +108,10 @@ public enum APIError: Error {
     case badResponseStatus(Int)
 }
 /*:
- Now lets use the Foundation-provided URLSession class to fetch
- a URL. (I'm using an easily accessible dropbox file as a stand in
- for a real API here.  We'll do something more elaborate later.
+ And lets write a final handler for both errors and real values
+ that we can attach at the end of the Combine chain.  (You'll
+ need to open up the debug console at bottom to see the output
+ as it happens).
  */
 func log<E>(completion: Subscribers.Completion<E>) {
     switch completion {
@@ -123,20 +124,24 @@ func log<T>(data: T) {
     type(of: data)
     data
 }
-
+/*:
+ Now lets use the Foundation-provided URLSession class to fetch
+ a URL. (I'm using an easily accessible dropbox file as a stand in
+ for a real API here.  We'll do something more elaborate later.
+ */
 let urlString = "https://www.dropbox.com/s/i4gp5ih4tfq3bve/S65g.json?dl=1"
 var c1 = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: urlString)!)
     .sink(receiveCompletion: log(completion:), receiveValue: log(data:))
 /*:
- And just like that we have asked the network for some data and it has given us
+ And, just like that, we have asked the network for some data and it has given us
  a response.  This particular response was successful and handed us back 1543
  bytes in a buffer.  Had it failed, we would have seen the error be printed
  to stdout.
  
  Looking more closely we see that `dataTaskPublisher` publishes values of
  type (Data?, HTTPURLResponse?), i.e. a tuple of `Optional<Data>` and
- `Optional<HTTPURLResponse>`.  What does it mean for `response` to be `.none`.
+ `Optional<HTTPURLResponse>`.  What does it mean for `response` to be `.none`?
  Well generally it means that the network is down. Stuff, as they say,
  happens and we need to protect against that.
  
@@ -144,7 +149,7 @@ var c1 = URLSession(configuration: URLSessionConfiguration.default)
  or just plain wrong in some way there would be no way to give us back `data`
  and so it would be `.none` so we need to protect against that as well.
  
- So let's do that.
+ So let's do a function which deals with this network-specific stuff.
  */
 func verifyHttpResponse(data: Data?, response: URLResponse?) throws -> Data {
     guard let httpResponse = response as? HTTPURLResponse else {
@@ -155,7 +160,10 @@ func verifyHttpResponse(data: Data?, response: URLResponse?) throws -> Data {
     }
     return data ?? Data()
 }
-
+/*:
+ And now lets stick that function in the middle of our `URL`-handling
+ chain.
+ */
 var c2 = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: urlString)!)
     .tryMap(verifyHttpResponse)
@@ -183,7 +191,8 @@ var c2 = URLSession(configuration: URLSessionConfiguration.default)
  enough to get us started.
  
  Now let's do something with that data that we have culled out of
- our request.
+ our request.  Let's decode its JSON into the model type that
+ we created above `Configuration`, in this case `[Configuration]`.
  */
 var c3 = URLSession(configuration: URLSessionConfiguration.default)
     .dataTaskPublisher(for: URL(string: urlString)!)
