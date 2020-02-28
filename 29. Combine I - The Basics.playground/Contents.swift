@@ -336,9 +336,18 @@ let c2 = sub1
     .map { "\($0)" }
     .sink { r3.append($0) }
 type(of: c2)
+r3
 /*:
- This time, unlike both the examples above, we don't send all the values
- immediately, we send them one at a time.  Note the value of r3 after each send.
+ Now this is different.  Before, when we connected the `sink` all the values
+ in the array were sent through immediately and our results array was populated.
+ But now, `r3` has nothing in it.
+ 
+ This time, unlike both the examples above, our root publisher
+ doesn't send all the values down the chain immediately.  In fact, we haven't
+ even given the root publisher (the PassthroughSubject) any values to send.
+ 
+ So you can probably guess what we do now.  Yeah, wen start sending the values
+ in one at a time.  Note the value of r3 after each send.
  Also note that the thing which responds to `send` is the `PassThroughSubject`, not
  any of the intervening `Publisher`s.  That's why we had to keep the subject in
  a separate variable, so that we could later call `send` on it.

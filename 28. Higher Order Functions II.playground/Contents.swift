@@ -64,7 +64,7 @@ let f = [Int].myCompactMap
  and return an `[String]`, your mind just leaves out the leading
  `([Int]) ->`
  
- This _should_ signature surprise you in several respects.
+ This signature _should_ surprise you in several respects.
  At least three questions that should be in your mind are:
  
  1. wtf? with the multiple `->`'s? and
@@ -111,7 +111,7 @@ let f = [Int].myCompactMap
  all of the arithmetic functions we have been taught since childhood
  associate to the left, and intuitively it seems like accepting a function
  is more important than returning one.  But that's not the convention.
- And, in this case, `( ... )` is causing the `->`
+ So, in this case, `( ... )` is causing the `->`
  to associate left, which is what we want.
  
  ### Higher-order Function Invocation
@@ -557,9 +557,9 @@ type(of: combined)
  to join the two functions.  `Double` in fact has had its
  type _erased_ from the final signature.
  
- The term _type erasure_ is going to come up again later, I'm
- just pointing out that what it means is that you remove types
- that are used internally to a function from the externally
+ The term _type erasure_ is going to come up again later, for now
+ be aware that what it means is that types
+ that are used internally to a function are removed from the externally
  vended function signature.  In this case we returned `(Int) -> String`,
  and not `(Int) -> Double -> String` as we could have.
  */
@@ -580,8 +580,13 @@ combined(4)
  we were able to combine two functions together _without invoking
  either one_. And this chain can be extended as far as we like
  because >>> is like addition only for functions.  Just
- like you can say: `1 + 2 + 3 + 4` ..., you can say:
- `a >>> b >>> c >>> d`...
+ like you can say:
+ 
+     1 + 2 + 3 + 4 ...
+ 
+ you can also say:
+ 
+     a >>> b >>> c >>> d ...
  
  And there's a real syntactic beauty here
  as well.  In the first form `right(left(4))`, `right` is invoked
@@ -618,7 +623,7 @@ combined(4)
  */
 func leftright(_ val: Int) -> String { right(left(val)) }
 /*:
- Only we did built a function like that at run time rather than
+ Only we built a function like that at run time rather than
  compile time.
 
  This is the essence of functional composition.  You dynamicaly
