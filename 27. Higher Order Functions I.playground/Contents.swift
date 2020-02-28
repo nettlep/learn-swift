@@ -701,6 +701,22 @@ let d3 = a.b.flatMap { $0.c }.flatMap { $0.value }
 d3
 type(of: d3)
 /*:
+ If you aren't seeing why that would be the case, here's the definition
+ of `Optional.flatMap` from the Swift 5.1.3 Standard Library.  Try and work
+ through what those invocations above would do:
+ 
+     @inlinable
+     public func flatMap<U>(
+       _ transform: (Wrapped) throws -> U?
+     ) rethrows -> U? {
+       switch self {
+       case .some(let y):
+         return try transform(y)
+       case .none:
+         return .none
+       }
+     }
+ 
  In other words calling flatMap on Optional was so incredibly pervasive that Apple
  put special syntax in the language to save you having to type it so much.
  This is precisely the conceptual basis necessary to support ObjC interoperability
