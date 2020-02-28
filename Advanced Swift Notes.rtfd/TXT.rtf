@@ -111,7 +111,7 @@ The community is converging on using the functional programming aspects of Swift
 \f1\i0  at the top of a RunLoop and all code below that reacts and returns results, no other while loops are needed\
 {\listtext	\uc0\u8226 	}
 \f0\b callbacks or NotificationCenters
-\f1\b0  replace with use of Combine in every case\
+\f1\b0  replace with use of Combine Publisher(s) in every case\
 {\listtext	\uc0\u8226 	}
 \f0\b inheritance
 \f1\b0  replace with a mix of generic wrappers, enums and protocol witnesses as appropriate,\
@@ -142,13 +142,13 @@ USE ONLY WITH CAREFUL CONSIDERATION
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls7\ilvl0\cf0 {\listtext	\uc0\u8226 	}
 \f0\b PATs
-\f1\b0  (Protocols with Associated Types) should be reserved as a feature for people writing framework libraries.  They introduce a world of hurt except for very specific cases where the programmer truly understands the interactions of the various concrete types being designed. The only exception to this may be protocols which have an only an associatedtype of Self.  If you are planning to make use of PATs you may well want to do some reading on type and category theory to make sure you understand the thinking that has already gone into standard library protocols like Sequence so that you avoid reinventing wheels.\
+\f1\b0  (Protocols with Associated Types) should be reserved as a feature for people writing framework libraries.  This is still IMHO an immature area of the language. As currently constituted, they introduce a world of hurt except for very specific cases where the programmer truly understands the interactions of the various concrete types being designed. The only exception to this may be protocols which have an only an associatedtype of Self.  If you are planning to make use of PATs you may well want to do some reading on type and category theory to make sure you understand the thinking that has already gone into standard library protocols like Sequence so that you avoid reinventing wheels.\
 {\listtext	\uc0\u8226 	}
 \f0\b the `mutating` keyword on structs
 \f1\b0 . This should be used only as a performance optimization after it has been proven to be to necessary.  It is frequently associated with functions returning Void.  The deprecated pattern is to create a `var` struct or class and then immediately begin mutating its values to properly configure it.  Usage of this pattern should always be replaced with inits which construct the value correctly to begin with.  Inits of this type frequently take closures so you'll want to be aware of how to use closures in your initializers.\
 {\listtext	\uc0\u8226 	}
 \f0\b var properties in structs.
-\f1\b0  By default your data structures should be immutable and mutability should only be used after due consideration.  If you make your properties `let` by default, you will find that use of the mutating keyword in the previous point simply goes away on its own.\
+\f1\b0  By default your data structures should be immutable and mutability should only be used after due consideration and a driving performance requirement.  If you make your properties `let` by default, you will find that use of the mutating keyword in the previous point simply goes away on its own.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\b \cf0 \
@@ -165,9 +165,9 @@ ASPIRE NOT TO USE
 CustomDebugStringConvertible frequently can be implemented in multiple ways for a given type and in those circumstances should be managed with a protocol witness rather than a conformance.  Think about this when you go to create a protocol type.\cf0 \cb1 \kerning1\expnd0\expndtw0 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-Note that some of the points above are not iron-clad rules but others are. For-loops and inheritance are never needed and should not be used.  Void-returning functions and PATs are appropriate in some specific but infrequent situations. Ternaries over if's and protocol witnesses can be aspirational.  However, all uses of the above should be carefully considered before they are employed in code.\
+Note that some of the points above are not iron-clad rules but others are. For-loops, callbacks and inheritance are never needed and should not be used.  Void-returning functions and PATs are appropriate in some specific but infrequent situations. Ternaries over if's and protocol witnesses can be aspirational.  However, all uses of the above should be carefully considered before they are employed in code.\
 \
-If you adopt the points above, you will find that you can adapt to Swift's functional style much more quickly.\
+If you adopt the points above, you will find that you can adapt to Swift's natural style much more quickly.\
 \
 \pard\pardeftab720\partightenfactor0
 
@@ -183,7 +183,7 @@ Value types are first class objects.
 \f1\b0 In many OOP languages (Java, JavaScript, ObjC, Python) only reference types can be objects. In Swift, _all_ structs, classes, enums and protocols are objects.  This has important performance and memory implications especially in server side or multi-threaded code.  This is possible because underneath the covers Swift views all 'objects' as data types with associated static functions and this fact itself can be leveraged in many interesting ways.\
 \ls10\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
 \f0\b Extensibility of all Types
-\f1\b0 . Because of the way the type system is implemented, every type in can be extended - including things like Int and CGRect.\expnd0\expndtw0\kerning0
+\f1\b0 . Because of the way the type system is implemented, every type can be extended - including things like Int and CGRect.\expnd0\expndtw0\kerning0
 \
 \ls10\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}
 \f0\b Sum Types

@@ -356,7 +356,7 @@ r3
  doesn't send all the values down the chain immediately.  In fact, we haven't
  even given the root publisher (the PassthroughSubject) any values to send.
  
- So you can probably guess what we do now.  Yeah, wen start sending the values
+ So you can probably guess what we do now.  Yeah, we start sending the values
  in one at a time.  Note the value of r3 after each send.
  Also note that the thing which responds to `send` is the `PassThroughSubject`, not
  any of the intervening `Publisher`s.  That's why we had to keep the subject in
