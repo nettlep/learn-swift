@@ -240,6 +240,16 @@ type(of: p1)
  of just one, where the second type is the kind of Error type that the Publisher
  can propogate downstream.
  
+ A big difference between an `Array` and a `Publisher` though is in those
+ type parameters.  `Array` only has one: the `Element` type of the array.
+ `Publisher` has _two_: the same `Element` type and another type representing
+ the errors that can be thrown by this `Publisher`.  Why `Publisher` needs
+ an error type, but `Array` doesn't will be discussed in detail in the next
+ playground, but for now, just note that in Combine, errors are passed down
+ the publication chain, but that for `Array`, they are thrown up the
+ call stack.  `Array` doesn't need to specify its error type, because
+ it expects you to deal with whatever type it chooses to throw.
+ 
  So it turns out that each of those calls subsequent to `[1, 2, 3].publisher`
  returns a new publisher which
  is initialized with its predecessor.  The initialization with the predecessor
@@ -459,8 +469,32 @@ r5
 
  ### Conclusion
  
- So there are three places that this technique should immediately spring
- out at you as being useful:
+ Let's make explicit some things that should be jumping out at you at
+ this point, but that we have not discussed:
+ 
+ 1. Sequence and Publisher have almost _exactly_ the same set of methods
+ defined on them.  For every higher order function that you are used to
+ working with on Sequence, you expect to find the exact same function
+ defined on Publisher.  This is not coincidental.  They both model
+ the common notion of "sequence", one synchronously, one asynchronously.
+ 2. The only cases where Sequence and Publisher differ in their method
+ signature are places that are clearly related to things being synchronous
+ vs asynchronous.  For example `Publisher` doesn't have a `makeIterator` function
+ and Sequence doesn't have a `collect(byTime:)` function.
+ 3. Combine does to "callback" functions precisely what the higher-order
+ functions on `Array` do to for-loops, it takes away all the boilerplate
+ and gives you specializations of callbacks in the form of higher-order
+ functions.  Just like you don't need for-loops anymore, with Combine
+ you no longer need callback functions.  Seriously.
+ 
+ Given that last one, we see that we have a marker that allows
+ us to go through our current code base and say: "replace with
+ Combine" - i.e. we should fix any place where we are using
+ callbacks.  And that includes any use of delegation protocols,
+ as well as the more direct `completionHandler` patterns.
+ 
+ There are three places that should immediately spring
+ out at you as being ripe for this:
  
  1. Doing network access - if we could have our webservice calls just pop
  the returned values into a Publisher
@@ -468,13 +502,13 @@ r5
  2. Responding to timers - we could attach listeners to our timers
  as above with PassThroughSubject and process timer firing in the same
  way we process network events.
- 3. Touch handling.  If we could model touches and other UI interaction
+ 3. UI event handling.  If we could model touches and other UI interaction
  as _events_ then we could tie these
  chains to our UI and process the stream of user interactions
  that way, rather than using the traditional UIKit callback method
  of `delegation`.
  
- We'll defer the third ones for now until we talk about SwiftUI, but suffice
+ We'll defer the third one until we talk about SwiftUI, but suffice
  it to say that if we cover network access, timers and GUI events, we will have
  radically overhauled the way we architect iOS apps.  In fact, the
  architectural change will be so radical as to be disorienting at times.
