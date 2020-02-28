@@ -37,12 +37,12 @@ r1
  Importantly, each line operates on a  batch - it processes
  its entire input array to produce an output array which is chained
  to the next call.  None of the elements of any of the arrays can
- get ahead of each other, the pass through the machinations of
+ get ahead of each other - they pass through the machinations of
  the chain as a group. (If necessary, go back to Playground 27.
  Higher Order Functions I and review the Swift Std Lib code
  for map to see why this might be).
  
- If you think about it though, there's no reason to do this in a batch.
+ If you think about it though, **_there's no reason to do this in a batch_**.
  Map _could_ take each argument that it is passed, do its thing,
  and pass it to the next function immediately rather than waiting
  for the whole batch to be complete before going to the next step.
@@ -72,26 +72,28 @@ r1
  see "SomeGenericThing").
  
  2. *A Completion value*.
- We need some way to know that we're done.  Array knows it's done
- because it knows the `count` of the array when we call map.
- It does that many things and then stops.
+ We need some way to know that we're done.  Array can
+ know when it's done because it knows the `count` of the
+ array when we call map. It does that many things and then stops.
  If a Publisher is just responding to it's input one at time, it never knows
  when processing is complete and it can clean up and go away.
  
  3. *Error handling*.
  We need someway to handle errors. There aren't many choices here,
- you sort of have to pass the error down the chain.
+ you sort of have to pass the error down the chain.  We just need
+ to figure out how to make that happen.
  
  4. *A Subscriber type*.
  Something needs to sit at the end of the chain and process the things
- coming out one at a time.  In the example we want something at the end
- of the chain which can construct the equivalent of `r1`. We call this thing
+ coming out one at a time.  In the example above, we want something at the end
+ of the chain which can construct the equivalent of `r1` by accepting
+ the values one at a time in a stream. We call this thing
  a Subscriber.  A Subscriber sits at the end of every Publisher chain.  if
  there is not a Subscriber, the Publisher is not allowed to publish.  In fact,
  in Combine, unlike other FRP packages, the subscriber tells the publisher
  _how many_ items it is allowed to publish. (This feature is called `backpressure`).
  
- 5. *Cancelability*.
+ 5. *Cancellability*.
  For long running Sequences, we'd like the opportunity to cancel the
  publication before it sends the "hey, I'm complete" message.
  
@@ -156,8 +158,21 @@ r1
  */
 var r2: [String] = []
 /*:
- Now we'll do the same example the Combine way.  Feel free to scroll back up and verify
+ Now we'll do the same example the Combine way. Here's the example from before
+ for you to refer to:
+ 
+     let r1 = [1, 2, 3]      // Array<Int>
+         .map { $0 * 2 }     // Array<Int>
+         .map { Double($0) } // Array<Double>
+         .map { "\($0)" }    // Array<String>
+     r1
+ 
+ Feel free to scroll back up and verify
  that all of the pieces from the previous example are still there.
+ 
+ Here's the _exact_ same thing only done in Combine.  Note how we still
+ have the same array to start and the same `map` statements, but we've
+ added two new lines.
  */
 let c1 = [1, 2, 3]
     .publisher
@@ -171,7 +186,8 @@ let c1 = [1, 2, 3]
 r1
 r2
 /*:
- So what are those `publisher` and `sink` lines in there?
+ So what are those `publisher` and `sink` lines in there?  Well,
+ they are us meeting two of the requirements above.
  
  Combine actually includes the ability to turn an Array into a Publisher.
  It adds an extension to Array that includes
@@ -195,10 +211,10 @@ type(of: c1)
 /*:
  `c1` turns out the be an  AnyCancellable.  We'll discuss the `Any`
  part later, but `c1` is exactly the type we need to satisfy Requirement
- 5 (Cancelability) above. In this case everything is done before we could have a chance to
+ 5 (Cancellability) above. In this case everything is done before we could have a chance to
  cancel it, but shortly we'll see where we _can_ actually cancel things.
  
- Now lets look at what we get from the middle of the chain (annotating the return types.:
+ So 3 requirements down, two to go.  Now lets look at what we get from the middle of the chain (annotating the return types.:
  */
 let p1 = [1, 2, 3]       // Array<Int>
     .publisher           // Publishers.Sequence<[Int], Never>
@@ -246,11 +262,37 @@ let c1a = p1.sink { r2.append($0) }
 type(of: c1a)
 r2
 /*:
- At this point we're only missing Requirements 2 (Completion value) and 3 (Error handling)
+ ### Function Composition and Capture Semantics
+ 
+ The key concept to to really understand about
+ what's happening here is this:  As soon as
+ we attach the subscriber, the functional composition happens and all the the pieces
+ below we used to build up our chain disappear from our sight forever.
+ 
+ At the line:
+ 
+     let c1a = p1.sink { r2.append($0) }
+ 
+ the composition happens. The thing at the top of the chain
+ is presented with a function which implements the chain and an
+ AnyCancellable is constructed.  All of the functions that we used
+ to build up the chain are captured into that single function where we
+ can never see them again. If you need to review that, go back to the previous
+ playground (Higher Order Functions 2) and look for the word capture.
+ 
+ This means it is pretty important that you understand the capture
+ semantics for closures.  Because every time you attach a Subscriber
+ to a Publisher chain, capture occurs and any references are
+ captured into the publication function to be used for the life
+ of the function.  This is what I meant about why you need to understand
+ what Combine is doing underneath in order to never be fooled by it.
+ 
+ Ok, so at this point we're only missing
+ Requirements 2 (Completion value) and 3 (Error handling)
  above, and we'll deal with those shortly.  But first let's ask,
  what's the point of all this?
  
- ### Asynchronous Sequences
+ ## Asynchronous Sequences
  
  I mean, it's all great that we can replace the functions on Array with publishers and avoid
  creating the intermediate arrays. But this seems pretty esoteric, what's the big deal?
@@ -264,9 +306,28 @@ r2
  */
 var r3: [String] = []
 /*:
+ And again, here are our previous examples:
+ 
+     let r1 = [1, 2, 3]      // Array<Int>
+         .map { $0 * 2 }     // Array<Int>
+         .map { Double($0) } // Array<Double>
+         .map { "\($0)" }    // Array<String>
+     r1
+ 
+ And
+ 
+     let c1 = [1, 2, 3]
+        .publisher
+        .map { $0 * 2 }
+        .map { Double($0) }
+        .map { "\($0)" }
+        .sink { r2.append($0) }
+
  But now instead of using `[Int].publisher`
- we use a new kind of Publisher, a `PassThruSubject`.  Notice how this code looks exactly
- like the `[Int].publisher`
+ we use a new kind of Publisher, a `PassThroughSubject`.
+ Notice how this code looks a lot like `[Int].publisher`
+ except that for some reason, we have put `sub1` in
+ a variable.
  */
 let sub1 = PassthroughSubject<Int, Never>()
 let c2 = sub1
@@ -276,9 +337,9 @@ let c2 = sub1
     .sink { r3.append($0) }
 type(of: c2)
 /*:
- This time however, unlike both the examples above, we don't send all the values
+ This time, unlike both the examples above, we don't send all the values
  immediately, we send them one at a time.  Note the value of r3 after each send.
- Also note that the thing which responds to `send` is the `PassthruSubject`, not
+ Also note that the thing which responds to `send` is the `PassThroughSubject`, not
  any of the intervening `Publisher`s.  That's why we had to keep the subject in
  a separate variable, so that we could later call `send` on it.
  */
@@ -290,14 +351,17 @@ r3
 sub1.send(3)
 r3
 /*:
- And now after sending the same three values we've been sending we have the
- same results as before, but we have sent the values into the
- Passthru subject asynchronously.
+ And now we see why we held `sub1` out separately, we needed
+ to keep the reference so we could call `send` on it.
+ 
+ And now after sending the same three values we've been sending we have
+ exactly the same results as before, but we have sent the values into the
+ PassThrough subject **_ASYNCHRONOUSLY_**.
  In fact, we could have programmed random delays into the sequence above,
  just to illustrate the asynchronous nature of what we are doing.
  
- But finally we decide we've sent everything that needs to be sent, and we notify
- the PassthruSubject that there will be no more values coming down the pipe:
+ Now finally we decide we've sent everything that needs to be sent, and we notify
+ the PassThroughSubject that there will be no more values coming down the pipe:
  */
 sub1.send(completion: .finished)
 r3
@@ -305,7 +369,7 @@ r3
  And _that_ is how we deal with Requirement 2 (Completion) above.
  We didn't have to do this with
  the Array publisher before, because that particular publisher sends the completion
- down the pipe itself.  With PassthruSubject, we have to do it ourselves.
+ down the pipe itself.  With PassThroughSubject, we have to do it ourselves.
  
  And now note that if we try to send values through the chain, nothing happens,
  because the Sequence has already been completed.
@@ -313,7 +377,7 @@ r3
 sub1.send(4)
 r3
 /*:
-So if you go and look at the Apple doc on PassthruSubject,
+So if you go and look at the Apple doc on PassThroughSubject,
  you will find the following:
  
  ```
@@ -323,7 +387,7 @@ So if you go and look at the Apple doc on PassthruSubject,
  ```
  This is way we can interface our existing imperative code to the functional world
  in Combine.  When our imperative code generates
- some new value we want to publish, we drop it into a PassthruSubject and *boom!*
+ some new value we want to publish, we drop it into a PassThroughSubject and *boom!*
  out it comes the other end of the chain.
  
  Btw, if you are familiar with UIKit programming, this will remind you of something.
@@ -335,11 +399,11 @@ So if you go and look at the Apple doc on PassthruSubject,
  a much more flexible mechanism which can garbage collect far more readily and which
  does not steer you into using one gigantic singleton of NotificationCenter.
  
- One more important thing to note about PassthruSubject that lets
+ One more important thing to note about PassThroughSubject that lets
  you know it still has one foot in the imperative
  world - it's a `class` (aka a reference type) _unlike most Publishers_
  which are `struct`'s (aka value types).  Why is this important?  Well, mainly it means
- that you can reference the _same_ PassthruSubject in multiple places
+ that you can reference the _same_ PassThroughSubject in multiple places
  in your code and that any publisher chain which
  you attach to that same instance will also get it's `sink` eventually invoked when you say send.
  
@@ -393,7 +457,7 @@ r5
  the returned values into a Publisher
  we would never have to write loads of nested callback code again.
  2. Responding to timers - we could attach listeners to our timers
- as above with PassthruSubject and process timer firing in the same
+ as above with PassThroughSubject and process timer firing in the same
  way we process network events.
  3. Touch handling.  If we could model touches and other UI interaction
  as _events_ then we could tie these
