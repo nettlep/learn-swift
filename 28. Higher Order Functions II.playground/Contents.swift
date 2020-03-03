@@ -46,7 +46,7 @@ let f = [Int].myCompactMap
  with a particular type).  Swift simply chose to put this function in a namespace
  associated with `[Int]` and it did that by prepending the type name as
  the namespace.
- 
+
  Now take a look at the far right column of the playground.
  Expand that column so that you can see the type of the variable `f`
  there. To remind, the type of `f` is *_NOT_* `function`.  The type of `f`
@@ -65,7 +65,7 @@ let f = [Int].myCompactMap
  `([Int]) ->`
  
  This signature _should_ surprise you in several respects.
- At least three questions that should be in your mind are:
+At least three questions that should be in your mind are:
  
  1. wtf? with the multiple `->`'s? and
  
@@ -102,7 +102,7 @@ let f = [Int].myCompactMap
  The lesson here is that, by default,
  the `->` operator associates to the right.  Right association says:
  a function without any parens in place to say which is which,
- will _return_ a function rather than _accepting_ one as an argument.
+ will  _return_ a function rather than _accepting_ one as an argument.
  
  Read that slowly,
  as it's very important. To specify that a function _accepts_

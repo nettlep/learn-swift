@@ -276,7 +276,7 @@ type(of: x2)
  Let's look at `zip` now and think about it's general form.  Here's the
  signature of zip:
 
-    Array<A>: func zip(Array<A>, Array<B>) -> Array<(A, B)>
+    func zip(Array<A>, Array<B>) -> Array<(A, B)>
 
  You use `zip` to take two arrays, match up the elements and combine
  then into one.
