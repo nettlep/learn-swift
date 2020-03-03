@@ -152,7 +152,7 @@ let r1 = [1,2,3].myCompactMap         ( { "\($0)" } )
 r1
 let r2 =   [Int].myCompactMap([1,2,3])( { "\($0)" } )
 r2
-let r3 = f([1,2,3])( { "\($0)" } )
+let r3 = f                   ([1,2,3])( { "\($0)" } )
 r3
 /*:
  Ok!  now we have some values.  And look, they're all the same. Which
@@ -348,8 +348,8 @@ type(of: StructA.append)
  invoking exactly the same functions in precisely the same
  order.
 */
-let s1 = StructA.append(StructA(a: "some string"))(string:" 5")
-let s2 = StructA(a:"some string").append(string: " 5")
+let s1 = StructA                 .append(StructA(a: "some string"))(string: " 5")
+let s2 = StructA(a:"some string").append                           (string: " 5")
 /*:
  now look at the following extension.
  */
