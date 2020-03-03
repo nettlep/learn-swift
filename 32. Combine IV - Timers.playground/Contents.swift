@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 /*:
- # Combine II - Timers
+ # Combine IV - Timers
  
  Timers have a different set of complications from network access.
  

@@ -124,7 +124,7 @@ At least three questions that should be in your mind are:
  as you can see over to the right where the playground prints the types.
 */
 let f1a = [1,2,3].myCompactMap
-let f1b = [Int].myCompactMap([1,2,3])
+let f1b =   [Int].myCompactMap([1,2,3])
 let f1c = f([1,2,3])
 /*:
 In words `f1[a, b, c]` are all functions which
@@ -148,9 +148,9 @@ In words `f1[a, b, c]` are all functions which
  So lets invoke the 3 functions above and see where we end up, (remember
  these functions accept as an argument an `(Int) -> String?`).
  */
-let r1 = [1,2,3].myCompactMap { "\($0)" }
+let r1 = [1,2,3].myCompactMap         ( { "\($0)" } )
 r1
-let r2 = [Int].myCompactMap([1,2,3])( { "\($0)" } )
+let r2 =   [Int].myCompactMap([1,2,3])( { "\($0)" } )
 r2
 let r3 = f([1,2,3])( { "\($0)" } )
 r3
@@ -159,17 +159,24 @@ r3
  had better be the case or this is one wasted playground.
  
  look closely at these two lines which we have just proven
- are _exactly_ the same:
+ are _exactly_ the same (I've adjusted the whitespace to
+ improve clarity):
  
-     let r1 = [1,2,3].myCompactMap { "\($0)" }
-     let r2 = [Int].myCompactMap([1,2,3])( { "\($0)" } )
- 
+     let r1 = [1,2,3].myCompactMap         ( { "\($0)" } )
+     let r2 =   [Int].myCompactMap([1,2,3])( { "\($0)" } )
+
+ What the compiler is doing as should
+ really jump out at you there.
+
  What this shows is that `[1,2,3].myCompactMap` is syntactic sugar
  for what is really going on underneath which is:
  `[Int].myCompactMap([1,2,3])`.  The first is the OO notation,
  the second is the FP notation.  But they are _exactly,
- precisely, indistinguishably_ the same.  What the compiler
- has done anytime you do OOP is take your object and pass
+ precisely, indistinguishably_ the same.
+
+ What the Swift compiler has done anytime you do
+ what you think of as Object riented Programming
+ is take your object and pass
  it as the first argument to a static function-returning-function
  and then invoke the first function.
  
