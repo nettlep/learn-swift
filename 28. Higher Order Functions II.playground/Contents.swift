@@ -158,15 +158,15 @@ r3
  Ok!  now we have some values.  And look, they're all the same. Which
  had better be the case or this is one wasted playground.
  
- look closely at these two lines which we have just proven
+ Look closely at these two lines which we have just proven
  are _exactly_ the same (I've adjusted the whitespace to
  improve clarity):
  
      let r1 = [1,2,3].myCompactMap         ( { "\($0)" } )
      let r2 =   [Int].myCompactMap([1,2,3])( { "\($0)" } )
 
- What the compiler is doing as should
- really jump out at you there.
+ What the compiler is doing with all this should
+ really jump out at you now.
 
  What this shows is that `[1,2,3].myCompactMap` is syntactic sugar
  for what is really going on underneath which is:
@@ -175,10 +175,11 @@ r3
  precisely, indistinguishably_ the same.
 
  What the Swift compiler has done anytime you do
- what you think of as Object riented Programming
- is take your object and pass
- it as the first argument to a static function-returning-function
- and then invoke the first function.
+ what you think of as Object Oriented Programming
+ is take the object you are are invoking the function on and pass
+ it as the first argument to a static function-returning-function.
+ It then invokes the returned function, passing what you think
+ of as the arguments to the method.
  
  So we've taken this `([Int]) -> (Int -> String?) -> [String]`
  thing and done _two_ function invocations to get our final
@@ -351,7 +352,11 @@ type(of: StructA.append)
 let s1 = StructA                 .append(StructA(a: "some string"))(string: " 5")
 let s2 = StructA(a:"some string").append                           (string: " 5")
 /*:
- now look at the following extension.
+ All that happened there was that `StructA(a:"some string")`
+ moved from before the append to immediately after and its place
+ was taken by the name of its type.
+
+ Now look at the following extension.
  */
 extension StructA {
     static func staticAppend(_ a: StructA) -> (String) -> String {
@@ -410,7 +415,11 @@ let s3 = StructA.staticAppend(StructA(a: "some string"))(" 5")
  
  Btw, if you are familiar with ObjC, what we have done
  here is _exactly_ equivalent to what ObjC
- does when it passes `self` as the first argument to an `Impl`.  Swift
+ does when it passes `self` as the first argument to an `IMP`.
+ (here's [great article](https://www.cocoawithlove.com/2008/02/imp-of-current-method.html)
+ on how that works, btw)
+
+ Swift does exactly the same thing in its OO notation, it
  just uses a different technique for designating `self`.  And it turns
  out that that technique is just a normal use of functional composition.
  
@@ -424,7 +433,8 @@ public func uncurry<A, B, C>(
     }
 }
 /*:
- This one takes as its only argument a function-returning-function. Here
+ This one takes as its only argument a function-returning-function
+ and returns just a regular ol' function. Here
  it is more clearly:
 
      ((A) -> (B) -> C) -> (A,B) -> C
@@ -439,7 +449,7 @@ let u = uncurry(StructA.append)
  languages like ObjectiveC, it should remind you of exactly what those languages
  do to provide method invocation.
  
- To reiterate, we just turned `StructA.append` into an ObjC-style Impl where `self`
+ To reiterate, we just turned `StructA.append` into an ObjC-style IMP where `self`
  is the first argument.  Hmm..  What can be seen here again is that everything you think
  of as OOP is in fact a specific notation that can be derived by manipulating
  functions and seasoning to taste with syntactic sugar.
@@ -465,8 +475,9 @@ type(of: c)
 /*:
  And we see that c recovers the shape of the original function.
  
- This sort of "shape manipulation" is an incredibly powerful feature
- that allows you to glue existing functions together in really interesting ways.
+ This sort of "shape manipulation" is a surprisingly powerful feature
+ of functional programming that allows you to glue existing functions
+ together in really interesting ways.
  
  NB, everything we've just done, could also be done in e.g. Java or ObjC.
  There are two differences (and the differences are the entire
