@@ -125,7 +125,7 @@ At least three questions that should be in your mind are:
 */
 let f1a = [1,2,3].myCompactMap
 let f1b =   [Int].myCompactMap([1,2,3])
-let f1c = f([1,2,3])
+let f1c =                    f([1,2,3])
 /*:
 In words `f1[a, b, c]` are all functions which
  ```
@@ -152,7 +152,7 @@ let r1 = [1,2,3].myCompactMap         ( { "\($0)" } )
 r1
 let r2 =   [Int].myCompactMap([1,2,3])( { "\($0)" } )
 r2
-let r3 = f                   ([1,2,3])( { "\($0)" } )
+let r3 =                    f([1,2,3])( { "\($0)" } )
 r3
 /*:
  Ok!  now we have some values.  And look, they're all the same. Which
