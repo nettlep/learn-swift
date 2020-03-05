@@ -512,10 +512,33 @@ r5
  it to say that if we cover network access, timers and GUI events, we will have
  radically overhauled the way we architect iOS apps.  In fact, the
  architectural change will be so radical as to be disorienting at times.
- 
+
+ Finally, for this playground, lets talk about how we manage dispatch
+ onto different queues.  Here it is:
+ */
+import Dispatch
+import Foundation
+var queue = OperationQueue()
+var r6 = [String]()
+let sub3 = PassthroughSubject<Int, Never>()
+let c5 = [1, 2, 3, 4, 5, 6, 7].publisher
+    .receive(on: queue)
+    .map { $0 * 2 }
+    .map { Double($0) }
+    .map { "\($0)" }
+    .receive(on: DispatchQueue.main)
+    .sink { r6.append($0) }
+type(of: c5)
+r6
+/*:
+ This demonstrates us taking any heavy calculations we need to
+ do into a background thread and then once its done bringing
+ it back on the main thread.  Asynchrony in action...
+
  There's one more thing we need to talk about before we get to Networking, though:
  Requirement 3 (Error handling).  Networks are things that fail and somehow
  we need to deal with failure.
  
  In the next playground we'll explain how we do error handling in Combine.
 */
+
