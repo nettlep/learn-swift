@@ -347,6 +347,10 @@ let c2 = sub1
     .sink { r3.append($0) }
 type(of: c2)
 r3
+struct Void { }
+let v = Void()
+type(of: v)
+enum Foo { }
 /*:
  Now this is different.  Before, when we connected the `sink` all the values
  in the array were sent through immediately and our results array was populated.
@@ -522,10 +526,10 @@ var queue = OperationQueue()
 var r6 = [String]()
 let sub3 = PassthroughSubject<Int, Never>()
 let c5 = [1, 2, 3, 4, 5, 6, 7].publisher
-    .receive(on: queue)
     .map { $0 * 2 }
     .map { Double($0) }
     .map { "\($0)" }
+    .subscribe(on: queue)
     .receive(on: DispatchQueue.main)
     .sink { r6.append($0) }
 type(of: c5)
