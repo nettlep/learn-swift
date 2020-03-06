@@ -76,7 +76,7 @@ You will want to pay special attention to familiarizing yourself with the follow
 Current Swift features:\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls2\ilvl0\cf0 {\listtext	\uc0\u8226 	}Types expressible as either value or reference types \
-{\listtext	\uc0\u8226 	}Sum (or Union) types as first-class types in addition to Product types\
+{\listtext	\uc0\u8226 	}Sum types as first-class types in addition to Product types\
 {\listtext	\uc0\u8226 	}Reified, constrained generics\
 {\listtext	\uc0\u8226 	}Simplified syntax for functional composition techniques\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
@@ -232,7 +232,7 @@ While Swift does not do lazy evaluation, it does handle higher order functions q
 \fs28  
 \f1\b0  \
 \pard\tx720\pardeftab720\partightenfactor0
-\cf0 Application architecture in the Functional Reactive Programming (FRP) style broadens functional decomposition to allow interaction with asynchronous streams of events.  FRP is inherently about reacting to events as they arrive (in JavaScript, the most common framework used for this architecture is even called `React`).  Since, by their nature,  events arrive asynchronously, FRP can be viewed as an attempt to tame asynchrony. \
+\cf0 Application architecture in the Functional Reactive Programming (FRP) style broadens functional decomposition to allow interaction with asynchronous streams of events.  FRP is inherently about reacting to events as they arrive (in JavaScript, the most common framework used for this architecture is even called `React`).  Since, by nature,  events arrive asynchronously, FRP can be viewed as an attempt to tame asynchrony. \
 \pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
 \ls13\ilvl0\cf0 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
 In Swift, FRP is embodied in the Combine framework. \
@@ -315,7 +315,7 @@ Swift's type system is discussed below in detail and consists of: tuples, functi
 \
 If you are coming from an OO background it is frequently the case that you will think the following things when you pick up Swift: \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls14\ilvl0\cf0 {\listtext	\uc0\u8226 	}Classes and protocols look quite familiar to what you are accustomed to in Java or ObjC or JavaScript and should be the first tool you reach for when designing new code\
+\ls14\ilvl0\cf0 {\listtext	\uc0\u8226 	}Classes and protocols look quite familiar to what you are accustomed to in Java or ObjC or JavaScript and should be the first tool you reach for when designing new code, just as they are in those languages.\
 {\listtext	\uc0\u8226 	}Structs seem like classes with several useless limitations \
 {\listtext	\uc0\u8226 	}Functions appear to be just like methods\
 {\listtext	\uc0\u8226 	}Generics seem a bit superfluous and \
@@ -351,11 +351,11 @@ You will want to:\
 \f0\b\fs36 Functions
 \f1\b0\fs28 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls16\ilvl0\cf0 {\listtext	\uc0\u8226 	}Functions in Swift are first-class objects, they can be passed in to other functions as arguments and can be returned from functions just like any other type.\
+\ls16\ilvl0\cf0 {\listtext	\uc0\u8226 	}Functions in Swift are first-class objects, they can be assigned to variables, passed in to other functions as arguments and returned from functions just like any other type.\
 {\listtext	\uc0\u8226 	}It is important to note that when a function returns a function, the return value is necessarily a composition of some function.\
 {\listtext	\uc0\u8226 	}Swift syntax provides very powerful tools for composing functions together in ways that are extremely difficult in ObjectiveC, C++ or Java\
-{\listtext	\uc0\u8226 	}Because functions are first class objects, this means that in your code you can invoke functions which return new functions.  You can then assign them to variables, pass them to other functions or invoke them.\
-{\listtext	\uc0\u8226 	}Again, other languages allow this and in this area, Swift's contribution has been simply to optimize the syntax in an idiosyncratic way that makes it much easier to do.  Accordingly, programming techniques which are built around function composition are used much more often in Swift than in other languages where the syntax is not so optimized.\
+{\listtext	\uc0\u8226 	}Other languages admit functions as first class objects, too. Swift's contribution has been simply to optimize the syntax in an idiosyncratic way that makes it much easier to do.  Accordingly, programming techniques which are built around function composition are used much more often in Swift than in other languages where the syntax is not so optimized.\
+{\listtext	\uc0\u8226 	}Swift is not the _most_ optimized for this usage, because it still clings syntactically to features from C and ObjC, but its pretty good in this regard.\
 {\listtext	\uc0\u8226 	}It is the function-creating-function feature that most confuses OO programmers new to Swift.  You should think of the various forms of composition as being an API on functions, similar to the API of String or Array. It will be used just that frequently.\
 {\listtext	\uc0\u8226 	}There are two key syntax elements that are required to use functions as first class objects effectively. These are key to all of the functional programming constructs mentioned below:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
@@ -379,7 +379,7 @@ You will want to:\
 \f1 \cf0  as an argument and returns a value of Z.  \
 {\listtext	\uc0\u8259 	}It is crucial to reading Swift code that you understand this difference\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls16\ilvl0\cf0 {\listtext	\uc0\u8226 	}The function/return value distinction is another one of the hardest syntax elements for those new to the language to acquire.  Remember that parens are required to force left association if it is needed.\
+\ls16\ilvl0\cf0 {\listtext	\uc0\u8226 	}The right association of the `->` operator (i.e. function-accepting-function vs the function-returning-function) distinction is another one of the hardest syntax elements for those new to the language to acquire.  Remember that parens are required to force left association if it is needed.\
 {\listtext	\uc0\u8226 	}You can separate any function call which accepts a multi-valued tuple such as 
 \f7 \cf5 (X, Y, Z) -> A
 \f1 \cf0  into a chain of function calls 

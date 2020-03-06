@@ -536,13 +536,16 @@ type(of: c5)
 r6
 /*:
  This demonstrates us taking any heavy calculations we need to
- do into a background thread and then once its done bringing
+ do onto a background thread and then once its done bringing
  it back on the main thread.  Asynchrony in action...
 
- There's one more thing we need to talk about before we get to Networking, though:
- Requirement 3 (Error handling).  Networks are things that fail and somehow
- we need to deal with failure.
+ There're two more things we need to talk about before we get to Networking, though:
  
- In the next playground we'll explain how we do error handling in Combine.
+ 1. Exactly _how_ combine does what it does (aka functional composition)
+ 2. Requirement 3 (Error handling).
+ 
+ In the next playground we'll explain more about higher order functions,
+ specifically functions that in addition to accepting other functions
+ as arguments, provide new functions as return values.
 */
 
