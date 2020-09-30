@@ -1,4 +1,5 @@
 import UIKit
+//Converts Strings into respective Data type and requirement
 extension String {
     // a -> 10
     var hexToInt : Int{return Int(strtoul(self, nil, 16))}
@@ -19,6 +20,7 @@ extension String {
     // a -> 97
     var ascii : Int{return Int(self.unicodeScalars.first!.value)}
 }
+//Converts Int into respective Data type and requirement
 extension Int {
     // 10 -> 1010
     var binString : String{return String(self, radix: 2)}
